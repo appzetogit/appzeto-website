@@ -58,7 +58,7 @@ export function quick(c, A, E, front, now) {
   const go = c < 1100 || (c > 2600 && c < 3450) || (c > 6500 && c < 7250) || c > 8650, jig = go ? Math.sin(now / 38) * 1.6 : 0, r = go ? Math.sin(now / 52) * 1.3 : bump(c, 1150, 1650) * 6 + bump(c, 7300, 7700) * 4
   const show = x > -300 && x < 470, tr = `translate(${x.toFixed(1)} ${(FLOOR + 4 + jig).toFixed(1)}) rotate(${r.toFixed(2)}) scale(1.06) translate(-112 -82)`
   put(E, 'quick-b', show, tr); put(E, 'quick-f', show, tr); E.swh.forEach(w => w.setAttribute('transform', `rotate(${(x * 6 % 360).toFixed(0)})`))
-  cast(c, A, 5, front, { out: 1350, in: 7420, step: 130, dur: 560, high: 78, turns: 1, seat: i => ({ x: x + (i - 2) * 33, y: FLOOR - 24 + jig, s: .3, r, f: ramp(x, -70, -30) * (1 - ramp(x, 330, 400)) }) })
+  cast(c, A, 5, front, { out: 1350, in: 7420, step: 130, dur: 560, high: 78, turns: 1, seat: i => ({ x: x + (i - 2) * 33, y: FLOOR - 48 + jig, s: .33, r, f: ramp(x, -70, -30) * (1 - ramp(x, 330, 400)) }) })
   E.gr.forEach((g, i) => {
     const o = ramp(c, 1300 + i * 110, 2050 + i * 110), b = ramp(c, 7150 + i * 120, 7850 + i * 120), t = o > 0 && o < 1 ? o : b > 0 && b < 1 ? 1 - b : -1
     g.style.visibility = t >= 0 ? 'visible' : 'hidden'
@@ -81,7 +81,7 @@ export function service(c, A, E, front, now) {
 // HOTEL: an elevator comes up, the doors slide, the staff step out
 export const HOTEL = { len: 9000, sync: 2000 }
 export function hotel(c, A, E, front) {
-  const rise = out(ramp(c, 0, 620)) * (1 - ease(ramp(c, 8400, 8950))), y = FLOOR + 2 + (1 - rise) * 170, show = c < 8950
+  const rise = out(ramp(c, 0, 620)) * (1 - ease(ramp(c, 2520, 3000))) + out(ramp(c, 6150, 6700)) * (1 - ease(ramp(c, 8400, 8950))), y = FLOOR + 2 + (1 - rise) * 172, show = c < 3000 || (c > 6150 && c < 8950)
   const open = ease(ramp(c, 780, 1080)) * (1 - ease(ramp(c, 2200, 2500))) + ease(ramp(c, 6700, 6950)) * (1 - ease(ramp(c, 8050, 8330)))
   const tr = `translate(86 ${y.toFixed(1)})`
   put(E, 'hotel-b', show, tr); put(E, 'hotel-f', show, tr)
