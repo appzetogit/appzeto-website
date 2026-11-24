@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
 import { Burger, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
 
+// Everything on stage, and the phone's own scenes, run at this speed
+export const SPEED = 1.5
 const SHOW = { taxi: [taxi, TAXI], food: [food, FOOD] }
 
 const I = '#06282A', T = '#06A4A5', D = '#0D5353', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B', C = '#FFD84A'
@@ -139,10 +141,10 @@ export default function Crew({ id, clock, ctl, seek }) {
       A.forEach(a => { a.ride = a.air = false; a.fade = 1; front(a, true) })
       if (show) {
         A.forEach(a => {
-          if (a.on) a.move = { kind: 'dive', t0: now + 60 + a.i * 70, d: 520, x: a.x, y: a.y, s: a.s, done: false }
+          if (a.on) a.move = { kind: 'dive', t0: now + 30 + a.i * 45, d: 380, x: a.x, y: a.y, s: a.s, done: false }
           if (a.i < next.length) { a.home = to[a.i]; a.cast = next[a.i] }
         })
-        showT = now + (some ? 880 : 150); synced = -1; cur = S.id; S.changed = false; lastIn = now; wordAt = now
+        showT = now + (some ? 600 : 100); synced = -1; cur = S.id; S.changed = false; lastIn = now; wordAt = now
         return
       }
       for (const a of A) {
@@ -150,16 +152,16 @@ export default function Crew({ id, clock, ctl, seek }) {
         if (will) {
           a.home = to[a.i]
           const kind = still ? 'set' : first ? 'run' : was ? 'flip' : 'born'
-          a.move = { kind, t0: now + (first ? a.i * 190 : kind === 'born' ? (some ? 620 : 160) + Math.max(0, some ? a.i - from.length : a.i) * 160 : 240 + a.i * 85), d: first ? 1050 : 780, x: was ? a.x : kind === 'run' ? -150 : PHONE[0], y: was ? a.y : kind === 'run' ? FLOOR : PHONE[1] + 60, s: was ? a.s : kind === 'run' ? to[a.i].s : .06, l: next[a.i][0], hat: next[a.i][1], done: false, dir: a.i % 2 ? -1 : 1 }
+          a.move = { kind, t0: now + (first ? a.i * 190 : kind === 'born' ? (some ? 360 : 80) + Math.max(0, some ? a.i - from.length : a.i) * 95 : 90 + a.i * 55), d: first ? 1050 : 560, x: was ? a.x : kind === 'run' ? -150 : PHONE[0], y: was ? a.y : kind === 'run' ? FLOOR : PHONE[1] + 60, s: was ? a.s : kind === 'run' ? to[a.i].s : .06, l: next[a.i][0], hat: next[a.i][1], done: false, dir: a.i % 2 ? -1 : 1 }
           a.on = true
-        } else if (was) a.move = { kind: still ? 'gone' : 'dive', t0: now + 220 + (a.i - next.length) * 130, d: 620, x: a.x, y: a.y, s: a.s, done: false }
+        } else if (was) a.move = { kind: still ? 'gone' : 'dive', t0: now + 90 + (a.i - next.length) * 80, d: 430, x: a.x, y: a.y, s: a.s, done: false }
         if (still || first) { a.l = will ? next[a.i][0] : a.l; a.hat = will ? next[a.i][1] : null }
       }
-      cur = S.id; S.changed = false; lastIn = now; wordAt = now + (first ? 2000 : 1750)
+      cur = S.id; S.changed = false; lastIn = now; wordAt = now + (first ? 2000 : 1150)
     }
     function runShow(now) {
       if (A.some(a => a.move) || now < showT) { perf = null; return }
-      const [fn, o] = SHOW[cur], run = Math.floor((now - showT) / o.len), c = (now - showT) % o.len
+      const [fn, o] = SHOW[cur], at = (now - showT) * SPEED, run = Math.floor(at / o.len), c = at % o.len
       for (const a of A) { if (a.i < WORDS[cur].length) { a.l = a.cast[0]; a.hat = a.cast[1] } else a.on = false }
       if (c >= o.sync - 60 && synced !== run) { synced = run; S.seek?.(0) }
       perf = fn(c, A, E, front, now)

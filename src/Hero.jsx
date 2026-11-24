@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PhoneBody, reduced, useLive } from './Brand.jsx'
-import Crew from './Crew.jsx'
+import Crew, { SPEED } from './Crew.jsx'
 import { RideMap } from './Ride.jsx'
 import { Quick, Service, Hotel, Super, Ai } from './Scenes.jsx'
 import { PanScene } from './Pizza.jsx'
@@ -17,6 +17,8 @@ const apps = {
   taxi: <RideMap />,
   quick: <Quick />, service: <Service />, hotel: <Hotel />, super: <Super />, ai: <Ai />,
 }
+// Seconds each app stays on stage
+const HOLD = { food: 7.3, taxi: 7.1 }
 const CLOCK = { food: '.pz-ride', taxi: '.cab' }
 const chips = { food: ['Pizza’s on', 'Rider picked up'], taxi: ['Driver found', 'Pickup set'], quick: ['Milk added', 'Cart packed'], service: ['Expert found', 'Visit booked'], hotel: ['Rooms free', 'Room booked'], super: ['All in one', 'One login'], ai: ['Idea received', 'App ready'] }
 
@@ -41,7 +43,8 @@ export default function Hero() {
     return a.an ? a.an.currentTime ?? 0 : 0
   }
   // Lets the crew restart the phone's scene at the right beat
-  const seek = ms => { const el = ref.current?.querySelector('.app-in'); el?.getAnimations({ subtree: true }).forEach(a => { if (a.effect.target !== el) a.currentTime = ms }) }
+  const seek = ms => { const el = ref.current?.querySelector('.app-in'); el?.getAnimations({ subtree: true }).forEach(a => { if (a.effect.target !== el) { a.playbackRate = SPEED; a.currentTime = ms } }) }
+  useEffect(() => { if (out) { const t = setTimeout(() => ref.current?.querySelector('.app-in')?.getAnimations({ subtree: true }).forEach(a => { a.playbackRate = SPEED }), 60); return () => clearTimeout(t) } }, [p.id, run, out])
   const point = { onPointerEnter: () => { ctl.current.mode = 'point' }, onPointerLeave: () => { ctl.current.mode = null }, onFocus: () => { ctl.current.mode = 'point' }, onBlur: () => { ctl.current.mode = null } }
   const next = () => { setI(x => (x + 1) % products.length); setRun(r => r + 1) }
   const move = e => {
@@ -66,7 +69,7 @@ export default function Hero() {
         </svg>
         {out && chips[p.id].map((c, n) => <span key={p.id + n} className={`chip chip${n}`} aria-hidden="true"><svg viewBox="0 0 20 20" width="18"><circle cx="10" cy="10" r="10" fill={G} /><path d="M5.500 10.500l3 3 6-7" fill="none" stroke={W} strokeWidth="2.600" strokeLinecap="round" strokeLinejoin="round" /></svg>{c}</span>)}
       </div>
-      <div className="tabs"><div className="tabset" role="group" aria-label="Choose a platform to preview">{products.map((x, n) => <button key={x.id} aria-pressed={n === i} onClick={() => { setAuto(false); setOut(true); if (n !== i) { setI(n); setRun(r => r + 1) } }}><span>{x.short}</span>{n === i && auto && out && <i key={run} className="bar" onAnimationEnd={next} />}</button>)}</div>
+      <div className="tabs"><div className="tabset" role="group" aria-label="Choose a platform to preview">{products.map((x, n) => <button key={x.id} aria-pressed={n === i} onClick={() => { setAuto(false); setOut(true); if (n !== i) { setI(n); setRun(r => r + 1) } }}><span>{x.short}</span>{n === i && auto && out && <i key={run} className="bar" style={{ animationDuration: `${HOLD[x.id] || 4.9}s` }} onAnimationEnd={next} />}</button>)}</div>
         <div className="tabs-more"><Link className="txt" to={p.path}>Open {p.name}</Link>{out && <button className="txt pause" onClick={() => setAuto(!auto)} aria-label={auto ? "Pause preview" : "Play preview"}><svg viewBox="0 0 20 20" width="22" aria-hidden="true"><path d={auto ? "M5 3h4v14H5zM11 3h4v14h-4z" : "M5 3l12 7-12 7z"} fill="currentColor" /></svg></button>}</div></div>
     </div>
   </section>
