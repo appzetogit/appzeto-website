@@ -18,7 +18,7 @@ const apps = {
   quick: <Quick />, service: <Service />, hotel: <Hotel />, super: <Super />, ai: <Ai />,
 }
 // Seconds each app stays on stage
-const HOLD = { food: 6.5, taxi: 6.2, quick: 6.2, service: 6, hotel: 5.8, super: 5.6, ai: 5.6 }
+const HOLD = { food: 7.1, taxi: 6.2, quick: 6.2, service: 6, hotel: 5.8, super: 5.6, ai: 5.6 }
 const CLOCK = { food: '.pz-ride', taxi: '.cab' }
 const chips = { food: ['Pizza’s on', 'Rider picked up'], taxi: ['Driver found', 'Pickup set'], quick: ['Milk added', 'Cart packed'], service: ['Expert found', 'Visit booked'], hotel: ['Rooms free', 'Room booked'], super: ['All in one', 'One login'], ai: ['Idea received', 'App ready'] }
 

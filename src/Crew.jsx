@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
-import { Burger, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
+import { Burger, Scooter, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
 import { AI, HOTEL, QUICK, SERVICE, SUPER, SetBacks, SetFronts, ai, hotel, quick, service, superShow } from './Shows2.jsx'
 
 // Everything on stage, and the phone's own scenes, run at this speed
@@ -13,7 +13,7 @@ const rd = { strokeLinecap: 'round', strokeLinejoin: 'round' }
 
 // Who plays in each app: [letter, hat]
 export const WORDS = {
-  food: [['F', 'chef'], ['O', 'paper'], ['O', 'bandana'], ['D', 'helmet']],
+  food: [['F', 'helmet', 'rider'], ['O', 'chef'], ['O', 'paper'], ['D', 'bandana']],
   taxi: [['T', 'cab'], ['A', 'sun'], ['Xx', 'police'], ['I', 'cap']],
   quick: [['Q', 'helmet'], ['U', 'paper'], ['I', 'cap'], ['C', 'bandana'], ['K', 'helmet']],
   service: [['F', 'hard'], ['I', 'cap'], ['Xx', 'bandana'], ['I', 'hard'], ['T', 'hard']],
@@ -78,18 +78,19 @@ function pose(id, i, n, l, ms, t) {
   if (ms == null) { wave(); return p }
   const u = (ms % 5200) / 5200
   if (id === 'food') {
+    // i0 F delivers, i1 O cooks, i2 O serves, i3 D helps
     const fly = Math.max(bump(u, .17, .33), bump(u, .43, .59)), jerk = Math.max(bump(u, .14, .22), bump(u, .4, .48))
     p.look = [i < 2 ? .5 : -.4, -.75 - fly * .25]
     if (u < .62) {
-      if (i === 0) { p.hr = [rx + 18, ry - 6 - jerk * 40, 50]; p.hl = [lx - 14, ly - 4 - fly * 30, -110]; p.rot = jerk * -7; p.m = fly > .2 ? [8, 8, 9] : [9, 9, 2] }
-      else { p.dy = -fly * 9; p.m = fly > .25 ? [6, 6, 9] : [8, 8, 1]; p.hl = [lx - 14, ly + 10 - fly * 34, -140 + fly * 110]; p.hr = [rx + 14, ry + 10 - fly * 34, 140 - fly * 110] }
+      if (i === 1) { p.hr = [rx + 14, ry - 8 - jerk * 40, 50]; p.hl = [lx - 12, ly - 4 - fly * 30, -110]; p.rot = jerk * -7; p.m = fly > .2 ? [8, 8, 9] : [9, 9, 2] }
+      else { p.dy = -fly * 9; p.m = fly > .25 ? [6, 6, 9] : [8, 8, 1]; p.hl = [lx - 14, ly + 10 - fly * 34, -140 + fly * 110]; p.hr = [rx + 14, ry + 10 - fly * 34, 140 - fly * 110]; if (i === 0) p.hr = [rx + 14, ry - 14 + Math.sin(sec * 5) * 2, 90] }
     } else if (u < .76) {
-      const at = u < .67 ? 1 : 2
-      if (i === 3) { p.hl = [lx - 24, ly - 20, -60]; p.look = [-1, 0]; p.m = [10, 11, 7]; p.dy = -Math.abs(Math.sin(sec * 9)) * 6 }
-      else if (i === at) { p.pr = 'tray'; p.hr = [rx + 6, ry - 92, 0]; p.dx = bump(u, .62, .76) * 8; p.look = [1, -.2]; p.m = [10, 11, 5] }
-      else if (i === 0) up(); else { p.look = [i < at ? 1 : -1, -.1]; p.hl = [lx - 20, ly - 6, -70] }
-    } else if (i === 3) { p.into = u < .95 ? ease(ramp(u, .76, .82)) : 1 - ease(ramp(u, .95, 1)); p.pr = u < .9 ? 'bag' : null; p.hr = [rx + 12, ry + 4, 40]; p.m = [10, 12, 5]; p.look = [0, -1] }
-    else { wave(); p.look = [.3, -.8]; if (i === 0 && u > .84) { p.pl = 'slice'; p.hl = [lx + 2, ly - 18 + Math.sin(sec * 13), -25]; p.m = [8, 5, 4 + Math.sin(sec * 13) * 4] } }
+      const at = u < .67 ? 2 : 1
+      if (i === 0) { p.hr = [rx + 22, ry - 20, 60]; p.look = [1, 0]; p.m = [10, 11, 7]; p.dy = -Math.abs(Math.sin(sec * 9)) * 6 }
+      else if (i === at) { p.pl = 'tray'; p.hl = [lx - 6, ly - 78, 0]; p.dx = -bump(u, .62, .76) * 8; p.look = [-1, -.2]; p.m = [10, 11, 5] }
+      else if (i === 3) up(); else { p.look = [i < at ? 1 : -1, -.1]; p.hr = [rx + 18, ry - 6, 70] }
+    } else if (i === 0) { p.into = u < .95 ? ease(ramp(u, .76, .82)) : 1 - ease(ramp(u, .95, 1)); p.pr = u < .9 ? 'bag' : null; p.hr = [rx + 12, ry + 4, 40]; p.m = [10, 12, 5]; p.look = [0, -1] }
+    else { wave(); p.look = [-.1, -.8]; if (i === 3 && u > .84) { p.pl = 'slice'; p.hl = [lx + 2, ly - 18 + Math.sin(sec * 13), -25]; p.m = [8, 5, 4 + Math.sin(sec * 13) * 4] } }
   } else if (id === 'taxi') {
     p.look = [0, -.6]
     if (i === 0) { p.pr = 'wheel'; const s = Math.sin(sec * 3.2); p.hr = [rx + 10, ry - 8, s * 26]; p.hl = [lx + 12, ly - 8 + s * 6, -40]; p.rot = s * 5; p.dy = -Math.abs(Math.sin(sec * 9)) * 3; p.look = [.8, -.3] }
@@ -124,14 +125,14 @@ export default function Crew({ id, clock, ctl, seek }) {
   S.clock = clock; S.ctl = ctl; S.seek = seek
   useEffect(() => {
     const host = root.current, still = calm(), all = (el, c) => [...el.querySelectorAll('.' + c)]
-    const els = all(host, 'cw').map(el => ({ el, sh: host.querySelector(`.cw-sh[data-i="${el.dataset.i}"]`), st: all(el, 'cw-s'), ey: all(el, 'cw-e'), pu: all(el, 'cw-p'), ar: all(el, 'cw-a'), ha: all(el, 'cw-h'), mo: all(el, 'cw-m')[0], ht: all(el, 'cw-hat')[0], hk: all(el, 'cw-hk'), pr: all(el, 'cw-pr') }))
+    const els = all(host, 'cw').map(el => ({ el, sh: host.querySelector(`.cw-sh[data-i="${el.dataset.i}"]`), st: all(el, 'cw-s'), ey: all(el, 'cw-e'), pu: all(el, 'cw-p'), ar: all(el, 'cw-a'), ha: all(el, 'cw-h'), mo: all(el, 'cw-m')[0], ht: all(el, 'cw-hat')[0], hk: all(el, 'cw-hk'), bk: all(el, 'cw-bk')[0], skin: all(el, 'cw-skin')[0], vest: all(el, 'cw-vest')[0], pr: all(el, 'cw-pr') }))
     const items = Object.fromEntries(all(host, 'cw-it').map(e => [e.dataset.k, e])), shown = {}
     const now0 = performance.now()
     const A = els.map((e, i) => ({ ...e, i, v: {}, l: 'O', hat: null, on: false, blink: now0 + 900 + i * 700, spin: 0, shock: 0, q: 1, qu: 0, move: null, x: -120, y: FLOOR, s: .5, rot: 0, hover: false, box: null, hurt: 0 }))
     let cur = null, raf = 0, last = now0, live = false, mouse = null, mAt = -1e9, lastIn = now0, wordAt = now0, slow = 16, tick = 0, bye = false, boxAt = 0
     const go = (a, k, to, dt, K, d) => { const o = a.v[k] || (a.v[k] = { x: to, u: 0 }); if (still) { o.x = to; return to } for (let j = 0; j < 2; j++) { o.u += ((to - o.x) * K - o.u * d) * dt / 2; o.x += o.u * dt / 2 } return o.x }
 
-    const E = { cab: all(host, 'cw-cab'), wheels: all(host, 'cw-wh'), burger: all(host, 'cw-bg')[0], layers: all(host, 'cw-ly'), crumbs: all(host, 'cw-cr'), sets: Object.fromEntries(all(host, 'cw-set').map(g => [g.dataset.k, g])), gr: all(host, 'cw-gr'), cf: all(host, 'cw-cf'), swh: all(host, 'st-wh'), dl: all(host, 'st-dl')[0], dr: all(host, 'st-dr')[0], beam: all(host, 'st-beam')[0] }
+    const E = { cab: all(host, 'cw-cab'), wheels: all(host, 'cw-wh'), burger: all(host, 'cw-bg')[0], layers: all(host, 'cw-ly'), crumbs: all(host, 'cw-cr'), sets: Object.fromEntries(all(host, 'cw-set').map(g => [g.dataset.k, g])), gr: all(host, 'cw-gr'), cf: all(host, 'cw-cf'), swh: all(host, 'st-wh'), scw: all(host, 'cw-sw'), puff: all(host, 'cw-pf'), dl: all(host, 'st-dl')[0], dr: all(host, 'st-dr')[0], beam: all(host, 'st-beam')[0] }
     const mark = host.querySelector('.cw-mark')
     let showT = null, synced = -1, perf = null
     // In front of the cab and burger, or behind them
@@ -198,9 +199,10 @@ export default function Crew({ id, clock, ctl, seek }) {
       let p = pose(cur, a.i, n, WORDS[cur][a.i] ? a.l : 'O', f, now)
       const [lx, ly, rx, ry] = L.a, sec = now / 1000
       if (a.ride) {
-        const drive = cur === 'taxi' && a.i === 0
-        p = { ...p, pl: null, pr: drive ? 'wheel' : null, into: 0, dx: 0, rot: 0, lid: 1, dy: -Math.abs(Math.sin(sec * 8 + a.i)) * 5, m: [11, 13, 8], look: [1, -.1], hl: drive ? [lx + 14, ly - 6, -30] : [lx - 20, ly - 46 + Math.sin(sec * 11 + a.i) * 8, -15], hr: drive ? [rx + 8, ry - 10, Math.sin(sec * 5) * 18] : [rx + 20, ry - 46 - Math.sin(sec * 11 + a.i) * 8, 15] }
-        if (cur !== 'taxi' && cur !== 'quick') p = { ...p, hl: [lx - 8, ly + 14, -150], hr: [rx + 8, ry + 14, 150], look: [Math.sin(sec * 4), -.4], m: [7, 6, 9] }
+        const drive = (cur === 'taxi' && a.i === 0) || a.drive
+        p = { ...p, pl: null, pr: drive && !a.drive ? 'wheel' : null, into: 0, dx: 0, rot: 0, lid: 1, dy: -Math.abs(Math.sin(sec * 8 + a.i)) * 5, m: [11, 13, 8], look: [1, -.1], hl: drive ? [lx + 14, ly - 6, -30] : [lx - 20, ly - 46 + Math.sin(sec * 11 + a.i) * 8, -15], hr: drive ? [rx + 8, ry - 10, Math.sin(sec * 5) * 18] : [rx + 20, ry - 46 - Math.sin(sec * 11 + a.i) * 8, 15] }
+        if (a.drive) p = { ...p, hl: [lx + 62, ly - 20, 40], hr: [rx + 8, ry + 6, 60], look: [1, .1], m: [10, 11, 6] }
+        else if (cur !== 'taxi' && cur !== 'quick') p = { ...p, hl: [lx - 8, ly + 14, -150], hr: [rx + 8, ry + 14, 150], look: [Math.sin(sec * 4), -.4], m: [7, 6, 9] }
       } else if (busy || now < wordAt) {
         p = { ...p, pl: null, pr: null, into: 0, dx: 0, dy: 0, rot: 0 }
         const pre = a.move && now < a.move.t0
@@ -250,6 +252,8 @@ export default function Crew({ id, clock, ctl, seek }) {
         a.ar[k].setAttribute('d', `M${ax.toFixed(1)} ${ay.toFixed(1)}Q${((ax + x) / 2 + side * 8).toFixed(1)} ${((ay + y) / 2 + 9).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`)
         a.ha[k].setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${q.toFixed(0)}) scale(${side} 1)`)
       })
+      const rider = cur === 'food' && a.i === 0
+      if (rider !== a.rider) { a.rider = rider; a.bk.style.display = a.vest.style.display = rider ? '' : 'none'; a.skin.setAttribute('stroke', rider ? R : T) }
       const want = `${p.pl}|${p.pr}`
       if (want !== a.want) { a.want = want; a.pr.forEach(e => { e.style.display = (e.dataset.s === 'l' ? p.pl : p.pr) === e.dataset.k ? '' : 'none' }) }
       if (a.hat !== a.hatOn || a.l !== a.hatL) { a.hatOn = a.hat; a.hatL = a.l; a.hk.forEach(e => { e.style.display = e.dataset.k === a.hat ? '' : 'none' }); const [hx, hy] = HAT_AT[a.l] || [50, 8]; a.ht.setAttribute('transform', `translate(${hx} ${hy})`); if (!still) a.ht.firstChild.animate([{ transform: 'translateY(-60px) rotate(-40deg)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 460, delay: 120, fill: 'backwards', easing: 'cubic-bezier(.3,1.7,.5,1)' }) }
@@ -298,15 +302,17 @@ export default function Crew({ id, clock, ctl, seek }) {
     {[...Array(MAX)].map((_, i) => <ellipse key={i} className="cw-sh" data-i={i} rx="40" ry="6" fill={I} style={{ opacity: 0 }} />)}
     <clipPath id="cw-floor"><path d="M-400-400H700V240H-400Z" /></clipPath><SetBacks /><CabBack />
     {[...Array(MAX)].map((_, i) => <g key={i} className="cw" data-i={i} style={{ visibility: 'hidden' }}>
+      <g className="cw-bk" style={{ display: 'none' }}><path d="M-34 34Q-34 28-28 28H14V104H-28Q-34 104-34 98Z" fill={R} stroke={I} strokeWidth="3.200" strokeLinejoin="round" /><path d="M-34 44H14" stroke={I} strokeWidth="2.400" /><path d="M-18 28V21Q-10 16-2 21V28" fill="none" stroke={I} strokeWidth="4" /><rect x="-27" y="52" width="34" height="42" rx="5" fill={W} stroke={I} strokeWidth="2.200" /><path d="M-19 60V70Q-19 75-15.500 75V88M-15.500 60V72M-12 60V70Q-12 75-15.500 75M-1 60Q-7 66-5 75H-1V88" fill="none" stroke={R} strokeWidth="3" {...rd} /></g>
       <path className="cw-a" {...base} stroke={I} strokeWidth="6" /><path className="cw-a" {...base} stroke={I} strokeWidth="6" />
       <g transform="translate(2 -4)"><path className="cw-s" d={d0} {...base} stroke={I} strokeWidth="30" /><path className="cw-s" d={d0} {...base} stroke={Y} strokeWidth="27" /></g>
-      <path className="cw-s" d={d0} {...base} stroke={D} strokeWidth="29.500" /><path className="cw-s" d={d0} {...base} stroke={T} strokeWidth="26" />
+      <path className="cw-s" d={d0} {...base} stroke={D} strokeWidth="29.500" /><path className="cw-s cw-skin" d={d0} {...base} stroke={T} strokeWidth="26" />
+      <g className="cw-vest" style={{ display: 'none' }}><path d="M15 78H40M15 100H40" stroke="#fff" strokeWidth="5" strokeLinecap="round" /><circle cx="28" cy="89" r="0" /></g>
       <g className="cw-hat"><g>{Object.entries(Hats).map(([k, h]) => <g key={k} className="cw-hk" data-k={k} style={{ display: 'none' }}>{h}</g>)}</g></g>
       <path className="cw-m" fill={I} stroke={I} strokeWidth="3" strokeLinejoin="round" />
       {[0, 1].map(e => <g key={e} className="cw-e"><circle r="14" fill={W} stroke={I} strokeWidth="2.600" /><g className="cw-p"><circle r="6.500" fill={I} /><circle cx="-2" cy="-2.500" r="2" fill={W} /></g></g>)}
       {['l', 'r'].map(s => <g key={s} className="cw-h">{Object.entries(Props).map(([k, h]) => <g key={k} className="cw-pr" data-k={k} data-s={s} style={{ display: 'none' }}>{h}</g>)}<Glove /></g>)}
     </g>)}
-    <CabFront /><Burger /><SetFronts /><g className="cw-mark" />
+    <CabFront /><Scooter /><Burger /><SetFronts /><g className="cw-mark" />
     {Object.entries(Items).map(([k, h]) => <g key={k} className="cw-it" data-k={k} style={{ visibility: 'hidden' }}>{h}</g>)}
   </g>
 }

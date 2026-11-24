@@ -17,7 +17,7 @@ export function PanScene({ solo }) {
   </g>
   </g>{!solo && <g className="pz-ride"><g className="pz-bump">
     <path d="M-6 118h-22M-2 104h-16M-4 90h-24" stroke={W} strokeWidth="3" strokeLinecap="round" className="wind" />
-    <g transform="translate(46 38) scale(.46)"><path d={letterPath('D')} fill="none" stroke={I} strokeWidth="34" strokeLinecap="round" /><path d={letterPath('D')} fill="none" stroke={W} strokeWidth="25" strokeLinecap="round" />{[33, 64].map(x => <g key={x}><circle cx={x} cy="36" r="13" fill={W} stroke={I} strokeWidth="4" /><circle cx={x + 4} cy="37" r="6" fill={I} /></g>)}</g>
+    <g transform="translate(46 38) scale(.46)"><path d={letterPath('F')} fill="none" stroke={I} strokeWidth="34" strokeLinecap="round" /><path d={letterPath('F')} fill="none" stroke={PE} strokeWidth="25" strokeLinecap="round" />{[33, 62].map(x => <g key={x}><circle cx={x} cy="22" r="13" fill={W} stroke={I} strokeWidth="4" /><circle cx={x + 4} cy="23" r="6" fill={I} /></g>)}</g>
     <path d="M28 112c2-16 12-18 24-18h24l8 14h10L88 72h-8" fill="none" stroke={I} strokeWidth="5" strokeLinejoin="round" strokeLinecap="round" /><path d="M26 114c2-18 14-20 26-20h22l10 16 14 2-2 8H28z" fill={Y} stroke={I} strokeWidth="2.500" strokeLinejoin="round" />
     <rect x="18" y="60" width="32" height="32" rx="5" fill={PE} stroke={I} strokeWidth="2.500" /><path d="M26 70h16l-8 15z" fill={CH} stroke={I} strokeWidth="1.500" strokeLinejoin="round" /><circle cx="34" cy="75" r="2.200" fill={PE} />
     {[40, 100].map(x => <g key={x} transform={`translate(${x} 122)`}><g className="wh"><circle r="10" fill={I} /><circle r="4.500" fill={W} /><path d="M-9 0h18M0-9v18" stroke={W} strokeWidth="1.500" /></g></g>)}
