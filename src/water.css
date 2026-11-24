@@ -1,0 +1,13 @@
+/* Tilt water: phones only, added by water.js */
+.wt{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:0}
+.prod-row.wt-on{position:relative;isolation:isolate}.prod-row.wt-on>.wt{z-index:-1}
+.wt-tilt{position:absolute;left:-100%;width:300%;top:40%;height:240%;transform-origin:50% 0}
+.wt-w{position:absolute;left:0;right:0;top:-17px;bottom:0;transform-origin:50% 18px}
+.wt-w i{position:absolute;left:-240px;right:-240px;top:0;bottom:0;background:var(--w);-webkit-mask:var(--m) 0 0/240px 36px repeat-x,linear-gradient(#000 0 0) 0 35px/100% 100% no-repeat;mask:var(--m) 0 0/240px 36px repeat-x,linear-gradient(#000 0 0) 0 35px/100% 100% no-repeat;--m:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='36'%3E%3Cpath d='M0 18Q60-10 120 18T240 18V36H0z'/%3E%3C/svg%3E")}
+.wt-b{top:-30px;opacity:.5}
+.wt-w i{animation:wtx 4.6s linear infinite}.wt-b i{animation:wtx 7s linear infinite reverse}@keyframes wtx{to{transform:translateX(240px)}}
+.wt:not(.run) i{animation-play-state:paused}
+.wt-d{position:absolute;width:12px;height:12px;border-radius:50% 50% 50% 0;background:var(--w)}
+.sh-panel.wt-on{background:#FDFEA6;--w:#FAFD0F}.pr-food.wt-on{background:#66CDCB;--w:#06A4A5}.pr-taxi.wt-on{--w:#0D5353}.pr-hospital.wt-on{background:#85D0B0;--w:#33A77A}
+.wt-ask{position:absolute;left:0;top:14px;z-index:3;min-height:44px;padding:0 14px;border:2px solid #06282A;border-radius:999px;background:#fff;color:#06282A;font:800 15px var(--head);white-space:nowrap}.prod-row .wt-ask{left:14px}
+@media (prefers-reduced-motion:reduce){.wt i{animation:none!important}}
