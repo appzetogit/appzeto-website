@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
+import { Burger, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
+
+const SHOW = { taxi: [taxi, TAXI], food: [food, FOOD] }
 
 const I = '#06282A', T = '#06A4A5', D = '#0D5353', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B', C = '#FFD84A'
 const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -112,10 +115,10 @@ function pose(id, i, n, l, ms, t) {
   return p
 }
 
-export default function Crew({ id, clock, ctl }) {
+export default function Crew({ id, clock, ctl, seek }) {
   const root = useRef(null), S = useRef({}).current
   if (S.id !== id) { S.prev = S.id; S.id = id; S.changed = true }
-  S.clock = clock; S.ctl = ctl
+  S.clock = clock; S.ctl = ctl; S.seek = seek
   useEffect(() => {
     const host = root.current, still = calm(), all = (el, c) => [...el.querySelectorAll('.' + c)]
     const els = all(host, 'cw').map(el => ({ el, sh: host.querySelector(`.cw-sh[data-i="${el.dataset.i}"]`), st: all(el, 'cw-s'), ey: all(el, 'cw-e'), pu: all(el, 'cw-p'), ar: all(el, 'cw-a'), ha: all(el, 'cw-h'), mo: all(el, 'cw-m')[0], ht: all(el, 'cw-hat')[0], hk: all(el, 'cw-hk'), pr: all(el, 'cw-pr') }))
@@ -125,19 +128,41 @@ export default function Crew({ id, clock, ctl }) {
     let cur = null, raf = 0, last = now0, live = false, mouse = null, mAt = -1e9, lastIn = now0, wordAt = now0, slow = 16, tick = 0, bye = false, boxAt = 0
     const go = (a, k, to, dt, K, d) => { const o = a.v[k] || (a.v[k] = { x: to, u: 0 }); if (still) { o.x = to; return to } for (let j = 0; j < 2; j++) { o.u += ((to - o.x) * K - o.u * d) * dt / 2; o.x += o.u * dt / 2 } return o.x }
 
+    const E = { cab: all(host, 'cw-cab'), wheels: all(host, 'cw-wh'), burger: all(host, 'cw-bg')[0], layers: all(host, 'cw-ly'), crumbs: all(host, 'cw-cr') }
+    const mark = host.querySelector('.cw-mark')
+    let showT = null, synced = -1, perf = null
+    // In front of the cab and burger, or behind them
+    const front = (a, yes) => { if (a.fr === yes) return; a.fr = yes; yes ? mark.after(a.el) : E.cab[0].after(a.el) }
     function change(now) {
-      const next = WORDS[S.id], to = slots(next), from = cur ? WORDS[cur] : [], first = !cur
+      const next = WORDS[S.id], to = slots(next), from = cur ? WORDS[cur] : [], first = !cur, show = !still && SHOW[S.id], some = A.some(a => a.on)
+      hideShows(E); showT = null; perf = null
+      A.forEach(a => { a.ride = a.air = false; a.fade = 1; front(a, true) })
+      if (show) {
+        A.forEach(a => {
+          if (a.on) a.move = { kind: 'dive', t0: now + 60 + a.i * 70, d: 520, x: a.x, y: a.y, s: a.s, done: false }
+          if (a.i < next.length) { a.home = to[a.i]; a.cast = next[a.i] }
+        })
+        showT = now + (some ? 880 : 150); synced = -1; cur = S.id; S.changed = false; lastIn = now; wordAt = now
+        return
+      }
       for (const a of A) {
         const was = a.on, will = a.i < next.length
         if (will) {
           a.home = to[a.i]
           const kind = still ? 'set' : first ? 'run' : was ? 'flip' : 'born'
-          a.move = { kind, t0: now + (first ? a.i * 190 : kind === 'born' ? 620 + (a.i - from.length) * 160 : 240 + a.i * 85), d: first ? 1050 : 780, x: was ? a.x : kind === 'run' ? -150 : PHONE[0], y: was ? a.y : kind === 'run' ? FLOOR : PHONE[1] + 60, s: was ? a.s : kind === 'run' ? to[a.i].s : .06, l: next[a.i][0], hat: next[a.i][1], done: false, dir: a.i % 2 ? -1 : 1 }
+          a.move = { kind, t0: now + (first ? a.i * 190 : kind === 'born' ? (some ? 620 : 160) + Math.max(0, some ? a.i - from.length : a.i) * 160 : 240 + a.i * 85), d: first ? 1050 : 780, x: was ? a.x : kind === 'run' ? -150 : PHONE[0], y: was ? a.y : kind === 'run' ? FLOOR : PHONE[1] + 60, s: was ? a.s : kind === 'run' ? to[a.i].s : .06, l: next[a.i][0], hat: next[a.i][1], done: false, dir: a.i % 2 ? -1 : 1 }
           a.on = true
         } else if (was) a.move = { kind: still ? 'gone' : 'dive', t0: now + 220 + (a.i - next.length) * 130, d: 620, x: a.x, y: a.y, s: a.s, done: false }
         if (still || first) { a.l = will ? next[a.i][0] : a.l; a.hat = will ? next[a.i][1] : null }
       }
       cur = S.id; S.changed = false; lastIn = now; wordAt = now + (first ? 2000 : 1750)
+    }
+    function runShow(now) {
+      if (A.some(a => a.move) || now < showT) { perf = null; return }
+      const [fn, o] = SHOW[cur], run = Math.floor((now - showT) / o.len), c = (now - showT) % o.len
+      for (const a of A) { if (a.i < WORDS[cur].length) { a.l = a.cast[0]; a.hat = a.cast[1] } else a.on = false }
+      if (c >= o.sync - 60 && synced !== run) { synced = run; S.seek?.(0) }
+      perf = fn(c, A, E, front, now)
     }
     function land(a, now, hard) {
       a.qu -= hard
@@ -164,12 +189,16 @@ export default function Crew({ id, clock, ctl }) {
       }
     }
     function draw(a, now, dt, n) {
-      const L = LETTERS[a.l], busy = !!a.move, f = now > wordAt && S.clock ? S.clock() : null
+      const L = LETTERS[a.l], busy = !!a.move || a.air, inShow = showT != null, f = inShow ? perf : now > wordAt && S.clock ? S.clock() : null
       let mode = S.ctl?.current?.mode
       const doze = !S.auto && f != null && now - lastIn > 30000 && S.ctl?.current?.paused
       let p = pose(cur, a.i, n, WORDS[cur][a.i] ? a.l : 'O', f, now)
       const [lx, ly, rx, ry] = L.a, sec = now / 1000
-      if (busy || now < wordAt) {
+      if (a.ride) {
+        const drive = cur === 'taxi' && a.i === 0
+        p = { ...p, pl: null, pr: drive ? 'wheel' : null, into: 0, dx: 0, rot: 0, lid: 1, dy: -Math.abs(Math.sin(sec * 8 + a.i)) * 5, m: [11, 13, 8], look: [1, -.1], hl: drive ? [lx + 14, ly - 6, -30] : [lx - 20, ly - 46 + Math.sin(sec * 11 + a.i) * 8, -15], hr: drive ? [rx + 8, ry - 10, Math.sin(sec * 5) * 18] : [rx + 20, ry - 46 - Math.sin(sec * 11 + a.i) * 8, 15] }
+        if (cur === 'food') p = { ...p, hl: [lx - 8, ly + 14, -150], hr: [rx + 8, ry + 14, 150], look: [Math.sin(sec * 4), -.4], m: [7, 6, 9] }
+      } else if (busy || now < wordAt) {
         p = { ...p, pl: null, pr: null, into: 0, dx: 0, dy: 0, rot: 0 }
         const pre = a.move && now < a.move.t0
         if (pre) { p.hl = [lx - 14, ly - 20, -40]; p.hr = [rx + 14, ry - 20, 40]; p.m = [4, 4, 8]; p.look = [0, -1] }
@@ -195,7 +224,8 @@ export default function Crew({ id, clock, ctl }) {
       const gone = !a.on || s < .07
       a.el.style.visibility = gone ? 'hidden' : 'visible'
       const high = cl((FLOOR - Yy) / 90, 0, 1)
-      a.sh.setAttribute('transform', `translate(${X.toFixed(1)} ${FLOOR}) scale(${(a.s * (1 - high * .6)).toFixed(2)})`); a.sh.style.opacity = gone ? 0 : (.2 * (1 - high)).toFixed(2)
+      a.sh.setAttribute('transform', `translate(${X.toFixed(1)} ${FLOOR}) scale(${(a.s * (1 - high * .6)).toFixed(2)})`); a.el.style.opacity = a.fade ?? 1
+      a.sh.style.opacity = gone || a.ride ? 0 : (.2 * (1 - high)).toFixed(2)
       // face
       if (now > a.blink) a.blink = now + 1500 + Math.random() * 3200
       const lid = go(a, 'lid', a.blink - now < 120 ? .08 : p.lid, dt, 900, 50)
@@ -224,7 +254,7 @@ export default function Crew({ id, clock, ctl }) {
     const put = (k, x, y, r, s = .6) => { const e = items[k]; shown[k] = 1; e.style.visibility = 'visible'; e.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${r.toFixed(0)}) scale(${s})`) }
     function props(now, n) {
       for (const k in shown) { items[k].style.visibility = 'hidden'; delete shown[k] }
-      const f = now > wordAt && S.clock ? S.clock() : null
+      const f = showT != null ? null : now > wordAt && S.clock ? S.clock() : null
       if (f == null || still || S.ctl?.current?.mode || (S.ctl?.current?.paused && now - lastIn > 30000)) return
       const u = (f % 5200) / 5200, sec = now / 1000
       if ((cur === 'quick' || cur === 'hotel') && u < .62) {
@@ -239,7 +269,8 @@ export default function Crew({ id, clock, ctl }) {
       const raw = now - last, dt = cl(raw / 1000, .001, .034); last = now; tick++
       if (raw < 120) slow += (raw - slow) * .04
       if (S.changed || !cur) change(now)
-      const n = WORDS[cur].length, lite = slow > 25 && !A.some(a => a.move)
+      if (showT != null) runShow(now)
+      const n = WORDS[cur].length, lite = slow > 25 && !A.some(a => a.move || a.air || a.ride)
       if (now - boxAt > 350 && mouse && now - mAt < 1500) { boxAt = now; A.forEach(a => { if (a.on) a.box = a.el.getBoundingClientRect() }) }
       A.forEach(a => { place(a, now, dt); if (!a.on) { if (a.seen !== false) { a.seen = false; a.el.style.visibility = 'hidden'; a.sh.style.opacity = 0 } return } a.seen = true; if (lite && a.i && (tick + a.i) % 2) return; draw(a, now, lite ? Math.min(.034, dt * 2) : dt, n) })
       props(now, n)
@@ -262,6 +293,7 @@ export default function Crew({ id, clock, ctl }) {
   const base = { fill: 'none', ...rd }, d0 = letterPath('O')
   return <g ref={root} className="crew">
     {[...Array(MAX)].map((_, i) => <ellipse key={i} className="cw-sh" data-i={i} rx="40" ry="6" fill={I} style={{ opacity: 0 }} />)}
+    <CabBack />
     {[...Array(MAX)].map((_, i) => <g key={i} className="cw" data-i={i} style={{ visibility: 'hidden' }}>
       <path className="cw-a" {...base} stroke={I} strokeWidth="6" /><path className="cw-a" {...base} stroke={I} strokeWidth="6" />
       <g transform="translate(2 -4)"><path className="cw-s" d={d0} {...base} stroke={I} strokeWidth="30" /><path className="cw-s" d={d0} {...base} stroke={Y} strokeWidth="27" /></g>
@@ -271,6 +303,7 @@ export default function Crew({ id, clock, ctl }) {
       {[0, 1].map(e => <g key={e} className="cw-e"><circle r="14" fill={W} stroke={I} strokeWidth="2.600" /><g className="cw-p"><circle r="6.500" fill={I} /><circle cx="-2" cy="-2.500" r="2" fill={W} /></g></g>)}
       {['l', 'r'].map(s => <g key={s} className="cw-h">{Object.entries(Props).map(([k, h]) => <g key={k} className="cw-pr" data-k={k} data-s={s} style={{ display: 'none' }}>{h}</g>)}<Glove /></g>)}
     </g>)}
+    <CabFront /><Burger /><g className="cw-mark" />
     {Object.entries(Items).map(([k, h]) => <g key={k} className="cw-it" data-k={k} style={{ visibility: 'hidden' }}>{h}</g>)}
   </g>
 }

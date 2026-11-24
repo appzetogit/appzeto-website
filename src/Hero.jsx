@@ -40,6 +40,8 @@ export default function Hero() {
     if (a.id !== p.id + run || !a.el?.isConnected) { a.id = p.id + run; a.el = ref.current?.querySelector('.app-in ' + (CLOCK[p.id] || '.clk')); a.an = a.el?.getAnimations()[0] }
     return a.an ? a.an.currentTime ?? 0 : 0
   }
+  // Lets the crew restart the phone's scene at the right beat
+  const seek = ms => { const el = ref.current?.querySelector('.app-in'); el?.getAnimations({ subtree: true }).forEach(a => { if (a.effect.target !== el) a.currentTime = ms }) }
   const point = { onPointerEnter: () => { ctl.current.mode = 'point' }, onPointerLeave: () => { ctl.current.mode = null }, onFocus: () => { ctl.current.mode = 'point' }, onBlur: () => { ctl.current.mode = null } }
   const next = () => { setI(x => (x + 1) % products.length); setRun(r => r + 1) }
   const move = e => {
@@ -60,7 +62,7 @@ export default function Hero() {
         <svg viewBox="-60 -4 292 252" aria-hidden="true" className="sh-svg">
           <ellipse cx="86" cy="190" rx="66" ry="6" fill={I} opacity=".14" />
           <g className="sh-phone"><PhoneBody>{out && <g key={p.id} className="app-in"><g transform="translate(45 30.4) scale(.507)">{apps[p.id]}</g></g>}</PhoneBody></g>
-          {out && <Crew id={p.id} clock={clock} ctl={ctl} />}
+          {out && <Crew id={p.id} clock={clock} ctl={ctl} seek={seek} />}
         </svg>
         {out && chips[p.id].map((c, n) => <span key={p.id + n} className={`chip chip${n}`} aria-hidden="true"><svg viewBox="0 0 20 20" width="18"><circle cx="10" cy="10" r="10" fill={G} /><path d="M5.500 10.500l3 3 6-7" fill="none" stroke={W} strokeWidth="2.600" strokeLinecap="round" strokeLinejoin="round" /></svg>{c}</span>)}
       </div>

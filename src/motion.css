@@ -54,7 +54,7 @@ html.opening{overflow:hidden}
 .sh:not(.live) *{animation-play-state:paused}
 .tabs{display:flex;align-items:center;gap:24px;flex-wrap:wrap;align-self:end}.tabset{display:flex;background:#fff;border:2px solid var(--ink);border-radius:18px;overflow:hidden}
 .tabset button{position:relative;border:0;background:none;color:var(--ink);font:800 20px var(--head);min-height:52px;padding:0 22px;cursor:pointer;overflow:hidden}.tabset button+button{border-left:2px solid var(--ink)}.tabset button[aria-pressed=true]{background:var(--mist)}.tabset :focus-visible{outline-offset:-5px}.tabset span{position:relative;z-index:1}
-.bar{position:absolute;inset:0;background:var(--teal);transform-origin:0 0;animation:bar 9.4s linear forwards}@keyframes bar{from{transform:scaleX(0)}}
+.bar{position:absolute;inset:0;background:var(--teal);transform-origin:0 0;animation:bar 11.2s linear forwards}@keyframes bar{from{transform:scaleX(0)}}
 .tabs-more{display:flex;gap:22px}.tabs .txt{font-size:18px}.pause{font-weight:700}
 /* Ticker */
 .ticker{background:var(--ink);color:#fff;overflow:hidden;height:70px;display:flex;align-items:center}.tick-run{display:flex;width:max-content;animation:tick 42s linear infinite}.ticker:hover .tick-run{animation-play-state:paused}.tick-run ul{display:flex}.tick-run li{font:800 26px var(--head);white-space:nowrap}.tick-run b{color:var(--yellow);margin:0 26px;font-style:italic}@keyframes tick{to{transform:translateX(-50%)}}
@@ -231,3 +231,5 @@ html.opening{overflow:hidden}
 @media (min-width:641px) and (max-width:1000px){.sh-stage{align-items:center}.chip0{top:22%}.chip1{top:42%}}
 @media (max-width:640px){.sh-svg{height:auto;width:100%}.sh-stage{margin-top:26px}.chip0{top:14%}.chip1{top:42%}.sh-panel{height:auto;top:57%}}
 @media (min-width:1500px){.sh .tabs{max-width:600px}}
+
+.cw-cab,.cw-bg{pointer-events:none}
