@@ -94,4 +94,4 @@ export function food(c, A, E, front, now) {
   }
   return c > 2000 && c < 7250 ? Math.min(5199, c - 2000) : null
 }
-export const hideShows = E => { E.cab.forEach(g => { g.style.visibility = 'hidden' }); E.burger.style.visibility = 'hidden' }
+export const hideShows = E => { E.cab.forEach(g => { g.style.visibility = 'hidden' }); E.burger.style.visibility = 'hidden'; Object.values(E.sets).forEach(g => { g.style.visibility = 'hidden' }); E.gr.forEach(g => { g.style.visibility = 'hidden' }); E.cf.forEach(g => { g.style.opacity = 0 }) }

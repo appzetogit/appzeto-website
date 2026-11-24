@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
 import { Burger, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
+import { AI, HOTEL, QUICK, SERVICE, SUPER, SetBacks, SetFronts, ai, hotel, quick, service, superShow } from './Shows2.jsx'
 
 // Everything on stage, and the phone's own scenes, run at this speed
-export const SPEED = 1.5
-const SHOW = { taxi: [taxi, TAXI], food: [food, FOOD] }
+export const SPEED = 1.7
+const SHOW = { taxi: [taxi, TAXI], food: [food, FOOD], quick: [quick, QUICK], service: [service, SERVICE], hotel: [hotel, HOTEL], super: [superShow, SUPER], ai: [ai, AI] }
 
 const I = '#06282A', T = '#06A4A5', D = '#0D5353', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B', C = '#FFD84A'
 const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -130,7 +131,7 @@ export default function Crew({ id, clock, ctl, seek }) {
     let cur = null, raf = 0, last = now0, live = false, mouse = null, mAt = -1e9, lastIn = now0, wordAt = now0, slow = 16, tick = 0, bye = false, boxAt = 0
     const go = (a, k, to, dt, K, d) => { const o = a.v[k] || (a.v[k] = { x: to, u: 0 }); if (still) { o.x = to; return to } for (let j = 0; j < 2; j++) { o.u += ((to - o.x) * K - o.u * d) * dt / 2; o.x += o.u * dt / 2 } return o.x }
 
-    const E = { cab: all(host, 'cw-cab'), wheels: all(host, 'cw-wh'), burger: all(host, 'cw-bg')[0], layers: all(host, 'cw-ly'), crumbs: all(host, 'cw-cr') }
+    const E = { cab: all(host, 'cw-cab'), wheels: all(host, 'cw-wh'), burger: all(host, 'cw-bg')[0], layers: all(host, 'cw-ly'), crumbs: all(host, 'cw-cr'), sets: Object.fromEntries(all(host, 'cw-set').map(g => [g.dataset.k, g])), gr: all(host, 'cw-gr'), cf: all(host, 'cw-cf'), swh: all(host, 'st-wh'), dl: all(host, 'st-dl')[0], dr: all(host, 'st-dr')[0], beam: all(host, 'st-beam')[0] }
     const mark = host.querySelector('.cw-mark')
     let showT = null, synced = -1, perf = null
     // In front of the cab and burger, or behind them
@@ -199,7 +200,7 @@ export default function Crew({ id, clock, ctl, seek }) {
       if (a.ride) {
         const drive = cur === 'taxi' && a.i === 0
         p = { ...p, pl: null, pr: drive ? 'wheel' : null, into: 0, dx: 0, rot: 0, lid: 1, dy: -Math.abs(Math.sin(sec * 8 + a.i)) * 5, m: [11, 13, 8], look: [1, -.1], hl: drive ? [lx + 14, ly - 6, -30] : [lx - 20, ly - 46 + Math.sin(sec * 11 + a.i) * 8, -15], hr: drive ? [rx + 8, ry - 10, Math.sin(sec * 5) * 18] : [rx + 20, ry - 46 - Math.sin(sec * 11 + a.i) * 8, 15] }
-        if (cur === 'food') p = { ...p, hl: [lx - 8, ly + 14, -150], hr: [rx + 8, ry + 14, 150], look: [Math.sin(sec * 4), -.4], m: [7, 6, 9] }
+        if (cur !== 'taxi' && cur !== 'quick') p = { ...p, hl: [lx - 8, ly + 14, -150], hr: [rx + 8, ry + 14, 150], look: [Math.sin(sec * 4), -.4], m: [7, 6, 9] }
       } else if (busy || now < wordAt) {
         p = { ...p, pl: null, pr: null, into: 0, dx: 0, dy: 0, rot: 0 }
         const pre = a.move && now < a.move.t0
@@ -256,7 +257,7 @@ export default function Crew({ id, clock, ctl, seek }) {
     const put = (k, x, y, r, s = .6) => { const e = items[k]; shown[k] = 1; e.style.visibility = 'visible'; e.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${r.toFixed(0)}) scale(${s})`) }
     function props(now, n) {
       for (const k in shown) { items[k].style.visibility = 'hidden'; delete shown[k] }
-      const f = showT != null ? null : now > wordAt && S.clock ? S.clock() : null
+      const f = showT != null ? perf : now > wordAt && S.clock ? S.clock() : null
       if (f == null || still || S.ctl?.current?.mode || (S.ctl?.current?.paused && now - lastIn > 30000)) return
       const u = (f % 5200) / 5200, sec = now / 1000
       if ((cur === 'quick' || cur === 'hotel') && u < .62) {
@@ -295,7 +296,7 @@ export default function Crew({ id, clock, ctl, seek }) {
   const base = { fill: 'none', ...rd }, d0 = letterPath('O')
   return <g ref={root} className="crew">
     {[...Array(MAX)].map((_, i) => <ellipse key={i} className="cw-sh" data-i={i} rx="40" ry="6" fill={I} style={{ opacity: 0 }} />)}
-    <CabBack />
+    <clipPath id="cw-floor"><path d="M-400-400H700V240H-400Z" /></clipPath><SetBacks /><CabBack />
     {[...Array(MAX)].map((_, i) => <g key={i} className="cw" data-i={i} style={{ visibility: 'hidden' }}>
       <path className="cw-a" {...base} stroke={I} strokeWidth="6" /><path className="cw-a" {...base} stroke={I} strokeWidth="6" />
       <g transform="translate(2 -4)"><path className="cw-s" d={d0} {...base} stroke={I} strokeWidth="30" /><path className="cw-s" d={d0} {...base} stroke={Y} strokeWidth="27" /></g>
@@ -305,7 +306,7 @@ export default function Crew({ id, clock, ctl, seek }) {
       {[0, 1].map(e => <g key={e} className="cw-e"><circle r="14" fill={W} stroke={I} strokeWidth="2.600" /><g className="cw-p"><circle r="6.500" fill={I} /><circle cx="-2" cy="-2.500" r="2" fill={W} /></g></g>)}
       {['l', 'r'].map(s => <g key={s} className="cw-h">{Object.entries(Props).map(([k, h]) => <g key={k} className="cw-pr" data-k={k} data-s={s} style={{ display: 'none' }}>{h}</g>)}<Glove /></g>)}
     </g>)}
-    <CabFront /><Burger /><g className="cw-mark" />
+    <CabFront /><Burger /><SetFronts /><g className="cw-mark" />
     {Object.entries(Items).map(([k, h]) => <g key={k} className="cw-it" data-k={k} style={{ visibility: 'hidden' }}>{h}</g>)}
   </g>
 }
