@@ -6,6 +6,7 @@ import { products, services, moreServices, steps, faqs } from '../data.js'
 import { Boarding } from '../Ride.jsx'
 import ProductLogo from '../ProductLogo.jsx'
 import Hero from '../Hero.jsx'
+import Network from '../Network.jsx'
 import { ContactBlock } from './Inner.jsx'
 
 export function FoodBand() {
@@ -61,6 +62,7 @@ export default function Home() {
     <div id="products"><div className="wrap prod-intro"><h2 className="h-xl">Pick an app. Or take them all.</h2><p className="lead">Each one has its own page. All-in-One puts them behind a single login.</p></div>
       <FoodBand /><TaxiBand /><MoreBands /></div>
     <ServiceList /><How />
+    <Network />
     <section className="join"><div className="wrap join-grid">
       <Link to="/channel-partners" className="panel panel-y"><h2>Bring us a client. Earn with us.</h2><p>Channel partners get commission, a support contact and sales material.</p><span className="go">Partner with us</span></Link>
       <Link to="/apply-now" className="panel panel-i"><h2>Come and build</h2><p>See whether we’re hiring.</p><span className="go">Careers</span></Link>

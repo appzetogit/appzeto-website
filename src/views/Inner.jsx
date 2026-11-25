@@ -5,6 +5,7 @@ import { LetterA, Phone, useLive } from '../Brand.jsx'
 import { Mascot } from '../Mascot.jsx'
 import { WaIcon, waLink } from '../Sticky.jsx'
 import ProductLogo from '../ProductLogo.jsx'
+import Network from '../Network.jsx'
 import s from '../settings.js'
 import { products, services, moreServices, allServices, steps } from '../data.js'
 
@@ -96,6 +97,7 @@ export function Careers() {
 }
 export function Partners() {
   return <><Top title="Bring us a client. Earn with us." text="Agencies, consultants and integrators can offer our platforms and services to their own clients." screen="digital-marketing" tone="top-care" />
+    <Network join={false} />
     <section className="sec"><div className="wrap two"><div><h2 className="h-l">What partners get</h2><ul className="ticks"><li>Access to our product line-up</li><li>Commission on what you bring</li><li>A partner support contact</li><li>Marketing and sales material</li></ul></div><Form subject="Channel partner" fields={[{ n: 'Company' , a: 'organization' }, { n: 'Contact person', a: 'name' }, { n: 'Company email', t: 'email', a: 'email' }, { n: 'Phone', t: 'tel', a: 'tel' }, { n: 'What you do', t: 'select', wide: true, o: ['Technology consulting', 'Digital agency', 'System integrator', 'Independent vendor'] }, { n: 'Message', t: 'area', opt: true }]} /></div></section></>
 }
 const legal = [
