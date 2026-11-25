@@ -28,7 +28,7 @@ export function Opening() {
 export const Curtain = ({ phase }) => <div className={`curtain ${phase}`} aria-hidden="true"><div className="cur-in"><Phone><g className="cur-a"><LetterA /><Eyes r={17} /></g></Phone></div></div>
 
 // Scroll motion. Elements are only hidden once this has run, so nothing depends on it.
-const PICK = '.pr-phone,.pr-roles li,.h-xl,.h-l,.big-text,.prod-intro .lead,.band .lead,.band .btn,.roles>div,.taxi-roles>div,.care-list li,.band-grid>.phone,.svc-list li,.svc-phone,.how-list li,.panel,.faq details,.reach li,.device,.role-row,.svc-row,.more-list li,.ticks li,.others a,.sec .form'
+const PICK = '.svc-card,.more-cards li,.pr-phone,.pr-roles li,.h-xl,.h-l,.big-text,.prod-intro .lead,.band .lead,.band .btn,.roles>div,.taxi-roles>div,.care-list li,.band-grid>.phone,.svc-list li,.svc-phone,.how-list li,.panel,.faq details,.reach li,.device,.role-row,.svc-row,.more-list li,.ticks li,.others a,.sec .form'
 export function useReveal(key) {
   useEffect(() => {
     if (reduced() || !('IntersectionObserver' in window)) return

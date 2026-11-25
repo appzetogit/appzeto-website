@@ -36,7 +36,7 @@ function MoreBands() {
 }
 
 function ServiceList() {
-  const [on, setOn] = useState(services[2].slug), ref = useLive()
+  const [on, setOn] = useState('mobile-application'), ref = useLive()
   return <section className="svc" ref={ref}><div className="wrap">
     <h2 className="h-xl">Or start from a blank screen</h2>
     <div className="svc-grid">

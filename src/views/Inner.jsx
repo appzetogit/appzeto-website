@@ -60,9 +60,15 @@ export function Products() {
     <Cta t="Need something we haven’t built yet?" /></>
 }
 export function Services() {
-  return <><Top title="What we make" text="Six things we do most, and five that keep them going." screen="mobile-application" tone="top-food" />
-    <section className="sec"><div className="wrap svc-rows">{services.map(v => <Link key={v.slug} to={`/services/${v.slug}`} className="svc-row"><Phone name={v.slug} /><div><h2>{v.name}</h2><p>{v.text}</p><ul>{v.features.map(f => <li key={f}>{f}</li>)}</ul></div></Link>)}</div></section>
-    <section className="sec sec-t"><div className="wrap"><h2 className="h-l">And to keep it going</h2><ul className="more-list">{moreServices.map(v => <li key={v.slug}><Link to={`/services/${v.slug}`}><b>{v.name}</b><span>{v.line}</span></Link></li>)}</ul></div></section>
+  const ref = useLive(), more = useLive()
+  return <><Top title="What we make" text="Five things we do most, and five that keep them going." screen="mobile-application" tone="top-food">
+      <nav className="jump" aria-label="Services">{services.map(v => <Link key={v.slug} className="btn" to={`/services/${v.slug}`}>{v.name}</Link>)}</nav></Top>
+    <section className="sec" ref={ref}><div className="wrap svc-cards">{services.map((v, i) => <Link key={v.slug} to={`/services/${v.slug}`} className={`svc-card svc-c${i % 4}`}>
+      <span className="svc-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <Phone name={v.slug} />
+      <div><h2>{v.name}</h2><p>{v.text}</p><ul className="chips">{v.features.map(f => <li key={f}>{f}</li>)}</ul><span className="go">Explore {v.name === 'AI and machine learning' ? 'AI and ML' : v.name.toLowerCase()}</span></div>
+    </Link>)}</div></section>
+    <section className="sec sec-t" ref={more}><div className="wrap"><h2 className="h-l">And to keep it going</h2><ul className="more-cards">{moreServices.map(v => <li key={v.slug}><Link to={`/services/${v.slug}`}><Phone name={v.slug} /><span><b>{v.name}</b><span>{v.line}</span></span></Link></li>)}</ul></div></section>
     <Cta t="Not sure which one you need?" /></>
 }
 export function Service({ slug }) {
