@@ -2,8 +2,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Link, NavLink, Nav, useLocation } from './router.jsx'
-import { LogoCompact, Phone, reduced } from './Brand.jsx'
-import { Curtain, Opening, Progress, useReveal } from './Motion.jsx'
+import { LogoCompact, Phone } from './Brand.jsx'
+import { Opening, Progress, useReveal } from './Motion.jsx'
 import Sticky, { WaIcon } from './Sticky.jsx'
 import { SiteCtx, useSite, waLinkOf } from './site.jsx'
 import { markBooted } from './Later.jsx'
@@ -63,7 +63,7 @@ function Footer() {
 function Scroll({ at }) {
   const { pathname, hash } = at
   useEffect(() => {
-    const go = () => { const el = hash && document.getElementById(hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0) }
+    const go = () => { const el = hash && document.getElementById(hash.slice(1)); el ? el.scrollIntoView({ behavior: 'instant' }) : scrollTo({ top: 0, left: 0, behavior: 'instant' }) }
     const root = document.documentElement; root.style.scrollBehavior = 'auto'; go(); root.style.scrollBehavior = ''
     if (!hash) return
     document.fonts?.ready.then(go)
@@ -77,52 +77,38 @@ function Scroll({ at }) {
 
 const split = to => { const u = new URL(to, location.href); return { pathname: u.pathname, hash: u.hash } }
 
-// Between pages: a slanted panel rises, the page swaps underneath, the panel leaves.
-// Same timings as before: cover 480ms, swap, clear 620ms.
+// Page changes go straight to the new page (no curtain; the opening logo plays on the first visit only).
 // `loc` is where we're heading (the header follows it at once); `shown` is the page on screen.
 function usePageSwap() {
   const router = useRouter(), real = usePathname()
-  const [loc, setLoc] = useState({ pathname: real, hash: '' }), [shown, setShown] = useState(loc), [phase, setPhase] = useState('idle')
-  const timer = useRef(0), pending = useRef(null), shownRef = useRef(shown)
+  const [loc, setLoc] = useState({ pathname: real, hash: '' }), [shown, setShown] = useState(loc)
+  const pending = useRef(null), shownRef = useRef(shown)
   shownRef.current = shown
   useEffect(() => { if (location.hash) { const t = { pathname: real, hash: location.hash }; setLoc(t); setShown(t) } }, [])
 
   const go = (to, { replace } = {}) => {
-    const t = split(to), calm = reduced(), how = replace ? 'replace' : 'push'
-    const move = () => { pending.current = { ...t, clear: !calm }; router[how](to, { scroll: false }) }
-    clearTimeout(timer.current); setLoc(t)
-    if (t.pathname === shownRef.current.pathname) { setPhase('idle'); setShown(t); router[how](to, { scroll: false }); return }
-    if (calm) { setPhase('idle'); move(); return }
-    setPhase('cover'); timer.current = setTimeout(move, 480)
+    const t = split(to)
+    setLoc(t)
+    if (t.pathname === shownRef.current.pathname) setShown(t)
+    else pending.current = t
+    router[replace ? 'replace' : 'push'](to, { scroll: false })
   }
 
-  // Back and forward: hold Next's own handler until the panel is up, then let it through.
+  // Back and forward on the same page (only the #part changed)
   useEffect(() => {
-    const on = e => {
-      if (e.az) return
-      const t = { pathname: location.pathname, hash: location.hash }
-      clearTimeout(timer.current); setLoc(t)
-      if (t.pathname === shownRef.current.pathname) { setPhase('idle'); setShown(t); return }
-      if (reduced()) { setPhase('idle'); pending.current = { ...t, clear: false }; return }
-      e.stopImmediatePropagation()
-      const state = e.state
-      setPhase('cover')
-      timer.current = setTimeout(() => { pending.current = { ...t, clear: true }; const ev = new PopStateEvent('popstate', { state }); ev.az = true; dispatchEvent(ev) }, 480)
-    }
+    const on = () => { const t = { pathname: location.pathname, hash: location.hash }; setLoc(t); if (t.pathname === shownRef.current.pathname) setShown(t) }
     addEventListener('popstate', on); return () => removeEventListener('popstate', on)
   }, [])
 
-  // The new page is in: show it and let the panel go.
+  // The new page is in: show it (scroll and reveal run off `shown`)
   useLayoutEffect(() => {
     if (real === shownRef.current.pathname) return
     const p = pending.current?.pathname === real ? pending.current : null
     pending.current = null
     const t = { pathname: real, hash: p?.hash || '' }
     setShown(t); setLoc(l => l.pathname === real ? l : t)
-    if (p?.clear) setPhase('clear')
   }, [real])
-  useEffect(() => { if (phase === 'clear') { const t = setTimeout(() => setPhase('idle'), 620); return () => clearTimeout(t) } }, [phase])
-  return { loc, shown, phase, go }
+  return { loc, shown, go }
 }
 
 // /admin has its own layout: no header, footer, curtain or opening there
@@ -135,8 +121,8 @@ function useVisit() {
 
 function Site({ children }) {
   useVisit()
-  const nav = usePageSwap(), { shown, phase } = nav
+  const nav = usePageSwap(), { shown } = nav
   useReveal(shown.pathname)
   useEffect(() => { import('./water.js'); markBooted() }, [])
-  return <Nav.Provider value={nav}><Opening /><Curtain phase={phase} /><Scroll at={shown} /><Header /><main id="main" tabIndex="-1">{children}</main><Footer /><Sticky path={shown.pathname} /></Nav.Provider>
+  return <Nav.Provider value={nav}><Opening /><Scroll at={shown} /><Header /><main id="main" tabIndex="-1">{children}</main><Footer /><Sticky path={shown.pathname} /></Nav.Provider>
 }

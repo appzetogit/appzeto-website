@@ -34,8 +34,8 @@ function Tagline() {
 export default function Hero() {
   const [quick] = useState(isBooted), [i, setI] = useState(0), [run, setRun] = useState(0), [out, setOut] = useState(false), [auto, setAuto] = useState(true)
   const ref = useLive(), tilt = useRef(null), p = products[i]
-  // First visit: wait for the opening logo. Arriving from another page: start as the curtain lifts.
-  useEffect(() => { if (reduced()) { setOut(true); return } const t = setTimeout(() => setOut(true), quick ? 700 : 2300); return () => clearTimeout(t) }, [])
+  // First visit: wait for the opening logo. Arriving from another page: start at once.
+  useEffect(() => { if (reduced()) { setOut(true); return } const t = setTimeout(() => setOut(true), quick ? 250 : 2300); return () => clearTimeout(t) }, [])
   useEffect(() => { if (reduced()) setAuto(false) }, [])
   const ctl = useRef({ mode: null }), anim = useRef({})
   ctl.current.paused = !auto
