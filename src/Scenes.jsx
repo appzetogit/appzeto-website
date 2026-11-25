@@ -44,6 +44,13 @@ const Ic = {
   Hotels: <><path d="M-9 10V-10H9V10z" fill="#EEE5D6" /><path d="M-5-6h3v3h-3zM2-6h3v3H2zM-5 0h3v3h-3zM2 0h3v3H2z" fill="#B98B2E" /><path d="M-2.500 10V5.500h5V10z" fill="#5B3A21" /></>,
   AI: <><path d="M-8-5h16v13H-8z" fill={W} /><path d="M0-5v-5" stroke={W} strokeWidth="2" /><circle cy="-11" r="2.400" fill={Y} /><circle cx="-3.500" cy="1" r="2" fill={I} /><circle cx="3.500" cy="1" r="2" fill={I} /></>,
 }
+// Every Appzeto app as a home-screen icon (the Mobile apps service screen)
+export const AppIcons = {
+  ...Ic,
+  Pharmacy: <><g transform="rotate(-35)"><path d="M-11-5.500h11v11h-11a5.500 5.500 0 0 1 0-11z" fill={R} /><path d="M0-5.500h11a5.500 5.500 0 0 1 0 11H0z" fill={W} /></g></>,
+  'All-in-one': <>{[[-6, -6, W], [6, -6, Y], [-6, 6, T], [6, 6, G]].map(([x, y, f]) => <rect key={x + '' + y} x={x - 4.500} y={y - 4.500} width="9" height="9" rx="2.500" fill={f} />)}</>,
+  More: <>{[-7, 0, 7].flatMap(x => [-7, 0, 7].map(y => <circle key={x + '' + y} cx={x} cy={y} r="2.200" fill={W} />))}</>,
+}
 const tiles = Object.entries(Ic).map(([n, g], i) => ({ n, g, x: 30 + (i % 3) * 49, y: 78 + Math.floor(i / 3) * 64, f: [D, T, '#DDF3EC', I, '#1B5363', G][i], i }))
 export function Super() {
   return <><Clk /><path d="M0 0h158v244H0z" fill={Y} /><Tx x="79" y="28" s="17" a="middle">One app</Tx><Tx b x="79" y="43" s="10" a="middle">Everything inside</Tx>
