@@ -72,3 +72,26 @@
   .adm-burger{display:block;position:fixed;top:12px;right:12px;z-index:31;width:44px;height:44px;border:2px solid var(--ink);border-radius:10px;background:var(--yellow);font-size:22px}
   .adm-main{padding-top:64px}.adm-recent a{grid-template-columns:auto 1fr auto}.adm-recent span,.adm-recent time{display:none}
 }
+/* Phase 2 */
+.adm-kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+a.adm-card{text-decoration:none;color:var(--ink)}a.adm-card:hover{transform:translate(-1px,-1px)}
+.k-o{background:#FFE0D6!important}
+.adm-who{display:grid;margin:0;color:#fff}.adm-who span{color:#B9D6D4;font-size:13px}
+.adm-owner{display:flex;flex-wrap:wrap;gap:16px;align-items:end;margin-top:18px}
+.adm-owner label,.adm-form label{display:grid;gap:4px;font-size:14px;font-weight:700;color:var(--soft)}
+.adm-quick{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.adm-chip{padding:7px 12px;border:2px solid var(--ink);border-radius:99px;background:var(--mist);font:700 14px var(--head);color:var(--ink);cursor:pointer}
+.adm-due{margin:14px 0 0;font-weight:700}.adm-due.late,.adm-late{color:#B3261E;font-weight:700}
+.adm-times{margin-left:8px;background:var(--mist);font-size:12px;vertical-align:4px}
+.adm-by{color:var(--soft)}
+.adm-earlier{margin-top:18px}.adm-earlier summary{cursor:pointer;font-weight:700;color:var(--teal-ink)}.adm-earlier>div{margin-top:12px;padding-top:12px;border-top:1.5px solid #E1ECE9}.adm-earlier time{font-size:13px;color:var(--soft)}
+.adm-danger{border-color:#B3261E;box-shadow:4px 4px 0 #B3261E}.adm-danger p{color:var(--soft)}
+.adm-btn-red{background:#FFD9D2}
+.adm-check{display:flex!important;align-items:center;gap:8px;font-weight:600;color:var(--ink)!important}.adm-check input{width:18px;height:18px;accent-color:var(--teal)}
+.adm-ok{margin:0;padding:12px 16px;border:2px solid var(--ink);border-radius:12px;background:#8FE0B8;font-weight:600}
+.adm-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;align-items:end}
+.adm-wide{grid-column:1/-1}.adm-form .opt{font-weight:400}
+.adm-mail{padding:10px 14px;border-radius:10px;background:#FFE0D6;font-weight:600}.adm-mail.on{background:#8FE0B8}
+.adm-settings{display:grid;gap:22px}
+.adm-team input{width:100%;min-width:190px}.adm-team tr{cursor:default}.adm-off td{opacity:.55}.adm-fixed td{background:#F3FAF8}
+.adm-row-acts{white-space:nowrap}.adm-row-acts .adm-link+.adm-link{margin-left:14px}

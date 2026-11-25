@@ -1,7 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { KIND, STATUS, ago, api } from './api.js'
+import { KIND, STATUS, ago, api, dayLabel } from './api.js'
+import { useMe } from './Shell.jsx'
 
 const Bars = ({ list, label = x => x._id, href }) => {
   const max = Math.max(1, ...list.map(x => x.n))
@@ -9,7 +10,7 @@ const Bars = ({ list, label = x => x._id, href }) => {
 }
 
 export default function Dashboard() {
-  const [s, setS] = useState(null), [recent, setRecent] = useState([]), [err, setErr] = useState('')
+  const me = useMe(), [s, setS] = useState(null), [recent, setRecent] = useState([]), [err, setErr] = useState('')
   useEffect(() => { Promise.all([api('/api/admin/stats'), api('/api/admin/leads')]).then(([a, b]) => { setS(a); setRecent(b.items.slice(0, 6)) }).catch(e => setErr(e.message)) }, [])
   if (err) return <p className="adm-err">{err}</p>
   if (!s) return <p className="adm-wait">Loading…</p>
@@ -18,10 +19,12 @@ export default function Dashboard() {
     <header className="adm-head"><h1>Dashboard</h1><Link className="adm-btn" href="/admin/leads?status=new">See new leads</Link></header>
     <div className="adm-kpis">
       <div className="adm-card k-y"><b>{s.unseen}</b><span>Unread</span></div>
-      <div className="adm-card"><b>{s.week}</b><span>Last 7 days</span></div>
-      <div className="adm-card"><b>{s.total}</b><span>All leads</span></div>
+      <div className="adm-card"><b>{s.week}</b><span>Last 7 days · {s.total} in all</span></div>
+      <Link href="/admin/leads?due=1" className="adm-card k-o"><b>{s.due.length}</b><span>Follow-ups due</span></Link>
+      <Link href="/admin/leads?who=none" className="adm-card"><b>{s.unassigned}</b><span>Not assigned</span></Link>
       <div className="adm-card k-g"><b>{s.winRate == null ? '–' : s.winRate + '%'}</b><span>Won of closed</span></div>
     </div>
+    {s.due.length > 0 && <section className="adm-card"><h2>Follow up today <small>{me.role === 'owner' ? 'everyone' : 'yours'}</small></h2><ul className="adm-recent">{s.due.map(l => <li key={l._id}><Link href={`/admin/leads/${l._id}`}><i className="adm-dot" /><b>{l.name}</b><span>{l.product || KIND[l.kind]}</span><em className="pill st-new">{dayLabel(l.followUp)}</em><time>{l.phone}</time></Link></li>)}</ul></section>}
     <section className="adm-card">
       <h2>Leads per day <small>last 30 days</small></h2>
       <div className="adm-chart" role="img" aria-label={`Leads per day, highest ${max}`}>{s.days.map(d => <span key={d.day} title={`${d.day}: ${d.n}`} style={{ '--h': d.n / max }}><i /></span>)}</div>

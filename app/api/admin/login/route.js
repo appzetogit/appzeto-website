@@ -7,9 +7,10 @@ export async function POST(req) {
   if (locked(ip)) return Response.json({ error: 'Too many wrong tries. Wait 15 minutes and try again.' }, { status: 429 })
   let b = {}
   try { b = await req.json() } catch {}
-  if (!tryLogin(ip, String(b.user || ''), String(b.password || ''))) return Response.json({ error: 'Wrong username or password.' }, { status: 401 })
+  const user = String(b.user || '').trim().toLowerCase()
+  if (!await tryLogin(ip, user, String(b.password || ''))) return Response.json({ error: 'Wrong username or password.' }, { status: 401 })
   const res = Response.json({ ok: true })
-  res.headers.append('Set-Cookie', cookie(COOKIE, makeSession(process.env.ADMIN_USER), cookieOpts()))
+  res.headers.append('Set-Cookie', cookie(COOKIE, makeSession(user), cookieOpts()))
   return res
 }
 export async function DELETE(req) {

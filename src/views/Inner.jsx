@@ -3,14 +3,15 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from '../router.jsx'
 import { LetterA, Phone, useLive } from '../Brand.jsx'
 import { Mascot } from '../Mascot.jsx'
-import { WaIcon, waLink } from '../Sticky.jsx'
+import { WaIcon } from '../Sticky.jsx'
+import { useSite, waLinkOf } from '../site.jsx'
 import ProductLogo from '../ProductLogo.jsx'
 import Network from '../Network.jsx'
-import s from '../settings.js'
 import { products, services, moreServices, allServices, steps } from '../data.js'
 
 // Sends to /api/leads (the admin inbox). If that fails, the visitor can still send it by email.
 function Form({ kind, subject, fields }) {
+  const s = useSite()
   const [st, setSt] = useState(null), [msg, setMsg] = useState(''), [mail, setMail] = useState(null), done = useRef(null), t0 = useRef(0)
   useEffect(() => { t0.current = Date.now() }, [])
   const submit = async e => {
@@ -33,6 +34,7 @@ function Form({ kind, subject, fields }) {
     {fields.map(f => <label key={f.n} className={f.t === 'area' || f.wide ? 'wide' : ''}>{f.n}{f.opt && <span className="opt"> (optional)</span>}
       {f.t === 'area' ? <textarea name={f.n} rows="4" required={!f.opt} /> : f.t === 'select' ? <select name={f.n}>{f.o.map(o => <option key={o}>{o}</option>)}</select> : f.t === 'file' ? <input name="cv" type="file" accept="application/pdf,.pdf" /> : <input name={f.n} type={f.t || 'text'} autoComplete={f.a} required={!f.opt} />}</label>)}
     <input className="hp" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+    <label className="wide consent"><input type="checkbox" name="consent" value="yes" required /><span>Appzeto may contact me about this. See the <Link to="/privacy-policy#privacy">privacy policy</Link>.</span></label>
     <div className="wide"><button className="btn" disabled={st === 'sending'}>{st === 'sending' ? 'Sending…' : 'Send'}</button></div>
     {st === 'sent' && <div className="wide notice" ref={done} tabIndex="-1" role="status"><p><b>Got it, thank you.</b> We’ll call or write back within one working day.</p></div>}
     {st === 'invalid' && <div className="wide notice" ref={done} tabIndex="-1" role="alert"><p>{msg}</p></div>}
@@ -42,6 +44,7 @@ function Form({ kind, subject, fields }) {
 const ideaFields = [{ n: 'Your name', a: 'name' }, { n: 'Phone', t: 'tel', a: 'tel' }, { n: 'Email', t: 'email', a: 'email', opt: true }, { n: 'About', t: 'select', o: ['A new project', ...products.map(p => p.name), 'Support', 'Something else'] }, { n: 'Your idea', t: 'area' }]
 
 export function ContactBlock({ h1 }) {
+  const s = useSite(), waLink = waLinkOf(s)
   const ref = useLive(), H = h1 ? 'h1' : 'h2', ctl = useRef({ mode: null })
   return <section className="contact" id="contact-form" ref={ref}><div className="wrap contact-grid">
     <div className="contact-l"><H className="h-xl">What’s the idea?</H><p className="lead">A sentence is enough to start.</p>
@@ -111,6 +114,7 @@ export function Projects() {
 }
 export function Blogs() { return <Top title="Nothing written yet" text="We’ll publish here when we have something useful to say." screen={1}><div className="row"><Link className="btn" to="/">Back to home</Link></div></Top> }
 export function About() {
+  const s = useSite()
   return <><Top title="We put ideas on screens" text="Appzeto is a technology company in Indore. We build websites, mobile apps and AI features, and platforms that are ready to launch." screen="A" tone="top-food" />
     <section className="sec"><div className="wrap two"><p className="big-text">Our name starts inside a phone because most of our work ends up there.</p><div className="prose"><p>Businesses come to us with everything from a sentence to a full specification. We work through the same seven steps either way, and stay to look after what we launch.</p><p>We build mostly with React, Next.js, Node.js, MongoDB, Flutter and AWS.</p><p>Appzeto is a brand of {s.legalName}.</p></div></div></section>
     <section className="sec sec-t"><div className="wrap"><h2 className="h-l">The seven steps</h2><ol className="more-list">{steps.map(([t, d]) => <li key={t}><div><b>{t}</b><span>{d}</span></div></li>)}</ol></div></section><Cta t="Come and say hello" /></>

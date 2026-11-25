@@ -239,3 +239,7 @@ html.opening{overflow:hidden}
 /* The opening is in the server HTML now: keep it away without JS or with reduced motion */
 html:not(.js) .open{display:none}
 @media (prefers-reduced-motion:reduce){.open{display:none}}
+/* Hero reached from another page: no opening logo to wait for, so it starts as the curtain lifts */
+.sh.quick .sh-panel{animation-delay:450ms}.sh.quick .sh-svg{animation-delay:600ms}
+.sh.quick .ln>span{animation-delay:calc(520ms + var(--n)*90ms)}
+.sh.quick .tagl{animation-delay:860ms}.sh.quick .sh-copy .row,.sh.quick .sh-sub,.sh.quick .tabs{animation-delay:940ms}

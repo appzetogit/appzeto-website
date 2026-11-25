@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 import { Link } from './router.jsx'
 import { LetterA, reduced } from './Brand.jsx'
 import Eyes from './Eyes.jsx'
-import s from './settings.js'
+import { useSite, waLinkOf } from './site.jsx'
 
-export const waLink = s.whatsapp && `https://wa.me/${s.whatsapp}?text=${encodeURIComponent('Hi Appzeto, I have an idea.')}`
 export const WaIcon = () => <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4a12 12 0 0 0-10.300 18.100L4 28l6.100-1.600A12 12 0 1 0 16 4z" fill="#fff" stroke="#06282A" strokeWidth="2" strokeLinejoin="round" /><path d="M12 9.500c-.6 0-2.200 1-2.200 3.200 0 4.600 5 9.600 9.600 9.600 2.200 0 3.200-1.600 3.200-2.300l-.2-.9-3.100-1.600-1.600 1.700c-2-.7-4-2.700-4.700-4.700l1.700-1.600-1.500-3.200z" fill="#06282A" /></svg>
 const lines = ['Inquire now', 'Let’s build?', 'Got an idea?', 'Ask for a demo']
 // Phones only (CSS). Steps aside while the contact form is on screen or someone is typing.
 export default function Sticky({ path }) {
+  const waLink = waLinkOf(useSite())
   const [n, setN] = useState(0), [away, setAway] = useState(true)
   useEffect(() => {
     if (reduced()) return

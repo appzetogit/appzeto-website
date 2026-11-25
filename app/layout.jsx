@@ -10,6 +10,10 @@ import '../src/motion.css'
 import '../src/water.css'
 import '../src/screens.css'
 import App from '../src/App.jsx'
+import { getSite, siteForPages } from '../src/server/settings.js'
+
+// Contact details come from admin › Settings; pages refresh when they're saved (and at least hourly)
+export const revalidate = 3600
 
 export const metadata = {
   title: 'Appzeto | Websites, apps and ready-to-launch platforms',
@@ -21,9 +25,10 @@ export const viewport = { width: 'device-width', initialScale: 1, viewportFit: '
 // Runs before first paint: marks JS as on, and starts the opening unless motion is reduced.
 const boot = "var d=document.documentElement;d.classList.add('js');if(location.pathname.indexOf('/admin')!==0&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('opening')"
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const site = siteForPages(await getSite())
   return <html lang="en" suppressHydrationWarning>
     <head><script dangerouslySetInnerHTML={{ __html: boot }} /></head>
-    <body><div id="root"><App>{children}</App></div></body>
+    <body><div id="root"><App site={site}>{children}</App></div></body>
   </html>
 }

@@ -7,6 +7,7 @@ import { RideMap } from './Ride.jsx'
 import { Quick, Service, Hotel, Super, Ai, Pharmacy } from './Scenes.jsx'
 import { PanScene } from './Pizza.jsx'
 import { products, allServices } from './data.js'
+import { isBooted } from './Later.jsx'
 
 const I = '#06282A', T = '#06A4A5', Y = '#FAFD0F', G = '#33A77A', W = '#fff', M = '#DDF3EC'
 const Tx = ({ x, y, s = 11, f = I, children, a }) => <text x={x} y={y} fontSize={s} fill={f} textAnchor={a} className="scr-t">{children}</text>
@@ -31,9 +32,10 @@ function Tagline() {
 }
 
 export default function Hero() {
-  const [i, setI] = useState(0), [run, setRun] = useState(0), [out, setOut] = useState(false), [auto, setAuto] = useState(true)
+  const [quick] = useState(isBooted), [i, setI] = useState(0), [run, setRun] = useState(0), [out, setOut] = useState(false), [auto, setAuto] = useState(true)
   const ref = useLive(), tilt = useRef(null), p = products[i]
-  useEffect(() => { if (reduced()) { setOut(true); return } const t = setTimeout(() => setOut(true), 2300); return () => clearTimeout(t) }, [])
+  // First visit: wait for the opening logo. Arriving from another page: start as the curtain lifts.
+  useEffect(() => { if (reduced()) { setOut(true); return } const t = setTimeout(() => setOut(true), quick ? 700 : 2300); return () => clearTimeout(t) }, [])
   useEffect(() => { if (reduced()) setAuto(false) }, [])
   const ctl = useRef({ mode: null }), anim = useRef({})
   ctl.current.paused = !auto
@@ -53,7 +55,7 @@ export default function Hero() {
     const b = ref.current.getBoundingClientRect(), x = (e.clientX - b.left) / b.width - .5, y = (e.clientY - b.top) / b.height - .5
     tilt.current.style.setProperty('--mx', x.toFixed(3)); tilt.current.style.setProperty('--my', y.toFixed(3))
   }
-  return <><section className="sh" ref={ref} onPointerMove={move}>
+  return <><section className={`sh${quick ? " quick" : ""}`} ref={ref} onPointerMove={move}>
     <i className="sh-panel" aria-hidden="true" />
     <div className="wrap sh-grid">
       <div className="sh-copy">

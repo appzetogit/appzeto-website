@@ -4,14 +4,15 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Link, NavLink, Nav, useLocation } from './router.jsx'
 import { LogoCompact, Phone, reduced } from './Brand.jsx'
 import { Curtain, Opening, Progress, useReveal } from './Motion.jsx'
-import Sticky, { WaIcon, waLink } from './Sticky.jsx'
+import Sticky, { WaIcon } from './Sticky.jsx'
+import { SiteCtx, useSite, waLinkOf } from './site.jsx'
 import { markBooted } from './Later.jsx'
-import s from './settings.js'
 import { products, services } from './data.js'
 
 const nav = [['/products', 'Products'], ['/services', 'Services'], ['/projects', 'Work'], ['/about', 'About'], ['/apply-now', 'Careers']]
 
 function Header() {
+  const s = useSite()
   const [open, setOpen] = useState(false)
   const { pathname, hash } = useLocation()
   useEffect(() => setOpen(false), [pathname, hash])
@@ -44,6 +45,7 @@ const footLinks = [
   ['Company', [['/', 'Home'], ['/about', 'About'], ['/projects', 'Work'], ['/apply-now', 'Careers'], ['/channel-partners', 'Partner with us'], ['/contact', 'Contact']]],
 ]
 function Footer() {
+  const s = useSite(), waLink = waLinkOf(s)
   const social = Object.entries(s.social).filter(([, v]) => v)
   return <footer className="foot"><div className="wrap">
     <div className="ft-top">
@@ -124,7 +126,7 @@ function usePageSwap() {
 }
 
 // /admin has its own layout: no header, footer, curtain or opening there
-export default function App({ children }) { return usePathname().startsWith('/admin') ? children : <Site>{children}</Site> }
+export default function App({ children, site }) { return usePathname().startsWith('/admin') ? children : <SiteCtx.Provider value={site}><Site>{children}</Site></SiteCtx.Provider> }
 
 // First page and campaign tags of the visit, sent along with any form
 function useVisit() {

@@ -17,7 +17,8 @@ export function db() {
     const client = await new MongoClient(uri).connect()
     const d = client.db(process.env.MONGODB_DB || 'appzeto_website')
     const leads = d.collection('leads')
-    await Promise.all([leads.createIndex({ createdAt: -1 }), leads.createIndex({ status: 1, createdAt: -1 }), leads.createIndex({ kind: 1, createdAt: -1 })])
+    await d.collection('users').createIndex({ username: 1 }, { unique: true })
+    await Promise.all([leads.createIndex({ phoneKey: 1 }), leads.createIndex({ emailKey: 1 }), leads.createIndex({ followUp: 1 }), leads.createIndex({ createdAt: -1 }), leads.createIndex({ status: 1, createdAt: -1 }), leads.createIndex({ kind: 1, createdAt: -1 })])
     return d
   })().catch(e => { g.__azDb = undefined; throw e })
   return g.__azDb

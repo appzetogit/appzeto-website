@@ -2,6 +2,12 @@
 // Small fetch helper for the admin: JSON in/out, and back to the login page when signed out.
 export const STATUS = { new: 'New', contacted: 'Contacted', qualified: 'Qualified', won: 'Won', lost: 'Lost' }
 export const KIND = { idea: 'Idea', career: 'Careers', partner: 'Partner' }
+export const ROLE = { owner: 'Owner', sales: 'Sales', hr: 'HR' }
+export const ROLE_SEES = { owner: 'Everything, plus team and settings', sales: 'Idea and partner forms', hr: 'Careers form' }
+// Today in India as YYYY-MM-DD, plus n days
+export const dayIST = (n = 0) => new Date(Date.now() + n * 864e5).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
+export const dateIST = d => d ? new Date(d).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }) : ''
+export const dayLabel = d => { if (!d) return ''; const k = dateIST(d); return k < dayIST() ? 'Overdue · ' + new Date(d).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }) : k === dayIST() ? 'Today' : k === dayIST(1) ? 'Tomorrow' : new Date(d).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }) }
 
 export async function api(path, { method = 'GET', body } = {}) {
   const res = await fetch(path, { method, headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify(body) : undefined, cache: 'no-store' })

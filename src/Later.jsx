@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react'
 
 let booted = false
 export const markBooted = () => { booted = true }
+// True once the first page has loaded: later pages are reached through the curtain, not the opening
+export const isBooted = () => booted
 
 export default function Later({ i = 0, h = 700, children }) {
   const [on, setOn] = useState(!booted)
