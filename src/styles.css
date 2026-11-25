@@ -261,3 +261,6 @@ summary::after{content:'';position:absolute;right:8px;top:24px;width:14px;height
 .work-next:hover{transform:translate(-3px,-3px);background:var(--yellow)}
 .work-next .phone{width:100%}.work-next h2{margin-bottom:12px}.work-next .go{display:inline-block;margin-top:6px}
 @media (max-width:640px){.work-card .plogo{margin-inline:auto}.work-next{grid-template-columns:1fr;justify-items:center;text-align:center;padding:36px 22px;gap:24px}.work-next .phone{width:150px}}
+.nw-flame{transform-box:fill-box;transform-origin:100% 50%;animation:nw-flame .12s infinite alternate both linear}
+@keyframes nw-flame{from{transform:scaleX(.6)}to{transform:scaleX(1.25)}}
+@media (prefers-reduced-motion:reduce){.nw-rocket{display:none}}

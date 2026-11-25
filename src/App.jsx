@@ -5,6 +5,7 @@ import { Link, NavLink, Nav, useLocation } from './router.jsx'
 import { LogoCompact, Phone, reduced } from './Brand.jsx'
 import { Curtain, Opening, Progress, useReveal } from './Motion.jsx'
 import Sticky, { WaIcon, waLink } from './Sticky.jsx'
+import { markBooted } from './Later.jsx'
 import s from './settings.js'
 import { products, services } from './data.js'
 
@@ -62,7 +63,12 @@ function Scroll({ at }) {
   useEffect(() => {
     const go = () => { const el = hash && document.getElementById(hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0) }
     const root = document.documentElement; root.style.scrollBehavior = 'auto'; go(); root.style.scrollBehavior = ''
-    if (hash) document.fonts?.ready.then(go)
+    if (!hash) return
+    document.fonts?.ready.then(go)
+    // The target may be in a section that mounts a moment later (Later.jsx)
+    const more = () => document.getElementById(hash.slice(1)) && go()
+    addEventListener('appzeto:more', more); const t = setTimeout(() => removeEventListener('appzeto:more', more), 1500)
+    return () => { clearTimeout(t); removeEventListener('appzeto:more', more) }
   }, [pathname, hash])
   return null
 }
@@ -129,6 +135,6 @@ function Site({ children }) {
   useVisit()
   const nav = usePageSwap(), { shown, phase } = nav
   useReveal(shown.pathname)
-  useEffect(() => { import('./water.js') }, [])
+  useEffect(() => { import('./water.js'); markBooted() }, [])
   return <Nav.Provider value={nav}><Opening /><Curtain phase={phase} /><Scroll at={shown} /><Header /><main id="main" tabIndex="-1">{children}</main><Footer /><Sticky path={shown.pathname} /></Nav.Provider>
 }

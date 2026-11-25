@@ -36,9 +36,11 @@ export function useReveal(key) {
       const el = e.target; io.unobserve(el); el.style.animationDelay = `${Math.min(n * 70, 420)}ms`; el.classList.add('in')
       setTimeout(() => { el.classList.remove("rv", "in"); el.style.animationDelay = "" }, 1150)
     }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' })
-    const els = [...document.querySelectorAll(PICK)].filter(el => !el.closest('.top') && el.getBoundingClientRect().top > innerHeight)
-    els.forEach(el => { el.classList.add('rv'); io.observe(el) })
-    return () => { io.disconnect(); els.forEach(el => el.classList.remove('rv', 'in')) }
+    // Sections that mount later (Later.jsx) announce themselves with appzeto:more
+    const els = new Set()
+    const scan = () => [...document.querySelectorAll(PICK)].filter(el => !els.has(el) && !el.closest('.top') && el.getBoundingClientRect().top > innerHeight).forEach(el => { els.add(el); el.classList.add('rv'); io.observe(el) })
+    scan(); addEventListener('appzeto:more', scan)
+    return () => { removeEventListener('appzeto:more', scan); io.disconnect(); els.forEach(el => el.classList.remove('rv', 'in')) }
   }, [key])
 }
 export function Progress() {

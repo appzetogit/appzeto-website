@@ -7,6 +7,7 @@ import { Boarding } from '../Ride.jsx'
 import ProductLogo from '../ProductLogo.jsx'
 import Hero from '../Hero.jsx'
 import Network from '../Network.jsx'
+import Later from '../Later.jsx'
 import { ContactBlock } from './Inner.jsx'
 
 export function FoodBand() {
@@ -59,15 +60,15 @@ function How() {
 
 export default function Home() {
   return <><Hero />
-    <div id="products"><div className="wrap prod-intro"><h2 className="h-xl">Pick an app. Or take them all.</h2><p className="lead">Each one has its own page. All-in-One puts them behind a single login.</p></div>
-      <FoodBand /><TaxiBand /><MoreBands /></div>
-    <ServiceList /><How />
-    <Network />
-    <section className="join"><div className="wrap join-grid">
+    <div id="products"><Later i={0} h={1800}><div className="wrap prod-intro"><h2 className="h-xl">Pick an app. Or take them all.</h2><p className="lead">Each one has its own page. All-in-One puts them behind a single login.</p></div>
+      <FoodBand /><TaxiBand /><MoreBands /></Later></div>
+    <Later i={1}><ServiceList /></Later><Later i={2}><How /></Later>
+    <Later i={3}><Network /></Later>
+    <Later i={4}><section className="join"><div className="wrap join-grid">
       <Link to="/channel-partners" className="panel panel-y"><h2>Bring us a client. Earn with us.</h2><p>Channel partners get commission, a support contact and sales material.</p><span className="go">Partner with us</span></Link>
       <Link to="/apply-now" className="panel panel-i"><h2>Come and build</h2><p>See whether we’re hiring.</p><span className="go">Careers</span></Link>
     </div></section>
     <section className="faq"><div className="wrap faq-grid"><h2 className="h-xl">Asked often</h2><div>{faqs.map(([q, a]) => <details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div></div></section>
-    <ContactBlock />
+    </Later><Later i={5}><ContactBlock /></Later>
   </>
 }

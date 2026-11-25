@@ -7,6 +7,8 @@ export default {
   reactStrictMode: false,
   poweredByHeader: false,
   serverExternalPackages: ['mongodb', 'mongodb-memory-server'],
+  // The dev-only database never ships
+  outputFileTracingExcludes: { '*': ['node_modules/mongodb-memory-server*/**', '.data/**', '.env*'] },
   async headers() {
     return [{ source: '/admin/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }, { key: 'Cache-Control', value: 'no-store' }] },
       { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex' }, { key: 'Cache-Control', value: 'no-store' }] }]

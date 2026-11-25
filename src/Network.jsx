@@ -18,6 +18,10 @@ const cities = [
 ]
 const VB = { x: -78, y: -12, w: 388, h: 318 }
 const pct = (x, y) => ({ left: `${((x - VB.x) / VB.w) * 100}%`, top: `${((y - VB.y) / VB.h) * 100}%` })
+const route = c => `M${HQ[0]} ${HQ[1]}Q${(HQ[0] + c.x) / 2 + 14} ${(HQ[1] + c.y) / 2 - 16} ${c.x} ${c.y}`
+// Rockets: one launch per city, back to back, each a fast hop along its route
+const HOP = 1.1, FLY = .75, legs = cities.filter(c => !c.hq), LOOP = legs.length * HOP
+const Rocket = () => <g><path className="nw-flame" d="M-8-3L-17 0-8 3Z" fill="#F39A2B" stroke="#06282A" strokeWidth="1.200" strokeLinejoin="round" /><path d="M-6-5L-10-8V-3ZM-6 5L-10 8V3Z" fill="#D9482B" stroke="#06282A" strokeWidth="1.200" strokeLinejoin="round" /><path d="M-9-4H3Q10-4 13 0Q10 4 3 4H-9Z" fill="#fff" stroke="#06282A" strokeWidth="1.600" strokeLinejoin="round" /><path d="M7-2.800Q10.500-2 13 0Q10.500 2 7 2.800Z" fill="#D9482B" /><circle cx="1" r="2.200" fill="#06A4A5" stroke="#06282A" strokeWidth="1.200" /></g>
 const stats = [[50, '+', 'Major cities'], [200, '+', 'Enterprise partners'], [15, 'k+', 'Active users'], [24, '/7', 'Regional support']]
 
 function Count({ to, suf, go }) {
@@ -33,10 +37,16 @@ function Count({ to, suf, go }) {
 }
 
 export default function Network({ join = true }) {
-  const ref = useLive(), seen = useRef(false), [go, setGo] = useState(false)
+  const ref = useLive(), svg = useRef(null), seen = useRef(false), [go, setGo] = useState(false)
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting && !seen.current) { seen.current = true; setGo(true) } }, { threshold: .3 })
     io.observe(ref.current); return () => io.disconnect()
+  }, [])
+  // The rockets (SVG animation) only fly while the map is on screen, and never with reduced motion
+  useEffect(() => {
+    const s = svg.current; if (reduced()) { s.pauseAnimations(); return }
+    const io = new IntersectionObserver(([e]) => e.isIntersecting ? s.unpauseAnimations() : s.pauseAnimations())
+    io.observe(s); return () => io.disconnect()
   }, [])
   return <section className="nw" ref={ref}><div className="wrap nw-grid">
     <div className="nw-copy">
@@ -47,15 +57,20 @@ export default function Network({ join = true }) {
       {join && <Link className="btn" to="/channel-partners">Join as a partner</Link>}
     </div>
     <div className="nw-map"><div className="nw-stage">
-      <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} aria-hidden="true">
+      <svg ref={svg} viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} aria-hidden="true">
         <path d={INDIA} transform="translate(5 5)" fill="#06282A" />
         <path d={INDIA} fill="#06A4A5" stroke="#06282A" strokeWidth="2.400" strokeLinejoin="round" />
-        {cities.filter(c => !c.hq).map((c, i) => <path key={c.n} className="nw-route" style={{ animationDelay: `${.5 + i * .25}s` }} pathLength="1" d={`M${HQ[0]} ${HQ[1]}Q${(HQ[0] + c.x) / 2 + 14} ${(HQ[1] + c.y) / 2 - 16} ${c.x} ${c.y}`} fill="none" stroke="#FAFD0F" strokeWidth="2" strokeDasharray=".02 .02" />)}
+        {cities.filter(c => !c.hq).map((c, i) => <path key={c.n} className="nw-route" style={{ animationDelay: `${.5 + i * .25}s` }} pathLength="1" d={route(c)} fill="none" stroke="#FAFD0F" strokeWidth="2" strokeDasharray=".02 .02" />)}
         {cities.map((c, i) => <g key={c.n}>
           <path className="nw-lead" style={{ animationDelay: `${.35 + i * .25}s` }} d={`M${c.x} ${c.y}L${c.x + c.side * 22} ${c.y + c.dy}`} stroke="#06282A" strokeWidth="1.600" strokeDasharray="2 2.500" />
           <g transform={`translate(${c.x} ${c.y})`}><circle className="nw-ring" style={{ animationDelay: `${i * .3}s` }} r={c.hq ? 9 : 6} fill="none" stroke={c.hq ? '#FAFD0F' : '#06282A'} strokeWidth="2" />
             <g className="nw-pin" style={{ animationDelay: `${.3 + i * .25}s` }}><circle r={c.hq ? 8 : 5.500} fill={c.hq ? '#06282A' : '#FAFD0F'} stroke="#06282A" strokeWidth="2" />{c.hq && <circle r="3.500" fill="#FAFD0F" />}</g></g>
         </g>)}
+        {legs.map((c, i) => { const a = (i * HOP / LOOP).toFixed(4), b = ((i * HOP + FLY) / LOOP).toFixed(4), e = (Math.min(1, (i * HOP + FLY + .08) / LOOP)).toFixed(4)
+          return <g key={c.n} className="nw-rocket" opacity="0">
+            <animate attributeName="opacity" dur={LOOP + 's'} repeatCount="indefinite" calcMode="discrete" keyTimes={`0;${a};${e}`} values="0;1;0" />
+            <animateMotion dur={LOOP + 's'} repeatCount="indefinite" rotate="auto" calcMode="spline" keyTimes={`0;${a};${b};1`} keyPoints="0;0;1;1" keySplines="0 0 1 1;.5 0 .3 1;0 0 1 1" path={route(c)} />
+            <g transform="scale(1.25)"><Rocket /></g></g> })}
       </svg>
       {cities.map((c, i) => <span key={c.n} className={`nw-tag ${c.side < 0 ? 'l' : 'r'}${c.hq ? ' hq' : ''}`} style={{ ...pct(c.x + c.side * 22, c.y + c.dy), animationDelay: `${.45 + i * .25}s` }}><b>{c.n}</b> <i>{c.t}</i></span>)}
     </div></div>
