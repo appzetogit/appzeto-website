@@ -251,3 +251,5 @@ summary::after{content:'';position:absolute;right:8px;top:24px;width:14px;height
   .nw-stats{gap:12px;margin:28px 0}.nw-stats>div{padding:14px 12px}
   .nw-map{padding:18px}.nw-tag{font-size:11.5px;padding:3px 8px;border-radius:7px;box-shadow:2px 2px 0 var(--teal)}.nw-tag i{display:none}
 }
+/* Form trap for bots: kept out of sight and out of the tab order */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}

@@ -117,7 +117,16 @@ function usePageSwap() {
   return { loc, shown, phase, go }
 }
 
-export default function App({ children }) {
+// /admin has its own layout: no header, footer, curtain or opening there
+export default function App({ children }) { return usePathname().startsWith('/admin') ? children : <Site>{children}</Site> }
+
+// First page and campaign tags of the visit, sent along with any form
+function useVisit() {
+  useEffect(() => { try { if (!sessionStorage.getItem('az_visit')) { const p = new URLSearchParams(location.search), utm = {}; for (const k of ['source', 'medium', 'campaign', 'term', 'content']) if (p.get('utm_' + k)) utm['utm_' + k] = p.get('utm_' + k); sessionStorage.setItem('az_visit', JSON.stringify({ landing: location.pathname + location.search, ref: document.referrer, ...utm })) } } catch {} }, [])
+}
+
+function Site({ children }) {
+  useVisit()
   const nav = usePageSwap(), { shown, phase } = nav
   useReveal(shown.pathname)
   useEffect(() => { import('./water.js') }, [])

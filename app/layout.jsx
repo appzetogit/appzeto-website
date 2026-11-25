@@ -19,7 +19,7 @@ export const metadata = {
 export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#F3FAF8', colorScheme: 'light only' }
 
 // Runs before first paint: marks JS as on, and starts the opening unless motion is reduced.
-const boot = "var d=document.documentElement;d.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('opening')"
+const boot = "var d=document.documentElement;d.classList.add('js');if(location.pathname.indexOf('/admin')!==0&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('opening')"
 
 export default function RootLayout({ children }) {
   return <html lang="en" suppressHydrationWarning>

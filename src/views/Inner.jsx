@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from '../router.jsx'
 import { LetterA, Phone, useLive } from '../Brand.jsx'
 import { Mascot } from '../Mascot.jsx'
@@ -9,20 +9,34 @@ import Network from '../Network.jsx'
 import s from '../settings.js'
 import { products, services, moreServices, allServices, steps } from '../data.js'
 
-// UI only: nothing is sent to a server yet. The form says so and offers a real email instead.
-function Form({ subject, fields }) {
-  const [mail, setMail] = useState(null), done = useRef(null)
-  const submit = e => {
-    e.preventDefault(); dispatchEvent(new Event('appzeto:cheer'))
-    const body = [...new FormData(e.target)].map(([k, v]) => `${k}: ${v}`).join('\n')
+// Sends to /api/leads (the admin inbox). If that fails, the visitor can still send it by email.
+function Form({ kind, subject, fields }) {
+  const [st, setSt] = useState(null), [msg, setMsg] = useState(''), [mail, setMail] = useState(null), done = useRef(null), t0 = useRef(0)
+  useEffect(() => { t0.current = Date.now() }, [])
+  const submit = async e => {
+    e.preventDefault()
+    const form = e.target, fd = new FormData(form)
+    const body = [...fd].filter(([k, v]) => typeof v === 'string' && k !== 'website').map(([k, v]) => `${k}: ${v}`).join('\n')
     setMail(`mailto:${s.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`)
+    fd.set('kind', kind); fd.set('t', String(t0.current)); fd.set('page', location.pathname)
+    try { const v = JSON.parse(sessionStorage.getItem('az_visit') || '{}'); for (const k in v) if (v[k]) fd.set(k, v[k]) } catch {}
+    const cv = fd.get('cv'); if (cv && typeof cv !== 'string' && !cv.size) fd.delete('cv')
+    setSt('sending')
+    try {
+      const res = await fetch('/api/leads', { method: 'POST', body: fd }), out = await res.json().catch(() => ({}))
+      if (!res.ok || !out.ok) { setMsg(out.error || ''); setSt(res.status === 400 && out.error ? 'invalid' : 'failed') }
+      else { setSt('sent'); form.reset(); dispatchEvent(new Event('appzeto:cheer')) }
+    } catch { setSt('failed') }
     setTimeout(() => done.current?.focus(), 50)
   }
   return <form className="form" onSubmit={submit}>
     {fields.map(f => <label key={f.n} className={f.t === 'area' || f.wide ? 'wide' : ''}>{f.n}{f.opt && <span className="opt"> (optional)</span>}
-      {f.t === 'area' ? <textarea name={f.n} rows="4" required={!f.opt} /> : f.t === 'select' ? <select name={f.n}>{f.o.map(o => <option key={o}>{o}</option>)}</select> : <input name={f.n} type={f.t || 'text'} autoComplete={f.a} required={!f.opt} />}</label>)}
-    <div className="wide"><button className="btn">{'Review and send'}</button></div>
-    {mail && <div className="wide notice" ref={done} tabIndex="-1" role="status"><p><b>One more step.</b> This form doesn’t send by itself yet, so nothing has gone to us. Open it in your email app and press send.</p><a className="btn btn-y" href={mail}>Open email</a></div>}
+      {f.t === 'area' ? <textarea name={f.n} rows="4" required={!f.opt} /> : f.t === 'select' ? <select name={f.n}>{f.o.map(o => <option key={o}>{o}</option>)}</select> : f.t === 'file' ? <input name="cv" type="file" accept="application/pdf,.pdf" /> : <input name={f.n} type={f.t || 'text'} autoComplete={f.a} required={!f.opt} />}</label>)}
+    <input className="hp" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+    <div className="wide"><button className="btn" disabled={st === 'sending'}>{st === 'sending' ? 'Sending…' : 'Send'}</button></div>
+    {st === 'sent' && <div className="wide notice" ref={done} tabIndex="-1" role="status"><p><b>Got it, thank you.</b> We’ll call or write back within one working day.</p></div>}
+    {st === 'invalid' && <div className="wide notice" ref={done} tabIndex="-1" role="alert"><p>{msg}</p></div>}
+    {st === 'failed' && <div className="wide notice" ref={done} tabIndex="-1" role="alert"><p><b>That didn’t go through.</b> {msg || 'Please try again, or send the same message by email.'}</p><a className="btn btn-y" href={mail}>Send by email</a></div>}
   </form>
 }
 const ideaFields = [{ n: 'Your name', a: 'name' }, { n: 'Phone', t: 'tel', a: 'tel' }, { n: 'Email', t: 'email', a: 'email', opt: true }, { n: 'About', t: 'select', o: ['A new project', ...products.map(p => p.name), 'Support', 'Something else'] }, { n: 'Your idea', t: 'area' }]
@@ -32,7 +46,7 @@ export function ContactBlock({ h1 }) {
   return <section className="contact" id="contact-form" ref={ref}><div className="wrap contact-grid">
     <div className="contact-l"><H className="h-xl">What’s the idea?</H><p className="lead">A sentence is enough to start.</p>
       <ul className="reach">{s.phones.map(p => <li key={p.href}><a href={p.href}>{p.label}</a></li>)}<li><a href={`mailto:${s.email}`}>{s.email}</a></li></ul>{waLink && <a className="btn btn-wa" href={waLink} target="_blank" rel="noopener noreferrer"><WaIcon />Chat on WhatsApp</a>}<address>{s.address}</address></div>
-    <div className="device" onFocus={() => { ctl.current.mode = 'type' }} onBlur={() => { ctl.current.mode = null }} onSubmit={() => { ctl.current.mode = null }}><div className="peek"><Mascot ctl={ctl} /></div><div className="device-in"><Form subject="New idea from the website" fields={ideaFields} /></div></div>
+    <div className="device" onFocus={() => { ctl.current.mode = 'type' }} onBlur={() => { ctl.current.mode = null }} onSubmit={() => { ctl.current.mode = null }}><div className="peek"><Mascot ctl={ctl} /></div><div className="device-in"><Form kind="idea" subject="New idea from the website" fields={ideaFields} /></div></div>
   </div></section>
 }
 
@@ -93,12 +107,12 @@ export function About() {
 export const Contact = () => <ContactBlock h1 />
 export function Careers() {
   return <><Top title="Come and build" text="Openings and internships are listed here when we have them." screen={3} tone="top-taxi" />
-    <section className="sec" id="positions"><div className="wrap two"><div><h2 className="h-l">Introduce yourself</h2><p className="lead">No openings are listed right now. You can still tell us what you’re good at.</p></div><Form subject="Careers" fields={[{ n: 'Your name', a: 'name' }, { n: 'Email', t: 'email', a: 'email' }, { n: 'I’m interested in', t: 'select', o: ['A job', 'An internship'], wide: true }, { n: 'Link to your work', t: 'url', opt: true, wide: true }, { n: 'About you', t: 'area' }]} /></div></section></>
+    <section className="sec" id="positions"><div className="wrap two"><div><h2 className="h-l">Introduce yourself</h2><p className="lead">No openings are listed right now. You can still tell us what you’re good at.</p></div><Form kind="career" subject="Careers" fields={[{ n: 'Your name', a: 'name' }, { n: 'Email', t: 'email', a: 'email' }, { n: 'I’m interested in', t: 'select', o: ['A job', 'An internship'], wide: true }, { n: 'Link to your work', t: 'url', opt: true, wide: true }, { n: 'CV (PDF, up to 5 MB)', t: 'file', opt: true, wide: true }, { n: 'About you', t: 'area' }]} /></div></section></>
 }
 export function Partners() {
   return <><Top title="Bring us a client. Earn with us." text="Agencies, consultants and integrators can offer our platforms and services to their own clients." screen="digital-marketing" tone="top-care" />
     <Network join={false} />
-    <section className="sec"><div className="wrap two"><div><h2 className="h-l">What partners get</h2><ul className="ticks"><li>Access to our product line-up</li><li>Commission on what you bring</li><li>A partner support contact</li><li>Marketing and sales material</li></ul></div><Form subject="Channel partner" fields={[{ n: 'Company' , a: 'organization' }, { n: 'Contact person', a: 'name' }, { n: 'Company email', t: 'email', a: 'email' }, { n: 'Phone', t: 'tel', a: 'tel' }, { n: 'What you do', t: 'select', wide: true, o: ['Technology consulting', 'Digital agency', 'System integrator', 'Independent vendor'] }, { n: 'Message', t: 'area', opt: true }]} /></div></section></>
+    <section className="sec"><div className="wrap two"><div><h2 className="h-l">What partners get</h2><ul className="ticks"><li>Access to our product line-up</li><li>Commission on what you bring</li><li>A partner support contact</li><li>Marketing and sales material</li></ul></div><Form kind="partner" subject="Channel partner" fields={[{ n: 'Company' , a: 'organization' }, { n: 'Contact person', a: 'name' }, { n: 'Company email', t: 'email', a: 'email' }, { n: 'Phone', t: 'tel', a: 'tel' }, { n: 'What you do', t: 'select', wide: true, o: ['Technology consulting', 'Digital agency', 'System integrator', 'Independent vendor'] }, { n: 'Message', t: 'area', opt: true }]} /></div></section></>
 }
 const legal = [
   ['privacy', 'Privacy Policy', 'At Appzeto, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and protect your data when you use our website, services, or digital products.', [
