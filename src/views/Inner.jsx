@@ -94,9 +94,20 @@ export function Service({ slug }) {
     <section className="sec"><div className="wrap two"><p className="big-text">{v.text}</p><ul className="ticks">{v.features.map(f => <li key={f}>{f}</li>)}</ul></div></section>
     <section className="sec sec-t"><div className="wrap"><Link className="nextlink" to={`/services/${next.slug}`}><span>Next</span><b>{next.name}</b></Link></div></section></>
 }
+const stack = ['React', 'Next.js', 'Node.js', 'MongoDB', 'Flutter', 'React Native', 'AWS']
 export function Projects() {
-  return <><Top title="Work" text="Client case studies will appear here once they’re approved to share. Until then, these are the platforms we’ve built ourselves." screen="web-app" tone="top-taxi" />
-    <section className="sec"><div className="wrap svc-rows">{products.slice(0, 2).map(v => <Link key={v.id} to={v.path} className="svc-row"><Phone name={v.id} /><div><h2>{v.name}</h2><p>{v.intro}</p></div></Link>)}</div></section><Cta t="Want to be the first case study here?" /></>
+  const ref = useLive(), next = useLive()
+  return <><Top title="Work" text="Client case studies will appear here once they’re approved to share. Until then, these are the platforms we’ve built ourselves." screen="super" tone="top-taxi" />
+    <section className="sec" ref={ref}><div className="wrap">
+      <p className="nw-eyebrow">Built by us</p><h2 className="h-xl work-h">{products.length} platforms, live and ready</h2>
+      <div className="svc-cards">{products.map((p, i) => <Link key={p.id} to={p.path} className={`svc-card work-card svc-c${i % 4}`}>
+        <span className="svc-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <Phone name={p.id} />
+        <div><ProductLogo id={p.id} /><h2>{p.name}</h2><p>{p.intro}</p><ul className="chips">{p.roles.map(r => <li key={r.who}>{r.who}</li>)}</ul><span className="go">Open {p.name}</span></div>
+      </Link>)}</div>
+    </div></section>
+    <div className="ticker work-stack" aria-label={'Built with ' + stack.join(', ')}><div className="tick-run">{[0, 1, 2].map(k => <ul key={k} aria-hidden="true">{stack.map(t => <li key={t}>{t}<b>/</b></li>)}</ul>)}</div></div>
+    <section className="sec" ref={next}><div className="wrap"><Link to="/contact" className="work-next"><Phone><g className="logo-a"><LetterA /></g></Phone><div><h2 className="h-xl">Your app could be next</h2><p className="lead">Want to be our first published case study? Tell us the idea and we’ll sketch it, build it and launch it.</p><span className="go">Start a project</span></div></Link></div></section></>
 }
 export function Blogs() { return <Top title="Nothing written yet" text="We’ll publish here when we have something useful to say." screen={1}><div className="row"><Link className="btn" to="/">Back to home</Link></div></Top> }
 export function About() {
