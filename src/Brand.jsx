@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useId, useRef } from 'react'
 import g from './glyphs.js'
 import Screen from './Screens.jsx'
@@ -22,7 +23,7 @@ export function LetterA() {
   return <><path d={g.A} transform="translate(.8 -3)" fill="none" stroke="#06282A" strokeWidth="1.2" /><path d={g.A} fill="#06A4A5" stroke="#0D5353" strokeWidth="1.6" fillRule="evenodd" /></>
 }
 export function PhoneBody({ children, off }) {
-  const id = useId().replace(/:/g, '')
+  const id = useId().replace(/[^\w-]/g, '')
   return <>
     <rect x="40" y="3" width="90" height="181" rx="14" fill="#33A77A" />
     <path d="M40 23h90v4H40zM40 159h90v4H40z" fill="#fff" />

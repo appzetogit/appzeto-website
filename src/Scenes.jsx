@@ -1,3 +1,4 @@
+'use client'
 // Phone scenes, 158 x 244. Each runs on one 5.2s loop; .clk lets the character read the time.
 const I = '#06282A', T = '#06A4A5', Y = '#FAFD0F', G = '#33A77A', W = '#fff', M = '#E7F4F0', R = '#D9482B', D = '#0D5353', S = '#476163'
 const Tx = ({ s = 11, f = I, b, a, children, ...p }) => <text className={b ? 'scr-b' : 'scr-t'} fontSize={s} fill={f} textAnchor={a} {...p}>{children}</text>

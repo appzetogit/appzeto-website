@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef } from 'react'
 
 // Googly eyes for the logo A (600x200 logo space). Pupils follow the pointer, glance around when idle, and blink.

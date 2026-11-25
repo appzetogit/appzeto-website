@@ -1,5 +1,6 @@
+'use client'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from './router.jsx'
 import { LetterA, reduced } from './Brand.jsx'
 import Eyes from './Eyes.jsx'
 import s from './settings.js'
@@ -26,7 +27,7 @@ export default function Sticky({ path }) {
     const t = setTimeout(() => { document.querySelectorAll('.form').forEach(f => io.observe(f)); set() }, 900)
     return () => { clearTimeout(t); io.disconnect(); removeEventListener('scroll', sc); document.removeEventListener('focusin', fi); document.removeEventListener('focusout', fo) }
   }, [path])
-  return <div className={`stk ${away ? 'away' : ''}`} inert={away ? '' : undefined}>
+  return <div className={`stk ${away ? 'away' : ''}`} inert={away}>
     <Link className="stk-in" to="/contact" aria-label="Inquire now"><svg className="stk-a" viewBox="40 30 92 124" aria-hidden="true"><g className="stk-hop"><LetterA /><Eyes r={17} /></g></svg><span className="stk-w" aria-hidden="true"><b key={n}>{lines[n]}</b></span><svg className="stk-go" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3l7 7-7 7" /></svg></Link>
     {waLink && <a className="stk-wa" href={waLink} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><WaIcon /></a>}
   </div>

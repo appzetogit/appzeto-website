@@ -1,14 +1,18 @@
+'use client'
 import { useEffect, useRef, useState } from 'react'
 import Eyes from './Eyes.jsx'
-import { useLocation } from 'react-router-dom'
 import { Letter, LetterA, PhoneBody, Phone, reduced } from './Brand.jsx'
 
 // Opening: the loader phone lights up, the A drops in, the letters pop out, the page is wiped clear.
+// It's in the server HTML, so its CSS starts at first paint; the 2s is counted from then too.
+// No JS or reduced motion: CSS keeps it hidden (motion.css), and it's dropped here.
+const sincePaint = () => { const p = performance.getEntriesByName('first-contentful-paint')[0] || performance.getEntriesByName('first-paint')[0]; return p ? performance.now() - p.startTime : 0 }
 export function Opening() {
-  const [st, setSt] = useState(() => reduced() ? 'gone' : 'play')
+  const [st, setSt] = useState('play')
+  useEffect(() => { if (reduced()) setSt('gone') }, [])
   useEffect(() => {
-    if (st === 'gone') return
-    const t = setTimeout(() => setSt(st === 'play' ? 'leave' : 'gone'), st === 'play' ? 2000 : 1000)
+    if (st === 'gone' || (st === 'play' && reduced())) return
+    const t = setTimeout(() => setSt(st === 'play' ? 'leave' : 'gone'), st === 'play' ? Math.max(0, 2000 - sincePaint()) : 1000)
     const skip = () => setSt(s => s === 'play' ? 'leave' : s)
     addEventListener('keydown', skip); addEventListener('pointerdown', skip); addEventListener('wheel', skip, { passive: true })
     return () => { clearTimeout(t); removeEventListener('keydown', skip); removeEventListener('pointerdown', skip); removeEventListener('wheel', skip) }
@@ -21,19 +25,6 @@ export function Opening() {
   </div></div>
 }
 
-// Between pages: a slanted panel rises, the page swaps underneath, the panel leaves.
-export function usePageSwap() {
-  const loc = useLocation(), [shown, setShown] = useState(loc), [phase, setPhase] = useState('idle')
-  useEffect(() => {
-    if (loc === shown) return
-    if (loc.pathname === shown.pathname || reduced()) { setShown(loc); setPhase('idle'); return }
-    setPhase('cover')
-    const t = setTimeout(() => { setShown(loc); setPhase('clear') }, 480)
-    return () => clearTimeout(t)
-  }, [loc])
-  useEffect(() => { if (phase === 'clear') { const t = setTimeout(() => setPhase('idle'), 620); return () => clearTimeout(t) } }, [phase])
-  return [shown, phase]
-}
 export const Curtain = ({ phase }) => <div className={`curtain ${phase}`} aria-hidden="true"><div className="cur-in"><Phone><g className="cur-a"><LetterA /><Eyes r={17} /></g></Phone></div></div>
 
 // Scroll motion. Elements are only hidden once this has run, so nothing depends on it.

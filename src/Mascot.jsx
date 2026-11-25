@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef } from 'react'
 
 const I = '#06282A', T = '#06A4A5', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B'

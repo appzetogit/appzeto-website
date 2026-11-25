@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
-import { Link, NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { LogoCompact, Phone } from './Brand.jsx'
-import { Curtain, Opening, Progress, usePageSwap, useReveal } from './Motion.jsx'
+'use client'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Link, NavLink, Nav, useLocation } from './router.jsx'
+import { LogoCompact, Phone, reduced } from './Brand.jsx'
+import { Curtain, Opening, Progress, useReveal } from './Motion.jsx'
 import Sticky, { WaIcon, waLink } from './Sticky.jsx'
 import s from './settings.js'
-import { products, services, allServices } from './data.js'
-import Home from './pages/Home.jsx'
-import { Product, Products, Services, Service, Projects, Blogs, About, Contact, Careers, Partners, Legal, NotFound } from './pages/Inner.jsx'
+import { products, services } from './data.js'
 
 const nav = [['/products', 'Products'], ['/services', 'Services'], ['/projects', 'Work'], ['/about', 'About'], ['/apply-now', 'Careers']]
 
@@ -52,16 +52,14 @@ function Footer() {
     <ul className="ft-reach">{s.phones.map(p => <li key={p.href}><a href={p.href}><Ico d={CALL} />{p.label}</a></li>)}{waLink && <li className="ft-wa"><a href={waLink} target="_blank" rel="noopener noreferrer"><WaIcon />WhatsApp</a></li>}<li className="ft-mail"><a href={`mailto:${s.email}`}><Ico d={MAIL} />{s.email}</a></li></ul>
     <nav className="ft-nav" aria-label="Footer">{footLinks.map(([h, ls]) => <div key={h}><h2>{h}</h2><ul>{ls.map(([to, t]) => <li key={to}><Link to={to}>{t}</Link></li>)}</ul></div>)}
       <div><h2>Visit</h2><address>{s.address}</address>{social.length > 0 && <ul>{social.map(([k, v]) => <li key={k}><a href={v}>{k}</a></li>)}</ul>}</div></nav>
-    <div className="ft-legal"><span>© {new Date().getFullYear()} {s.legalName} (Appzeto)</span><ul><li><Link to="/privacy-policy#privacy">Privacy</Link></li><li><Link to="/privacy-policy#refund">Refunds</Link></li><li><Link to="/privacy-policy#cancellation">Cancellation</Link></li></ul></div>
+    <div className="ft-legal"><span suppressHydrationWarning>© {new Date().getFullYear()} {s.legalName} (Appzeto)</span><ul><li><Link to="/privacy-policy#privacy">Privacy</Link></li><li><Link to="/privacy-policy#refund">Refunds</Link></li><li><Link to="/privacy-policy#cancellation">Cancellation</Link></li></ul></div>
   </div></footer>
 }
 
-const titles = { '/': 'Websites, apps and ready-to-launch platforms', '/products': 'Products', '/services': 'Services', '/projects': 'Work', '/about': 'About', '/contact': 'Contact', '/apply-now': 'Careers', '/channel-partners': 'Partner with us', '/privacy-policy': 'Policies', '/blogs': 'Blog' }
+// Page titles now live in each route's metadata.
 function Scroll({ at }) {
   const { pathname, hash } = at
   useEffect(() => {
-    const p = products.find(x => x.path === pathname), v = allServices.find(x => `/services/${x.slug}` === pathname)
-    document.title = `Appzeto | ${p?.name || v?.name || titles[pathname] || 'Page not found'}`
     const go = () => { const el = hash && document.getElementById(hash.slice(1)); el ? el.scrollIntoView() : scrollTo(0, 0) }
     const root = document.documentElement; root.style.scrollBehavior = 'auto'; go(); root.style.scrollBehavior = ''
     if (hash) document.fonts?.ready.then(go)
@@ -69,18 +67,59 @@ function Scroll({ at }) {
   return null
 }
 
-export default function App() {
-  const [shown, phase] = usePageSwap()
+const split = to => { const u = new URL(to, location.href); return { pathname: u.pathname, hash: u.hash } }
+
+// Between pages: a slanted panel rises, the page swaps underneath, the panel leaves.
+// Same timings as before: cover 480ms, swap, clear 620ms.
+// `loc` is where we're heading (the header follows it at once); `shown` is the page on screen.
+function usePageSwap() {
+  const router = useRouter(), real = usePathname()
+  const [loc, setLoc] = useState({ pathname: real, hash: '' }), [shown, setShown] = useState(loc), [phase, setPhase] = useState('idle')
+  const timer = useRef(0), pending = useRef(null), shownRef = useRef(shown)
+  shownRef.current = shown
+  useEffect(() => { if (location.hash) { const t = { pathname: real, hash: location.hash }; setLoc(t); setShown(t) } }, [])
+
+  const go = (to, { replace } = {}) => {
+    const t = split(to), calm = reduced(), how = replace ? 'replace' : 'push'
+    const move = () => { pending.current = { ...t, clear: !calm }; router[how](to, { scroll: false }) }
+    clearTimeout(timer.current); setLoc(t)
+    if (t.pathname === shownRef.current.pathname) { setPhase('idle'); setShown(t); router[how](to, { scroll: false }); return }
+    if (calm) { setPhase('idle'); move(); return }
+    setPhase('cover'); timer.current = setTimeout(move, 480)
+  }
+
+  // Back and forward: hold Next's own handler until the panel is up, then let it through.
+  useEffect(() => {
+    const on = e => {
+      if (e.az) return
+      const t = { pathname: location.pathname, hash: location.hash }
+      clearTimeout(timer.current); setLoc(t)
+      if (t.pathname === shownRef.current.pathname) { setPhase('idle'); setShown(t); return }
+      if (reduced()) { setPhase('idle'); pending.current = { ...t, clear: false }; return }
+      e.stopImmediatePropagation()
+      const state = e.state
+      setPhase('cover')
+      timer.current = setTimeout(() => { pending.current = { ...t, clear: true }; const ev = new PopStateEvent('popstate', { state }); ev.az = true; dispatchEvent(ev) }, 480)
+    }
+    addEventListener('popstate', on); return () => removeEventListener('popstate', on)
+  }, [])
+
+  // The new page is in: show it and let the panel go.
+  useLayoutEffect(() => {
+    if (real === shownRef.current.pathname) return
+    const p = pending.current?.pathname === real ? pending.current : null
+    pending.current = null
+    const t = { pathname: real, hash: p?.hash || '' }
+    setShown(t); setLoc(l => l.pathname === real ? l : t)
+    if (p?.clear) setPhase('clear')
+  }, [real])
+  useEffect(() => { if (phase === 'clear') { const t = setTimeout(() => setPhase('idle'), 620); return () => clearTimeout(t) } }, [phase])
+  return { loc, shown, phase, go }
+}
+
+export default function App({ children }) {
+  const nav = usePageSwap(), { shown, phase } = nav
   useReveal(shown.pathname)
-  return <><Opening /><Curtain phase={phase} /><Scroll at={shown} /><Header /><main id="main" tabIndex="-1"><Routes location={shown}>
-    <Route path="/" element={<Home />} />
-    {products.map(p => <Route key={p.id} path={p.path} element={<Product p={p} />} />)}
-    <Route path="/products" element={<Products />} />
-    <Route path="/services" element={<Services />} /><Route path="/services/:slug" element={<Service />} />
-    <Route path="/projects" element={<Projects />} /><Route path="/blogs" element={<Blogs />} />
-    <Route path="/about" element={<About />} /><Route path="/contact" element={<Contact />} />
-    <Route path="/appzeto-hospital" element={<Navigate to="/products" replace />} /><Route path="/chit-chat" element={<Navigate to="/contact" replace />} /><Route path="/demo" element={<Navigate to="/contact" replace />} /><Route path="/team" element={<Navigate to="/about" replace />} />
-    <Route path="/apply-now" element={<Careers />} /><Route path="/channel-partners" element={<Partners />} />
-    <Route path="/privacy-policy" element={<Legal />} /><Route path="*" element={<NotFound />} />
-  </Routes></main><Footer /><Sticky path={shown.pathname} /></>
+  useEffect(() => { import('./water.js') }, [])
+  return <Nav.Provider value={nav}><Opening /><Curtain phase={phase} /><Scroll at={shown} /><Header /><main id="main" tabIndex="-1">{children}</main><Footer /><Sticky path={shown.pathname} /></Nav.Provider>
 }

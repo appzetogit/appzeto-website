@@ -1,5 +1,6 @@
+'use client'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '../router.jsx'
 import { Phone, useLive } from '../Brand.jsx'
 import { products, services, moreServices, steps, faqs } from '../data.js'
 import { Boarding } from '../Ride.jsx'

@@ -1,5 +1,6 @@
+'use client'
 import { useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from '../router.jsx'
 import { LetterA, Phone, useLive } from '../Brand.jsx'
 import { Mascot } from '../Mascot.jsx'
 import { WaIcon, waLink } from '../Sticky.jsx'
@@ -64,8 +65,8 @@ export function Services() {
     <section className="sec sec-t"><div className="wrap"><h2 className="h-l">And to keep it going</h2><ul className="more-list">{moreServices.map(v => <li key={v.slug}><Link to={`/services/${v.slug}`}><b>{v.name}</b><span>{v.line}</span></Link></li>)}</ul></div></section>
     <Cta t="Not sure which one you need?" /></>
 }
-export function Service() {
-  const v = allServices.find(x => x.slug === useParams().slug)
+export function Service({ slug }) {
+  const v = allServices.find(x => x.slug === slug)
   if (!v) return <NotFound />
   const i = allServices.indexOf(v), next = allServices[(i + 1) % allServices.length]
   return <><Top title={v.name} text={v.line} screen={v.slug} tone="top-food"><div className="row"><Link className="btn btn-y" to="/contact">Tell us your idea</Link></div></Top>

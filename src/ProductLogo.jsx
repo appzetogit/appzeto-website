@@ -1,3 +1,4 @@
+'use client'
 import { useLive } from './Brand.jsx'
 
 const I = '#06282A', T = '#06A4A5', D = '#0D5353', Y = '#FAFD0F', G = '#33A77A', W = '#fff', R = '#D9482B'

@@ -1,3 +1,4 @@
+'use client'
 // Big set pieces for the crew: the cab that brings TAXI, and the burger that FOOD bursts out of.
 const I = '#06282A', T = '#06A4A5', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B'
 const rd = { strokeLinecap: 'round', strokeLinejoin: 'round' }

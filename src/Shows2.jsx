@@ -1,3 +1,4 @@
+'use client'
 // More set pieces: grocery cart, toolbox, elevator, surprise box and UFO.
 import { FLOOR } from './Shows.jsx'
 const I = '#06282A', T = '#06A4A5', D = '#0D5353', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B', C = '#FFD84A', S = '#C9D3D8'

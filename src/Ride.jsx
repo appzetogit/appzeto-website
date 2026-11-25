@@ -1,3 +1,4 @@
+'use client'
 const I = '#06282A', T = '#06A4A5', W = '#fff', Y = '#FAFD0F'
 const Tx = p => <text className="scr-t" fill={I} {...p} />
 

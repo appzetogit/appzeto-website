@@ -1,3 +1,4 @@
+'use client'
 import { letterPath } from './Mascot.jsx'
 const I = '#06282A', W = '#fff', Y = '#FAFD0F', CR = '#E39A3B', CH = '#FFD84A', PE = '#D9482B', GR = '#33A77A'
 const flame = 'M0 0c-9-5-8-13-3-18c0 4 3 4 3 0c0-4-1-6 1-9c6 6 11 20-1 27z'

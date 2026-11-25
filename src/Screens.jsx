@@ -1,3 +1,4 @@
+'use client'
 import { Quick, Service, Hotel, Super, Ai } from './Scenes.jsx'
 import { RideMap } from './Ride.jsx'
 import { PanScene } from './Pizza.jsx'

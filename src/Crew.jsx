@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
 import { Burger, Scooter, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
