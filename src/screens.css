@@ -106,3 +106,18 @@
 /* Graphic design: the poster builds, a card slides in */
 .live .phone .sc-in .lv-slide{animation:lv-slide 4.8s infinite both cubic-bezier(.3,1.2,.5,1)}
 @keyframes lv-slide{0%{transform:translateX(70px);opacity:0}14%,88%{transform:none;opacity:1}96%,100%{transform:translateX(70px);opacity:0}}
+
+/* Pharmacy app (Scenes.jsx): same 5.2s clock as the other product apps */
+.ph-scan{animation:ph-scan 5.2s infinite both ease-in-out}
+@keyframes ph-scan{0%,6%{transform:none;opacity:0}9%{opacity:1}30%{transform:translateY(40px);opacity:1}34%,100%{transform:translateY(40px);opacity:0}}
+.ph-ok{transform-box:fill-box;transform-origin:center;animation:ph-ok 5.2s infinite both cubic-bezier(.3,1.7,.5,1)}
+@keyframes ph-ok{0%,33%{transform:scale(0)}40%,98%{transform:none}100%{transform:scale(0)}}
+.ph-row{animation:ph-row 5.2s infinite both cubic-bezier(.3,1.3,.5,1)}.ph-r1{animation-name:ph-row1}.ph-r2{animation-name:ph-row2}
+@keyframes ph-row{0%,42%{transform:translateX(170px)}49%,98%{transform:none}100%{transform:translateX(170px)}}
+@keyframes ph-row1{0%,48%{transform:translateX(170px)}55%,98%{transform:none}100%{transform:translateX(170px)}}
+@keyframes ph-row2{0%,54%{transform:translateX(170px)}61%,98%{transform:none}100%{transform:translateX(170px)}}
+.ph-sheet{animation:ph-sheet 5.2s infinite both cubic-bezier(.2,1.1,.4,1)}
+@keyframes ph-sheet{0%,70%{transform:translateY(80px)}77%,98%{transform:none}100%{transform:translateY(80px)}}
+.ph-ride{animation:ph-ride 5.2s infinite both linear}
+@keyframes ph-ride{0%,76%{transform:none}98%,100%{transform:translateX(6px)}}
+.top-pharmacy{background:var(--green)}.pr-pharmacy{background:var(--mist)}

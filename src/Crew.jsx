@@ -2,11 +2,11 @@
 import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
 import { Burger, Scooter, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
-import { AI, HOTEL, QUICK, SERVICE, SUPER, SetBacks, SetFronts, ai, hotel, quick, service, superShow } from './Shows2.jsx'
+import { AI, HOTEL, PHARMACY, QUICK, SERVICE, SUPER, SetBacks, SetFronts, ai, hotel, pharmacy, quick, service, superShow } from './Shows2.jsx'
 
 // Everything on stage, and the phone's own scenes, run at this speed
 export const SPEED = 1.7
-const SHOW = { taxi: [taxi, TAXI], food: [food, FOOD], quick: [quick, QUICK], service: [service, SERVICE], hotel: [hotel, HOTEL], super: [superShow, SUPER], ai: [ai, AI] }
+const SHOW = { taxi: [taxi, TAXI], food: [food, FOOD], quick: [quick, QUICK], pharmacy: [pharmacy, PHARMACY], service: [service, SERVICE], hotel: [hotel, HOTEL], super: [superShow, SUPER], ai: [ai, AI] }
 
 const I = '#06282A', T = '#06A4A5', D = '#0D5353', W = '#fff', Y = '#FAFD0F', G = '#33A77A', R = '#D9482B', C = '#FFD84A'
 const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -17,6 +17,7 @@ export const WORDS = {
   food: [['F', 'helmet', 'rider'], ['O', 'chef'], ['O', 'paper'], ['D', 'bandana']],
   taxi: [['T', 'cab'], ['A', 'sun'], ['Xx', 'police'], ['I', 'cap']],
   quick: [['Q', 'helmet'], ['U', 'paper'], ['I', 'cap'], ['C', 'bandana'], ['K', 'helmet']],
+  pharmacy: [['H', 'nurse'], ['E', 'nurse'], ['A', 'nurse'], ['L', 'nurse']],
   service: [['F', 'hard'], ['I', 'cap'], ['Xx', 'bandana'], ['I', 'hard'], ['T', 'hard']],
   hotel: [['H', 'bell'], ['O', 'sun'], ['T', 'chef'], ['E', 'bell'], ['L', 'paper']],
   super: [['A', 'crown'], ['L', 'crown'], ['L', 'crown']],
@@ -39,6 +40,7 @@ const Hats = {
   bandana: <><path d="M-26 5C-24-20 24-20 26 5Q0-2-26 5Z" fill={R} stroke={I} strokeWidth="2.600" /><path d="M24 2L38-4 36 8Z" fill={R} stroke={I} strokeWidth="2.200" strokeLinejoin="round" />{[-12, 0, 12].map(x => <circle key={x} cx={x} cy={-5 - (x ? 0 : 3)} r="2.200" fill={W} />)}</>,
   police: <><path d="M-30-8Q-28-24 0-24T30-8L22 2H-22Z" fill="#23407A" stroke={I} strokeWidth="2.600" strokeLinejoin="round" /><path d="M-24 1Q0 8 24 1L28 8Q0 16-28 8Z" fill={I} /><path d="M0-19l3 6 6 .5-5 4 2 6-6-3.500-6 3.500 2-6-5-4 6-.5z" fill={C} /></>,
   sun: <><path d="M-18 1C-18-22 18-22 18 1Z" fill="#F0CE8B" stroke={I} strokeWidth="2.600" /><path d="M-18-3Q0 2 18-3V2Q0 7-18 2Z" fill={R} /><ellipse cy="3" rx="37" ry="7" fill="#F0CE8B" stroke={I} strokeWidth="2.600" /></>,
+  nurse: <><path d="M-22 4L-18-16H18L22 4Q0 9-22 4Z" fill={W} stroke={I} strokeWidth="2.600" strokeLinejoin="round" /><path d="M-3-13h6v4h4v6h-4v4h-6v-4h-4v-6h4z" fill={R} /></>,
   cap: <><path d="M-22 3C-22-22 22-22 22 3Z" fill={G} stroke={I} strokeWidth="2.600" /><path d="M16 1Q36-2 42 6Q28 9 14 5Z" fill={I} /></>,
 }
 const Props = {

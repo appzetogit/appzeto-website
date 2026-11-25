@@ -31,6 +31,16 @@ export const products = [
     ],
   },
   {
+    id: 'pharmacy', letter: 'C', path: '/appzeto-pharmacy', name: 'Appzeto Pharmacy', short: 'Pharmacy', line: 'Medicines from nearby chemists, checked against a prescription and delivered.',
+    intro: 'Customers upload a prescription, a nearby pharmacy checks it and packs the order, and a rider brings it to the door.',
+    roles: [
+      { who: 'Customers', does: ['Upload a prescription', 'Search medicines and reorder', 'Track the delivery', 'Get refill reminders'] },
+      { who: 'Pharmacies', does: ['Check prescriptions', 'Keep stock and expiry dates', 'Pack orders'] },
+      { who: 'Riders', does: ['Accept deliveries', 'See the drop on a map'] },
+      { who: 'You', does: ['Approve pharmacies', 'Set zones and fees', 'See orders and sales'] },
+    ],
+  },
+  {
     id: 'service', letter: 'S', path: '/appzeto-service-provider', name: 'Appzeto Services', short: 'Services', line: 'Book an electrician, plumber, cleaner or AC expert at home.',
     intro: 'A home-services platform that connects customers with local professionals.',
     roles: [

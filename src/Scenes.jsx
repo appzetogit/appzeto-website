@@ -58,3 +58,21 @@ export function Ai() {
     <rect x="12" y="122" width="134" height="26" rx="13" fill={W} /><Tx b x="24" y="139" s="10.500">Build my idea</Tx><g className="caret"><path d="M87 130v11" stroke={T} strokeWidth="2" /></g><circle cx="133" cy="135" r="9" fill={I} /><path d="M133 139v-8m-3.500 3.500l3.500-3.500 3.500 3.500" fill="none" stroke={Y} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     <g className="bld b0"><rect x="12" y="158" width="134" height="20" rx="7" fill={T} /><rect x="22" y="165" width="46" height="6" rx="3" fill={W} /></g><g className="bld b1"><rect x="12" y="184" width="63" height="46" rx="9" fill={G} /><path d="M22 218l12-14 9 9 7-6 12 14z" fill={W} opacity=".9" /><circle cx="58" cy="196" r="4" fill={Y} /></g><g className="bld b2"><rect x="82" y="184" width="64" height="20" rx="7" fill="#12474A" /><rect x="91" y="191" width="40" height="6" rx="3" fill="#8FC9C8" /></g><g className="bld b3"><rect x="82" y="210" width="64" height="20" rx="10" fill={Y} /><Tx x="114" y="224" s="10.500" a="middle">Launch</Tx></g></>
 }
+
+// Pharmacy: the prescription is scanned and verified, medicines drop into the cart, then it's out for delivery
+const meds = [['Paracetamol', '10 tablets', 'cap'], ['Vitamin C', '30 tablets', 'tab'], ['Cough syrup', '100 ml', 'syr']]
+const MedIcon = ({ k }) => k === 'cap' ? <g transform="rotate(-35)"><path d="M-9-5h9v10h-9a5 5 0 0 1 0-10z" fill={R} /><path d="M0-5h9a5 5 0 0 1 0 10H0z" fill={W} stroke={I} strokeWidth="1.400" /><path d="M-9-5h9v10h-9a5 5 0 0 1 0-10z" fill="none" stroke={I} strokeWidth="1.400" /></g>
+  : k === 'tab' ? <><circle r="8" fill={Y} stroke={I} strokeWidth="1.600" /><path d="M-5 0h10" stroke={I} strokeWidth="1.600" /></>
+  : <><path d="M-5-10h10v4l3 3v12q0 2-2 2H-6q-2 0-2-2V-3l3-3z" fill="#7A4BB0" stroke={I} strokeWidth="1.400" strokeLinejoin="round" /><path d="M-6-2h12v7H-6z" fill={W} /></>
+export function Pharmacy() {
+  return <><Clk /><path d="M0 0h158v244H0z" fill="#F6FAF9" /><Tx x="14" y="24" s="14">Pharmacy</Tx><Tx b x="14" y="38" s="9.500" f={S}>Upload a prescription</Tx>
+    <g transform="translate(124 12)"><rect width="22" height="22" rx="7" fill={G} /><path d="M8.500 5h5v3.500H17v5h-3.500V17h-5v-3.500H5v-5h3.500z" fill={W} /></g>
+    <rect x="12" y="48" width="134" height="62" rx="10" fill={W} stroke="#DDE6E3" />
+    <g transform="translate(22 56)"><path d="M0 0h30l8 8v38H0z" fill={M} stroke={I} strokeWidth="1.600" strokeLinejoin="round" /><text x="6" y="22" fontSize="14" className="scr-t" fill={T}>Rx</text><path d="M6 30h24M6 36h18" stroke={S} strokeWidth="2" strokeLinecap="round" /></g>
+    <Tx x="70" y="72" s="11">Dr. prescription</Tx><Tx b x="70" y="85" s="9" f={S}>Photo uploaded</Tx>
+    <rect className="ph-scan" x="20" y="56" width="42" height="3" rx="1.500" fill={T} />
+    <g className="ph-ok"><rect x="70" y="91" width="60" height="13" rx="6.500" fill={G} /><path d="M76 97.500l2.500 2.500 4.500-5" fill="none" stroke={W} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><Tx x="87" y="101" s="8.500" f={W}>Verified</Tx></g>
+    {meds.map(([n, q, k], i) => <g key={n} className={`ph-row ph-r${i}`}><g transform={`translate(0 ${118 + i * 26})`}><rect x="12" width="134" height="22" rx="8" fill={W} stroke="#DDE6E3" /><g transform="translate(27 11)"><MedIcon k={k} /></g><Tx x="44" y="14.500" s="10">{n}</Tx><Tx b x="138" y="14.500" s="8.500" f={S} a="end">{q}</Tx></g></g>)}
+    <rect x="12" y="200" width="134" height="32" rx="12" fill={I} /><Tx x="79" y="220" s="12" f={Y} a="middle">Order medicines</Tx>
+    <g className="ph-sheet"><path d="M0 186q0-9 9-9h140q9 0 9 9v62H0z" fill={D} /><g className="ph-ride"><g transform="translate(30 210)"><rect x="-12" y="-12" width="16" height="12" rx="2" fill={G} stroke={I} strokeWidth="1.400" /><path d="M-3-6h3M-1.500-7.500v3" stroke={W} strokeWidth="1.400" /><path d="M-14 4h18l4-8h6" fill="none" stroke={Y} strokeWidth="2.400" strokeLinecap="round" strokeLinejoin="round" /><circle cx="-11" cy="6" r="3.500" fill={I} stroke={Y} strokeWidth="1.600" /><circle cx="12" cy="6" r="3.500" fill={I} stroke={Y} strokeWidth="1.600" /></g></g><Tx x="56" y="205" s="12" f={W}>Out for delivery</Tx><Tx b x="56" y="218" s="9.500" f="#B9D6D4">Arriving in 20 min</Tx></g></>
+}

@@ -4,7 +4,7 @@ import { Link } from './router.jsx'
 import { PhoneBody, reduced, useLive } from './Brand.jsx'
 import Crew, { SPEED } from './Crew.jsx'
 import { RideMap } from './Ride.jsx'
-import { Quick, Service, Hotel, Super, Ai } from './Scenes.jsx'
+import { Quick, Service, Hotel, Super, Ai, Pharmacy } from './Scenes.jsx'
 import { PanScene } from './Pizza.jsx'
 import { products, allServices } from './data.js'
 
@@ -16,12 +16,12 @@ const apps = {
   food: <><path d="M0 0h158v244H0z" fill={W} /><path d="M0 0h158v132l-158 14z" fill={T} /><PanScene />
     <path d="M26 164v58" stroke={M} strokeWidth="4" /><Step y={164} n="1" t="Accepted" /><Step y={193} n="2" t="Cooking" /><Step y={222} n="3" t="On the way" /></>,
   taxi: <RideMap />,
-  quick: <Quick />, service: <Service />, hotel: <Hotel />, super: <Super />, ai: <Ai />,
+  quick: <Quick />, pharmacy: <Pharmacy />, service: <Service />, hotel: <Hotel />, super: <Super />, ai: <Ai />,
 }
 // Seconds each app stays on stage
-const HOLD = { food: 7.1, taxi: 6.2, quick: 6.2, service: 6, hotel: 5.8, super: 5.6, ai: 5.6 }
+const HOLD = { food: 7.1, taxi: 6.2, quick: 6.2, pharmacy: 6, service: 6, hotel: 5.8, super: 5.6, ai: 5.6 }
 const CLOCK = { food: '.pz-ride', taxi: '.cab' }
-const chips = { food: ['Pizza’s on', 'Rider picked up'], taxi: ['Driver found', 'Pickup set'], quick: ['Milk added', 'Cart packed'], service: ['Expert found', 'Visit booked'], hotel: ['Rooms free', 'Room booked'], super: ['All in one', 'One login'], ai: ['Idea received', 'App ready'] }
+const chips = { food: ['Pizza’s on', 'Rider picked up'], taxi: ['Driver found', 'Pickup set'], quick: ['Milk added', 'Cart packed'], pharmacy: ['Prescription OK', 'Meds packed'], service: ['Expert found', 'Visit booked'], hotel: ['Rooms free', 'Room booked'], super: ['All in one', 'One login'], ai: ['Idea received', 'App ready'] }
 
 const lines = [['Ideas in', 'Next-gen apps out'], ['Tomorrow’s tech', 'on today’s screen'], ['Think it', 'We’ll build what’s next'], ['Small idea', 'Next-generation app']]
 function Tagline() {
@@ -59,7 +59,7 @@ export default function Hero() {
       <div className="sh-copy">
         <h1>{['Next-gen tech,', 'built around', 'your idea.'].map((l, n) => <span className="ln" key={l}><span style={{ '--n': n }}>{l} </span></span>)}</h1>
         <Tagline />
-        <p className="sh-sub">Food, taxi, quick commerce, services and hotels, separately or all in one app. Plus AI-driven custom projects.</p>
+        <p className="sh-sub">Food, taxi, quick commerce, pharmacy, services and hotels, separately or all in one app. Plus AI-driven custom projects.</p>
         <div className="row"><Link className="btn btn-k" to="/contact" {...point}>Tell us your idea</Link><Link className="txt" to="/services">See services</Link></div>
       </div>
       <div className="sh-stage" ref={tilt}>

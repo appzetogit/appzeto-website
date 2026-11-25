@@ -13,7 +13,7 @@ import App from '../src/App.jsx'
 
 export const metadata = {
   title: 'Appzeto | Websites, apps and ready-to-launch platforms',
-  description: 'Appzeto designs and builds websites, mobile apps and food, taxi, quick commerce, home services, hotel and all-in-one apps from Indore.',
+  description: 'Appzeto designs and builds websites, mobile apps and food, taxi, quick commerce, pharmacy, home services, hotel and all-in-one apps from Indore.',
   icons: { icon: { url: '/favicon.svg', type: 'image/svg+xml' } },
 }
 export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#F3FAF8', colorScheme: 'light only' }
