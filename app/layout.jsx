@@ -8,6 +8,7 @@ import '@fontsource/noto-serif/latin-700-italic.css'
 import '../src/styles.css'
 import '../src/motion.css'
 import '../src/water.css'
+import '../src/screens.css'
 import App from '../src/App.jsx'
 
 export const metadata = {
