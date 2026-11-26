@@ -4,14 +4,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { reduced } from './Brand.jsx'
 
-// Edit the numbers here. [target, suffix, label]
-const STATS = [[1000, '+', 'Happy clients'], [50, '+', 'Cities'], [100, 'k+', 'Active users'], [24, '/7', 'Support']]
+// Edit the numbers here. [target, suffix, label, emoji]
+const STATS = [
+  [1000, '+', 'Happy clients', '😊'],
+  [50, '+', 'Cities covered', '📍'],
+  [100, 'k+', 'Active users', '🚀'],
+  [24, '/7', 'Live support', '💬']
+]
 const RATING = 4.35
 const GOOGLE_URL = '' // your Google Business review link; the card becomes a link once this is set
 
 const BITS = 18, COLORS = ['#FAFD0F', '#06A4A5', '#06282A', '#33A77A', '#fff']
 
-function Tile({ to, suf, label, go, delay }) {
+function Tile({ to, suf, label, emoji, go, delay }) {
   const [n, setN] = useState(to), [pop, setPop] = useState(false)
   useEffect(() => {
     if (!go) return
@@ -28,6 +33,7 @@ function Tile({ to, suf, label, go, delay }) {
     return () => { clearTimeout(timer); cancelAnimationFrame(raf) }
   }, [go])
   return <div className={`tr-tile${pop ? ' pop' : ''}`}>
+    <span className="tr-corner-emoji" aria-hidden="true">{emoji}</span>
     <dt><span className="tr-num">{n.toLocaleString('en-IN')}</span>{suf}</dt><dd>{label}</dd>
     {pop && <i className="tr-burst" aria-hidden="true">{Array.from({ length: BITS }, (_, i) => {
       const a = (i / BITS) * Math.PI * 2 + .3, d = 70 + (i * 37) % 60
@@ -46,6 +52,7 @@ const G = () => <svg viewBox="0 0 48 48" aria-hidden="true" className="tr-g">
 function Rating({ go }) {
   const stars = Array.from({ length: 5 }, (_, i) => Math.max(0, Math.min(1, RATING - i)))
   const body = <>
+    <span className="tr-corner-emoji" aria-hidden="true">🌟</span>
     <div className="tr-g-head"><G /><span>Google</span></div>
     <div className="tr-score">{RATING.toFixed(2)}</div>
     <div className="tr-stars" role="img" aria-label={`Rated ${RATING} out of 5 on Google`}>
@@ -64,7 +71,7 @@ export default function Trust() {
     io.observe(ref.current); return () => io.disconnect()
   }, [])
   return <section className="trust" ref={ref} aria-label="Appzeto in numbers"><div className="wrap trust-in">
-    <dl className="tr-tiles">{STATS.map(([v, s, l], i) => <Tile key={l} to={v} suf={s} label={l} go={go} delay={i * 160} />)}</dl>
+    <dl className="tr-tiles">{STATS.map(([v, s, l, em], i) => <Tile key={l} to={v} suf={s} label={l} emoji={em} go={go} delay={i * 160} />)}</dl>
     <Rating go={go} />
   </div></section>
 }
