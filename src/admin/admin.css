@@ -268,3 +268,17 @@ a.adm-card{text-decoration:none;color:var(--ink)}a.adm-card:hover{transform:tran
 }
 
 
+
+/* Job openings */
+.adm-jobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.adm-job{display:flex;flex-direction:column;gap:8px}
+.adm-job.is-closed{opacity:.65;background:#F3F6F5}
+.adm-job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.adm-job-top h2{margin:0;font-size:21px}
+.adm-job-st{flex:none;padding:3px 10px;border:2px solid var(--ink);border-radius:99px;font:800 13px var(--head);background:#E3E7E6}
+.adm-job-st.on{background:#8FE0B8}
+.adm-job-meta{margin:0;font-weight:600;color:var(--soft)}
+.adm-job-skills{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
+.adm-job-skills span{padding:3px 10px;border-radius:99px;background:var(--mist);border:1.5px solid var(--ink);font:700 13px var(--head)}
+.adm-job .adm-acts{margin-top:auto;padding-top:8px;align-items:center}
+.adm-del{color:#B3261E}

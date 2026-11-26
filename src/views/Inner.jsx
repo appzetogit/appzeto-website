@@ -8,6 +8,7 @@ import { useSite, waLinkOf } from '../site.jsx'
 import { trackEvent } from '../track.js'
 import ProductLogo from '../ProductLogo.jsx'
 import Network, { Count } from '../Network.jsx'
+import Openings from './Openings.jsx'
 import { products, clientProjects, services, moreServices, allServices, steps } from '../data.js'
 
 // Sends to /api/leads (the admin inbox). If that fails, the visitor can still send it by email.
@@ -271,9 +272,11 @@ export function About() {
     <Cta t="Come and say hello" /></>
 }
 export const Contact = () => <ContactBlock h1 />
-export function Careers() {
-  return <><Top title="Come and build" text="Openings and internships are listed here when we have them." screen={3} tone="top-taxi" />
-    <section className="sec" id="positions"><div className="wrap two"><div><h2 className="h-l">Introduce yourself</h2><p className="lead">No openings are listed right now. You can still tell us what you’re good at.</p></div><Form kind="career" subject="Careers" fields={[{ n: 'Your name', a: 'name' }, { n: 'Email', t: 'email', a: 'email' }, { n: 'I’m interested in', t: 'select', o: ['A job', 'An internship'], wide: true }, { n: 'Link to your work', t: 'url', opt: true, wide: true }, { n: 'CV (PDF, up to 5 MB)', t: 'file', opt: true, wide: true }, { n: 'About you', t: 'area' }]} /></div></section></>
+export function Careers({ openings = [] }) {
+  const has = openings.length > 0
+  return <><Top title="Come and build" text={has ? 'Join the team building apps for businesses across India, from our offices in Indore.' : 'Openings and internships are listed here when we have them.'} screen={3} tone="top-taxi" />
+    {has && <Openings list={openings} />}
+    <section className="sec" id={has ? 'apply-form' : 'positions'}><div className="wrap two"><div><h2 className="h-l">{has ? 'Apply' : 'Introduce yourself'}</h2><p className="lead">{has ? 'Pick the role, tell us about yourself and attach your CV. We reply to every application.' : 'No openings are listed right now. You can still tell us what you’re good at.'}</p></div><Form kind="career" subject="Careers" fields={[...(has ? [{ n: 'Position', t: 'select', o: [...openings.map(o => o.title), 'General application'], wide: true }] : []), { n: 'Your name', a: 'name' }, { n: 'Email', t: 'email', a: 'email' }, { n: 'I’m interested in', t: 'select', o: ['A job', 'An internship'], wide: true }, { n: 'Link to your work', t: 'url', opt: true, wide: true }, { n: 'CV (PDF, up to 5 MB)', t: 'file', opt: true, wide: true }, { n: 'About you', t: 'area' }]} /></div></section></>
 }
 export function Partners() {
   return <><Top title="Bring us a client. Earn with us." text="Agencies, consultants and integrators can offer our platforms and services to their own clients." screen="digital-marketing" tone="top-care" />

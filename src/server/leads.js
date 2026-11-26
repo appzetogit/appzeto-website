@@ -18,7 +18,7 @@ export function summarise(kind, f) {
     phone: pick(f, 'Phone'),
     email: pick(f, 'Email', 'Company email'),
     company: pick(f, 'Company'),
-    product: kind === 'idea' ? pick(f, 'About') : kind === 'career' ? pick(f, 'I’m interested in') : pick(f, 'What you do'),
+    product: kind === 'idea' ? pick(f, 'About') : kind === 'career' ? (pick(f, 'Position') || pick(f, 'I’m interested in')) : pick(f, 'What you do'),
     message: pick(f, 'Your idea', 'About you', 'Message'),
   }
 }
