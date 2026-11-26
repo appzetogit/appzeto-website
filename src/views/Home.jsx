@@ -8,7 +8,7 @@ import ProductLogo from '../ProductLogo.jsx'
 import Hero from '../Hero.jsx'
 import Network from '../Network.jsx'
 import Later from '../Later.jsx'
-import { ContactBlock } from './Inner.jsx'
+import { ContactBlock, How } from './Inner.jsx'
 
 export function FoodBand() {
   const p = products[0], ref = useLive()
@@ -47,14 +47,6 @@ function ServiceList() {
       <div className="svc-phone"><Phone name={on} /></div>
     </div>
     <p className="svc-more">We also do {moreServices.map((m, i) => <span key={m.slug}>{i ? (i === moreServices.length - 1 ? ' and ' : ', ') : ''}<Link to={`/services/${m.slug}`}>{m.name === 'SEO' ? 'SEO' : m.name.toLowerCase()}</Link></span>)}.</p>
-  </div></section>
-}
-
-function How() {
-  const ref = useLive()
-  return <section className="how" ref={ref}><div className="wrap">
-    <h2 className="h-xl">How an idea gets its screen</h2>
-    <ol className="how-list">{steps.map(([t, d], i) => <li key={t}><Phone name={i} /><div><h3>{t}</h3><p>{d}</p></div></li>)}</ol>
   </div></section>
 }
 

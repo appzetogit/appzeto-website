@@ -6,7 +6,7 @@ import { Mascot } from '../Mascot.jsx'
 import { WaIcon } from '../Sticky.jsx'
 import { useSite, waLinkOf } from '../site.jsx'
 import ProductLogo from '../ProductLogo.jsx'
-import Network from '../Network.jsx'
+import Network, { Count } from '../Network.jsx'
 import { products, services, moreServices, allServices, steps } from '../data.js'
 
 // Sends to /api/leads (the admin inbox). If that fails, the visitor can still send it by email.
@@ -113,11 +113,43 @@ export function Projects() {
     <section className="sec" ref={next}><div className="wrap"><Link to="/contact" className="work-next"><Phone><g className="logo-a"><LetterA /></g></Phone><div><h2 className="h-xl">Your app could be next</h2><p className="lead">Want to be our first published case study? Tell us the idea and we’ll sketch it, build it and launch it.</p><span className="go">Start a project</span></div></Link></div></section></>
 }
 export function Blogs() { return <Top title="Nothing written yet" text="We’ll publish here when we have something useful to say." screen={1}><div className="row"><Link className="btn" to="/">Back to home</Link></div></Top> }
+// The seven steps, each with its own live phone (Home and About)
+export function How({ title = 'How an idea gets its screen' }) {
+  const ref = useLive()
+  return <section className="how" ref={ref}><div className="wrap">
+    <h2 className="h-xl">{title}</h2>
+    <ol className="how-list">{steps.map(([t, d], i) => <li key={t}><Phone name={i} /><div><h3>{t}</h3><p>{d}</p></div></li>)}</ol>
+  </div></section>
+}
+
+const ico = { rd: { fill: 'none', stroke: '#06282A', strokeWidth: 3, strokeLinecap: 'round', strokeLinejoin: 'round' } }
+const values = [
+  ['A sentence is enough', 'Bring a full spec or one line on a napkin. We help shape the rest.', <><path d="M10 34V12a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H18z" {...ico.rd} /><path d="M17 16h14M17 22h9" {...ico.rd} /></>],
+  ['Sketch before colour', 'Structure first, then screens, so nobody pays for pixels twice.', <><path d="M12 36l3-10L31 10l7 7-16 16z" {...ico.rd} /><path d="M27 14l7 7" {...ico.rd} /></>],
+  ['Break it before you do', 'We test every build on real phones before it goes near the stores.', <><circle cx="21" cy="21" r="11" {...ico.rd} /><path d="M29 29l9 9M16 21l4 4 7-8" {...ico.rd} /></>],
+  ['We stay after launch', 'Updates, fixes and new features once your users arrive.', <><path d="M24 40s-14-8-14-19a8 8 0 0 1 14-5 8 8 0 0 1 14 5c0 11-14 19-14 19z" {...ico.rd} /></>],
+]
 export function About() {
-  const s = useSite()
-  return <><Top title="We put ideas on screens" text="Appzeto is a technology company in Indore. We build websites, mobile apps and AI features, and platforms that are ready to launch." screen="A" tone="top-food" />
-    <section className="sec"><div className="wrap two"><p className="big-text">Our name starts inside a phone because most of our work ends up there.</p><div className="prose"><p>Businesses come to us with everything from a sentence to a full specification. We work through the same seven steps either way, and stay to look after what we launch.</p><p>We build mostly with React, Next.js, Node.js, MongoDB, Flutter and AWS.</p><p>Appzeto is a brand of {s.legalName}.</p></div></div></section>
-    <section className="sec sec-t"><div className="wrap"><h2 className="h-l">The seven steps</h2><ol className="more-list">{steps.map(([t, d]) => <li key={t}><div><b>{t}</b><span>{d}</span></div></li>)}</ol></div></section><Cta t="Come and say hello" /></>
+  const s = useSite(), nums = useLive(), seen = useRef(false), [go, setGo] = useState(false)
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting && !seen.current) { seen.current = true; setGo(true) } }, { threshold: .4 })
+    io.observe(nums.current); return () => io.disconnect()
+  }, [])
+  const counts = [[products.length, '', 'Platforms ready to launch'], [allServices.length, '', 'Services we offer'], [steps.length, '', 'Steps from idea to launch'], [1, '', 'Office in Indore']]
+  return <><Top title="We put ideas on screens" text="Appzeto is a technology company in Indore. We build websites, mobile apps and AI features, and platforms that are ready to launch." screen="super" letter="A" tone="top-food">
+      <div className="row"><Link className="btn btn-y" to="/projects">See our work</Link><Link className="txt" to="/contact">Tell us your idea</Link></div></Top>
+    <section className="sec ab-nums-sec" ref={nums}><div className="wrap"><dl className="nw-stats ab-nums">{counts.map(([v, suf, l]) => <div key={l}><dt><Count to={v} suf={suf} go={go} /></dt><dd>{l}</dd></div>)}</dl></div></section>
+    <section className="sec ab-story"><div className="wrap ab-story-in">
+      <blockquote className="ab-quote"><p>Our name starts inside a phone because most of our work ends up there.</p></blockquote>
+      <div className="prose"><p className="nw-eyebrow">Our story</p><p>Businesses come to us with everything from a sentence to a full specification. We work through the same seven steps either way, and stay to look after what we launch.</p><p>We build mostly with React, Next.js, Node.js, MongoDB, Flutter and AWS.</p><p>Appzeto is a brand of {s.legalName}.</p></div>
+    </div></section>
+    <section className="sec sec-t"><div className="wrap"><p className="nw-eyebrow">How we work</p><h2 className="h-xl ab-vals-h">Four promises</h2>
+      <ul className="ab-vals">{values.map(([t, d, icon], i) => <li key={t} className={`ab-v${i}`}><svg viewBox="0 0 48 48" aria-hidden="true">{icon}</svg><h3>{t}</h3><p>{d}</p></li>)}</ul>
+    </div></section>
+    <How title="The seven steps" />
+    <div className="ticker work-stack" aria-label={'Built with ' + stack.join(', ')}><div className="tick-run">{[0, 1, 2].map(k => <ul key={k} aria-hidden="true">{stack.map(t => <li key={t}>{t}<b>/</b></li>)}</ul>)}</div></div>
+    <Network />
+    <Cta t="Come and say hello" /></>
 }
 export const Contact = () => <ContactBlock h1 />
 export function Careers() {
