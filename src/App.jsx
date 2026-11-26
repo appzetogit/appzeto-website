@@ -7,6 +7,7 @@ import { Opening, Progress, useReveal } from './Motion.jsx'
 import Sticky, { WaIcon } from './Sticky.jsx'
 import { SiteCtx, useSite, waLinkOf } from './site.jsx'
 import { markBooted } from './Later.jsx'
+import { startTracking, trackView } from './track.js'
 import { products, services } from './data.js'
 
 const nav = [['/products', 'Products'], ['/services', 'Services'], ['/projects', 'Work'], ['/about', 'About'], ['/apply-now', 'Careers']]
@@ -123,6 +124,7 @@ function Site({ children }) {
   useVisit()
   const nav = usePageSwap(), { shown } = nav
   useReveal(shown.pathname)
-  useEffect(() => { import('./water.js'); markBooted() }, [])
+  useEffect(() => { import('./water.js'); markBooted(); startTracking() }, [])
+  useEffect(() => { trackView(shown.pathname) }, [shown.pathname])
   return <Nav.Provider value={nav}><Opening /><Scroll at={shown} /><Header /><main id="main" tabIndex="-1">{children}</main><Footer /><Sticky path={shown.pathname} /></Nav.Provider>
 }

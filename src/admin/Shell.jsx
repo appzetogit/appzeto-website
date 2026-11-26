@@ -16,7 +16,7 @@ export default function Shell({ children }) {
   useEffect(() => setOpen(false), [path])
   if (login) return <div className="adm adm-login-wrap">{children}</div>
   const out = async () => { await api('/api/admin/login', { method: 'DELETE' }); router.replace('/admin/login') }
-  const nav = [['/admin', 'Dashboard'], ['/admin/leads', 'Leads'], ...(me?.role === 'owner' ? [['/admin/team', 'Team'], ['/admin/settings', 'Settings']] : []), ...(me && !me.env ? [['/admin/account', 'My account']] : [])]
+  const nav = [['/admin', 'Dashboard'], ['/admin/leads', 'Leads'], ['/admin/analytics', 'Analytics'], ...(me?.role === 'owner' ? [['/admin/team', 'Team'], ['/admin/settings', 'Settings']] : []), ...(me && !me.env ? [['/admin/account', 'My account']] : [])]
   return <div className="adm">
     <aside className={`adm-side ${open ? 'open' : ''}`}>
       <Link href="/admin" className="adm-logo" aria-label="Appzeto admin"><LogoCompact /><span>Admin</span></Link>

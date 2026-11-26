@@ -5,6 +5,7 @@ import { LetterA, Phone, useLive } from '../Brand.jsx'
 import { Mascot } from '../Mascot.jsx'
 import { WaIcon } from '../Sticky.jsx'
 import { useSite, waLinkOf } from '../site.jsx'
+import { trackEvent } from '../track.js'
 import ProductLogo from '../ProductLogo.jsx'
 import Network, { Count } from '../Network.jsx'
 import { products, services, moreServices, allServices, steps } from '../data.js'
@@ -26,7 +27,7 @@ function Form({ kind, subject, fields }) {
     try {
       const res = await fetch('/api/leads', { method: 'POST', body: fd }), out = await res.json().catch(() => ({}))
       if (!res.ok || !out.ok) { setMsg(out.error || ''); setSt(res.status === 400 && out.error ? 'invalid' : 'failed') }
-      else { setSt('sent'); form.reset(); dispatchEvent(new Event('appzeto:cheer')) }
+      else { setSt('sent'); form.reset(); dispatchEvent(new Event('appzeto:cheer')); trackEvent('lead', kind) }
     } catch { setSt('failed') }
     setTimeout(() => done.current?.focus(), 50)
   }

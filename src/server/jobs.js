@@ -8,6 +8,7 @@ import { users } from './auth.js'
 import { getOps, getSettings, saveSettings } from './settings.js'
 import { uploadDir } from './leads.js'
 import { digest, mailReady } from './mail.js'
+import { visitDays, visits } from './analytics.js'
 
 export async function purgeOld() {
   const { retentionMonths } = await getOps(), months = Number(retentionMonths)
@@ -36,9 +37,23 @@ export async function sendDigests(now = new Date()) {
   }
 }
 
+// Once a day: keep yesterday's totals for good (raw visits are deleted after 90 days)
+export async function rollupYesterday(now = new Date()) {
+  const y = new Date(now - 864e5).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }), state = await getSettings('jobs', {})
+  if (state.rollup === y) return
+  const from = new Date(y + 'T00:00:00+05:30'), to = new Date(y + 'T23:59:59.999+05:30'), v = await visits()
+  const views = await v.countDocuments({ type: 'view', at: { $gte: from, $lte: to } })
+  const visitors = (await v.distinct('sid', { type: 'view', at: { $gte: from, $lte: to } })).length
+  const top = f => v.aggregate([{ $match: { type: 'view', at: { $gte: from, $lte: to }, ...(f === '$src' ? { first: true } : {}) } }, { $group: { _id: f, n: { $sum: 1 } } }, { $sort: { n: -1 } }, { $limit: 20 }]).toArray()
+  const [pages, sources] = await Promise.all([top('$path'), top('$src')])
+  await (await visitDays()).updateOne({ _id: y }, { $set: { views, visitors, pages, sources, at: new Date() } }, { upsert: true })
+  await saveSettings('jobs', { ...(await getSettings('jobs', {})), rollup: y })
+}
+
 export function start() {
   if (globalThis.__azJobs) return
-  const run = () => Promise.all([purgeOld(), sendDigests()]).catch(e => console.error('[jobs]', e.message))
+  // One after another: they share the jobs record
+  const run = async () => { for (const job of [purgeOld, sendDigests, rollupYesterday]) await job().catch(e => console.error('[jobs]', job.name, e.message)) }
   globalThis.__azJobs = setInterval(run, 15 * 6e4)
   setTimeout(run, 30e3)
 }
