@@ -10,7 +10,7 @@ import { markBooted } from './Later.jsx'
 import { startTracking, trackView } from './track.js'
 import { products, services } from './data.js'
 
-const nav = [['/products', 'Products'], ['/services', 'Services'], ['/projects', 'Work'], ['/about', 'About'], ['/apply-now', 'Careers']]
+const nav = [['/products', 'Products'], ['/services', 'Services'], ['/projects', 'Work'], ['/gallery', 'Gallery'], ['/about', 'About'], ['/apply-now', 'Careers']]
 
 function Header() {
   const s = useSite()

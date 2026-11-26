@@ -109,7 +109,7 @@ export const faqs = [
   ['How does pricing work?', 'Fixed price when the scope is clear, time and material when it will change, or a dedicated team for longer work.'],
 ]
 
-export const topApps = [
+export const clientProjects = [
   {
     id: 'inplay',
     name: 'In Play',
@@ -120,55 +120,65 @@ export const topApps = [
     icon: '/apps/inplay.png',
     url: 'https://play.google.com/store/apps/details?id=com.company.inplay',
     color: '#E50914',
-    badge: 'Top OTT'
+    badge: 'Top OTT',
+    intro: 'High-performance video streaming app built for rapid short drama episodes, video buffering, reels-style swipe navigation, and secure subscription monetization.',
+    chips: ['1.5 Lakh+ downloads', 'OTT video streaming', 'Subscription engine', 'Android & iOS']
   },
   {
     id: 'abhikaro',
     name: 'Abhi Karo',
     tagline: 'Food + Taxi + Hotel booking',
-    category: 'All-in-One App',
+    category: 'All-in-One Super App',
     downloads: '10k+',
     downloadsRaw: 10000,
     icon: '/apps/abhikaro.png',
     url: 'https://play.google.com/store/apps/details?id=com.abhikaro',
     color: '#FF6B00',
-    badge: 'Multi-service'
+    badge: 'Multi-service',
+    intro: 'Khatu Ka Apna App — an all-in-one multi-service ecosystem connecting local residents and pilgrims with restaurant deliveries, cab rides, and hotel bookings in one unified interface.',
+    chips: ['10k+ downloads', 'Food + Taxi + Hotel', 'Live GPS tracking', 'Pilgrim city network']
   },
   {
     id: 'tiranga',
     name: 'Tiranga Cab',
     tagline: 'Fast city rides & taxi fleet',
-    category: 'Taxi Booking',
+    category: 'Taxi & Ride-Hailing',
     downloads: '10k+',
     downloadsRaw: 10000,
     icon: '/apps/tiranga.png',
     url: 'https://play.google.com/store/apps/details?id=com.tirangacabpartner.appzeto',
     color: '#FF9933',
-    badge: 'Ride-Hailing'
+    badge: 'Ride-Hailing',
+    intro: 'Fast on-demand taxi and bike-booking platform equipped with real-time driver partner dispatch, live ETA sharing, route heatmaps, and automatic fare calculation.',
+    chips: ['10k+ downloads', 'Driver partner fleet', 'Google Places routing', 'Wallet & cash payments']
   },
   {
     id: 'foodywing',
     name: 'Foodywing',
     tagline: 'Food & quick grocery delivery',
-    category: 'Food Delivery',
+    category: 'Food & Quick Commerce',
     downloads: '10k+',
     downloadsRaw: 10000,
     icon: '/apps/foodywing.png',
     url: 'https://play.google.com/store/apps/details?id=com.quick_commerce.frontend',
     color: '#E23744',
-    badge: 'Quick Delivery'
+    badge: 'Quick Delivery',
+    intro: 'Multi-restaurant ordering and doorstep grocery delivery platform with synchronized customer cart, merchant order management, and zone-based rider dispatch.',
+    chips: ['10k+ downloads', 'Multi-restaurant ordering', 'Zone-based dispatch', 'Real-time order tracking']
   },
   {
     id: 'indiankart',
     name: 'Indian Kart',
     tagline: 'Multi-vendor local marketplace',
-    category: 'E-commerce',
+    category: 'E-commerce Marketplace',
     downloads: '5k+',
     downloadsRaw: 5000,
     icon: '/apps/indiankart.png',
     url: 'https://play.google.com/store/apps/details?id=com.indiankart.user1',
     color: '#008ECC',
-    badge: 'Commerce'
+    badge: 'Commerce',
+    intro: 'Hyperlocal e-commerce marketplace empowering local vendors and shops to sell online with real-time product catalogs, instant cart updates, and fast neighborhood delivery.',
+    chips: ['5k+ downloads', 'Multi-vendor store catalog', 'Local merchant panel', 'Digital payments']
   },
   {
     id: 'tuggo',
@@ -180,7 +190,12 @@ export const topApps = [
     icon: '/apps/tuggo.png',
     url: 'https://play.google.com/store/apps/details?id=com.tuggo.user',
     color: '#28A745',
-    badge: 'Food App'
+    badge: 'Food App',
+    intro: 'Cloud kitchen and multi-restaurant food delivery system with live order tracking, menu customization, kitchen display panels, and real-time rider routing.',
+    chips: ['10k+ downloads', 'Cloud kitchen ordering', 'Live rider map', 'Restaurant dashboard']
   }
 ]
+
+export const topApps = clientProjects
+
 

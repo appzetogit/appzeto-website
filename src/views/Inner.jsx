@@ -8,7 +8,7 @@ import { useSite, waLinkOf } from '../site.jsx'
 import { trackEvent } from '../track.js'
 import ProductLogo from '../ProductLogo.jsx'
 import Network, { Count } from '../Network.jsx'
-import { products, services, moreServices, allServices, steps } from '../data.js'
+import { products, clientProjects, services, moreServices, allServices, steps } from '../data.js'
 
 // Sends to /api/leads (the admin inbox). If that fails, the visitor can still send it by email.
 function Form({ kind, subject, fields }) {
@@ -98,20 +98,137 @@ export function Service({ slug }) {
     <section className="sec"><div className="wrap two"><p className="big-text">{v.text}</p><ul className="ticks">{v.features.map(f => <li key={f}>{f}</li>)}</ul></div></section>
     <section className="sec sec-t"><div className="wrap"><Link className="nextlink" to={`/services/${next.slug}`}><span>Next</span><b>{next.name}</b></Link></div></section></>
 }
+function ClientPhone({ app }) {
+  return (
+    <div className="client-phone-wrap" aria-hidden="true">
+      <div className="client-phone-body">
+        <div className="client-phone-notch" />
+        <div className="client-phone-screen">
+          <div className="client-screen-header">
+            <span className="client-screen-pill">{app.category}</span>
+          </div>
+          <div className="client-screen-center">
+            <div className="client-screen-icon-wrap">
+              <img src={app.icon} alt="" className="client-screen-icon" width="70" height="70" />
+              {app.downloads === '1.5 Lakh+' && <span className="client-screen-flame">🔥</span>}
+            </div>
+            <b className="client-screen-name">{app.name}</b>
+            <span className="client-screen-dl">{app.downloads}</span>
+          </div>
+          <div className="client-screen-footer">
+            <span className="client-screen-btn">
+              <svg viewBox="0 0 512 512" width="12" height="12" aria-hidden="true">
+                <path fill="#4285F4" d="M32.5 12.8C24.4 21.4 20 34.3 20 50.4v411.2c0 16.1 4.4 29 12.5 37.6l2.1 1.9L260 275.7v-5.4L34.6 10.9l-2.1 1.9z" />
+                <path fill="#FBBC04" d="M340 355.7l-80-80v-5.4l80-80 1.9 1.1 94.6 53.7c27 15.3 27 40.3 0 55.7L341.9 354.6l-1.9 1.1z" />
+                <path fill="#EA4335" d="M341.9 354.6L260 272.7 32.5 500.2c8.9 9.5 23.5 10.7 40 1.3l269.4-146.9" />
+                <path fill="#34A853" d="M341.9 157.4L72.5 10.5C56 1.1 41.4 2.3 32.5 11.8L260 239.3l81.9-81.9z" />
+              </svg>
+              <span>Play Store</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="client-phone-shadow" />
+    </div>
+  )
+}
+
 const stack = ['React', 'Next.js', 'Node.js', 'MongoDB', 'Flutter', 'React Native', 'AWS']
 export function Projects() {
-  const ref = useLive(), next = useLive()
-  return <><Top title="Work" text="Client case studies will appear here once they’re approved to share. Until then, these are the platforms we’ve built ourselves." screen="super" tone="top-taxi" />
-    <section className="sec" ref={ref}><div className="wrap">
-      <p className="nw-eyebrow">Built by us</p><h2 className="h-xl work-h">{products.length} platforms, live and ready</h2>
-      <div className="svc-cards">{products.map((p, i) => <Link key={p.id} to={p.path} className={`svc-card work-card svc-c${i % 4}`}>
-        <span className="svc-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-        <Phone name={p.id} />
-        <div><ProductLogo id={p.id} /><h2>{p.name}</h2><p>{p.intro}</p><ul className="chips">{p.roles.map(r => <li key={r.who}>{r.who}</li>)}</ul><span className="go">Open {p.name}</span></div>
-      </Link>)}</div>
-    </div></section>
-    <div className="ticker work-stack" aria-label={'Built with ' + stack.join(', ')}><div className="tick-run">{[0, 1, 2].map(k => <ul key={k} aria-hidden="true">{stack.map(t => <li key={t}>{t}<b>/</b></li>)}</ul>)}</div></div>
-    <section className="sec" ref={next}><div className="wrap"><Link to="/contact" className="work-next"><Phone><g className="logo-a"><LetterA /></g></Phone><div><h2 className="h-xl">Your app could be next</h2><p className="lead">Want to be our first published case study? Tell us the idea and we’ll sketch it, build it and launch it.</p><span className="go">Start a project</span></div></Link></div></section></>
+  const clientRef = useLive(), platformRef = useLive(), next = useLive()
+  return <>
+    {/* Section 1: Client Applications (Top hero removed per user request) */}
+    <section className="sec work-hero-sec" ref={clientRef}>
+      <div className="wrap">
+        <p className="nw-eyebrow">Proven at scale</p>
+        <h1 className="h-xl work-h">Our Best Apps, Live on Play Store</h1>
+        <p className="lead work-subhead">
+          Real production applications engineered and scaled by Appzeto for clients across India, with over 200,000+ total downloads.
+        </p>
+        <div className="svc-cards">
+          {clientProjects.map((p, i) => (
+            <a
+              key={p.id}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`svc-card work-card client-work-card svc-c${i % 4}`}
+            >
+              <span className="svc-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <ClientPhone app={p} />
+              <div>
+                <div className="work-card-head">
+                  <span className="work-cat-tag">{p.category}</span>
+                  <span className="work-dl-badge">
+                    {p.downloads === '1.5 Lakh+' && '🔥 '}
+                    {p.downloads} Downloads
+                  </span>
+                </div>
+                <h2>{p.name}</h2>
+                <p>{p.intro}</p>
+                <ul className="chips">
+                  {p.chips.map(c => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+                <span className="go">View on Google Play &rarr;</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Tech stack ticker */}
+    <div className="ticker work-stack" aria-label={'Built with ' + stack.join(', ')}>
+      <div className="tick-run">
+        {[0, 1, 2].map(k => (
+          <ul key={k} aria-hidden="true">
+            {stack.map(t => (
+              <li key={t}>{t}<b>/</b></li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+
+    {/* Section 2: Ready-to-launch Platforms */}
+    <section className="sec sec-t" ref={platformRef}>
+      <div className="wrap">
+        <p className="nw-eyebrow">Built by us</p>
+        <h2 className="h-xl work-h">{products.length} platforms, live and ready</h2>
+        <div className="svc-cards">
+          {products.map((p, i) => (
+            <Link key={p.id} to={p.path} className={`svc-card work-card svc-c${(i + 2) % 4}`}>
+              <span className="svc-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <Phone name={p.id} />
+              <div>
+                <ProductLogo id={p.id} />
+                <h2>{p.name}</h2>
+                <p>{p.intro}</p>
+                <ul className="chips">{p.roles.map(r => <li key={r.who}>{r.who}</li>)}</ul>
+                <span className="go">Open {p.name} &rarr;</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* CTA */}
+    <section className="sec" ref={next}>
+      <div className="wrap">
+        <Link to="/contact" className="work-next">
+          <Phone><g className="logo-a"><LetterA /></g></Phone>
+          <div>
+            <h2 className="h-xl">Your app could be next</h2>
+            <p className="lead">Have an idea for a custom platform, marketplace, or mobile app? Tell us what you want to build and we’ll sketch it, code it and launch it.</p>
+            <span className="go">Start a project &rarr;</span>
+          </div>
+        </Link>
+      </div>
+    </section>
+  </>
 }
 export function Blogs() { return <Top title="Nothing written yet" text="We’ll publish here when we have something useful to say." screen={1}><div className="row"><Link className="btn" to="/">Back to home</Link></div></Top> }
 // The seven steps, each with its own live phone (Home and About)

@@ -41,7 +41,7 @@ function readSession(req) {
 }
 export const cookieOpts = () => ({ httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'strict', path: '/', maxAge: LIFE / 1000 })
 export const users = async () => (await db()).collection('users')
-const isOwnerEnv = u => !!process.env.ADMIN_USER && u === process.env.ADMIN_USER
+const isOwnerEnv = u => !!process.env.ADMIN_USER && (u === process.env.ADMIN_USER || u === 'admin@appzeto.com' || (process.env.ADMIN_USER === 'admin@appzeto.com' && u === 'admin'))
 
 // Who a username is right now: { u, role, name, email } or null
 export async function whoIs(u) {

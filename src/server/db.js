@@ -18,9 +18,22 @@ export function db() {
     const d = client.db(process.env.MONGODB_DB || 'appzeto_website')
     const leads = d.collection('leads')
     await d.collection('users').createIndex({ username: 1 }, { unique: true })
-    await Promise.all([leads.createIndex({ phoneKey: 1 }), leads.createIndex({ emailKey: 1 }), leads.createIndex({ followUp: 1 }), leads.createIndex({ createdAt: -1 }), leads.createIndex({ status: 1, createdAt: -1 }), leads.createIndex({ kind: 1, createdAt: -1 })])
+    await Promise.all([
+      leads.createIndex({ phoneKey: 1 }),
+      leads.createIndex({ emailKey: 1 }),
+      leads.createIndex({ followUp: 1 }),
+      leads.createIndex({ createdAt: -1 }),
+      leads.createIndex({ status: 1, createdAt: -1 }),
+      leads.createIndex({ kind: 1, createdAt: -1 }),
+      d.collection('gallery').createIndex({ category: 1, createdAt: -1 }),
+      d.collection('gallery').createIndex({ createdAt: -1 }),
+      d.collection('gallery_categories').createIndex({ slug: 1 }, { unique: true })
+    ])
     return d
   })().catch(e => { g.__azDb = undefined; throw e })
   return g.__azDb
 }
 export const leads = async () => (await db()).collection('leads')
+export const gallery = async () => (await db()).collection('gallery')
+export const galleryCategories = async () => (await db()).collection('gallery_categories')
+
