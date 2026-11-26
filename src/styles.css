@@ -534,3 +534,6 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
 }
 
 
+
+/* Several offices: one line each */
+.addr-line{display:block}.addr-line+.addr-line{margin-top:10px}

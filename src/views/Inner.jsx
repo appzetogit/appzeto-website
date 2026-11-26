@@ -49,7 +49,7 @@ export function ContactBlock({ h1 }) {
   const ref = useLive(), H = h1 ? 'h1' : 'h2', ctl = useRef({ mode: null })
   return <section className="contact" id="contact-form" ref={ref}><div className="wrap contact-grid">
     <div className="contact-l"><H className="h-xl">What’s the idea?</H><p className="lead">A sentence is enough to start.</p>
-      <ul className="reach">{s.phones.map(p => <li key={p.href}><a href={p.href}>{p.label}</a></li>)}<li><a href={`mailto:${s.email}`}>{s.email}</a></li></ul>{waLink && <a className="btn btn-wa" href={waLink} target="_blank" rel="noopener noreferrer"><WaIcon />Chat on WhatsApp</a>}<address>{s.address}</address></div>
+      <ul className="reach">{s.phones.map(p => <li key={p.href}><a href={p.href}>{p.label}</a></li>)}<li><a href={`mailto:${s.email}`}>{s.email}</a></li></ul>{waLink && <a className="btn btn-wa" href={waLink} target="_blank" rel="noopener noreferrer"><WaIcon />Chat on WhatsApp</a>}<address>{String(s.address || '').split(/\n+/).filter(Boolean).map(a => <span key={a} className="addr-line">{a}</span>)}</address></div>
     <div className="device" onFocus={() => { ctl.current.mode = 'type' }} onBlur={() => { ctl.current.mode = null }} onSubmit={() => { ctl.current.mode = null }}><div className="peek"><Mascot ctl={ctl} /></div><div className="device-in"><Form kind="idea" subject="New idea from the website" fields={ideaFields} /></div></div>
   </div></section>
 }
@@ -249,11 +249,12 @@ const values = [
 ]
 export function About() {
   const s = useSite(), nums = useLive(), seen = useRef(false), [go, setGo] = useState(false)
+  const offices = Math.max(1, String(s.address || '').split(/\n+/).filter(Boolean).length)
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting && !seen.current) { seen.current = true; setGo(true) } }, { threshold: .4 })
     io.observe(nums.current); return () => io.disconnect()
   }, [])
-  const counts = [[products.length, '', 'Platforms ready to launch'], [allServices.length, '', 'Services we offer'], [steps.length, '', 'Steps from idea to launch'], [1, '', 'Office in Indore']]
+  const counts = [[products.length, '', 'Platforms ready to launch'], [allServices.length, '', 'Services we offer'], [steps.length, '', 'Steps from idea to launch'], [offices, '', offices === 1 ? 'Office in Indore' : 'Offices in Indore']]
   return <><Top title="We put ideas on screens" text="Appzeto is a technology company in Indore. We build websites, mobile apps and AI features, and platforms that are ready to launch." screen="super" letter="A" tone="top-food">
       <div className="row"><Link className="btn btn-y" to="/projects">See our work</Link><Link className="txt" to="/contact">Tell us your idea</Link></div></Top>
     <section className="sec ab-nums-sec" ref={nums}><div className="wrap"><dl className="nw-stats ab-nums">{counts.map(([v, suf, l]) => <div key={l}><dt><Count to={v} suf={suf} go={go} /></dt><dd>{l}</dd></div>)}</dl></div></section>

@@ -9,7 +9,8 @@ export default {
   ],
   // Country code + number, digits only. null hides the WhatsApp button.
   whatsapp: '917691810506',
-  address: 'Office No 501, Princess Center, 5th Floor, New Palasia, Indore, Madhya Pradesh 452001',
+  // One office per line
+  address: 'Office No 501, Princess Center, 5th Floor, New Palasia, Indore, Madhya Pradesh 452001\n508, B Block, Corporate House, Opposite Silver Mall, Indore, Madhya Pradesh',
   // Found on the old site but not confirmed as yours. Add the real URLs to show them.
   social: { linkedin: null, instagram: null, x: null, github: null },
 }

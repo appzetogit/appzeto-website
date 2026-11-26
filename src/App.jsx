@@ -55,8 +55,8 @@ function Footer() {
     </div>
     <ul className="ft-reach">{s.phones.map(p => <li key={p.href}><a href={p.href}><Ico d={CALL} />{p.label}</a></li>)}{waLink && <li className="ft-wa"><a href={waLink} target="_blank" rel="noopener noreferrer"><WaIcon />WhatsApp</a></li>}<li className="ft-mail"><a href={`mailto:${s.email}`}><Ico d={MAIL} />{s.email}</a></li></ul>
     <nav className="ft-nav" aria-label="Footer">{footLinks.map(([h, ls]) => <div key={h}><h2>{h}</h2><ul>{ls.map(([to, t]) => <li key={to}><Link to={to}>{t}</Link></li>)}</ul></div>)}
-      <div><h2>Visit</h2><address>{s.address}</address>{social.length > 0 && <ul>{social.map(([k, v]) => <li key={k}><a href={v}>{k}</a></li>)}</ul>}</div></nav>
-    <div className="ft-legal"><span suppressHydrationWarning>© {new Date().getFullYear()} {s.legalName} (Appzeto)</span><ul><li><Link to="/privacy-policy#privacy">Privacy</Link></li><li><Link to="/privacy-policy#refund">Refunds</Link></li><li><Link to="/privacy-policy#cancellation">Cancellation</Link></li></ul></div>
+      <div><h2>Visit</h2><address>{String(s.address || '').split(/\n+/).filter(Boolean).map(a => <span key={a} className="addr-line">{a}</span>)}</address>{social.length > 0 && <ul>{social.map(([k, v]) => <li key={k}><a href={v}>{k}</a></li>)}</ul>}</div></nav>
+    <div className="ft-legal"><span suppressHydrationWarning>© {new Date().getFullYear()} {s.legalName} (Appzeto)</span><ul><li><Link to="/privacy-policy#privacy">Privacy</Link></li><li><Link to="/privacy-policy#cancellation">Cancellation</Link></li></ul></div>
   </div></footer>
 }
 

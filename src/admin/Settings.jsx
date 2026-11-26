@@ -23,7 +23,7 @@ export default function Settings() {
         <label>Email<input name="email" type="email" defaultValue={site.email} required /></label>
         {[0, 1, 2].map(i => <label key={i}>Phone {i + 1}{i > 0 && <span className="opt"> (optional)</span>}<input name={`phone${i + 1}`} defaultValue={site.phones[i] || ''} placeholder="+91 98765 43210" required={i === 0} /></label>)}
         <label>WhatsApp number<span className="opt"> (country code first, empty hides the button)</span><input name="whatsapp" defaultValue={site.whatsapp} placeholder="917691810506" inputMode="numeric" /></label>
-        <label className="adm-wide">Office address<textarea name="address" rows="2" defaultValue={site.address} /></label>
+        <label className="adm-wide">Office addresses (one per line)<textarea name="address" rows="3" defaultValue={site.address} /></label>
       </div>
     </section>
     <section className="adm-card"><h2>Lead alerts</h2>

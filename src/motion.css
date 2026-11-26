@@ -228,7 +228,7 @@ html.opening{overflow:hidden}
 @media (max-width:640px){.ft-wa{grid-column:1/-1}}
 @media (min-width:641px){.stk{display:block;position:fixed;right:24px;bottom:24px;z-index:18;transition:transform 380ms cubic-bezier(.3,1.3,.5,1)}.stk-in{display:none}.stk.away,html.opening .stk{transform:translateY(130px)}
  .stk-wa{position:relative;width:62px;height:62px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:20px;background:#25D366;transition:transform 200ms}.stk-wa:hover{transform:translateY(-5px) rotate(-4deg)}.stk-wa svg{width:38px}}
-@media (min-width:641px){.foot{padding-bottom:104px}}
+@media (min-width:641px){.foot{padding-bottom:36px}}
 
 /* Crew: the word that runs the app */
 .cw{cursor:pointer}.sh .cw *{animation-play-state:inherit}
