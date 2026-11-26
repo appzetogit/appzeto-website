@@ -12,16 +12,16 @@ export default function Team() {
   const reset = u => { const pw = prompt(`New password for ${u.name} (at least 10 characters):`); if (pw) patch(u.username, { password: pw }, `Password changed for ${u.name}.`) }
   if (!d) return err ? <p className="adm-err">{err}</p> : <p className="adm-wait">Loading…</p>
   return <>
-    <header className="adm-head"><div><h1>Team</h1><p className="adm-sub">Everyone who can sign in. Sales see the idea and partner forms; HR sees careers.</p></div></header>
+    <header className="adm-head"><div><h1>Team</h1><p className="adm-sub">Everyone who can sign in. Sales see clients and partners; HR sees job applicants.</p></div></header>
     {msg && <p className="adm-ok" role="status">{msg}</p>}{err && <p className="adm-err" role="alert">{err}</p>}
     <section className="adm-card adm-table-wrap"><table className="adm-table adm-team">
       <thead><tr><th>Name</th><th>Username</th><th>Email (for alerts)</th><th>Role</th><th></th></tr></thead>
       <tbody>
-        <tr className="adm-fixed"><td><b>Owner</b><small>from the server settings</small></td><td>{d.owner}</td><td><small>uses the alert list in Settings</small></td><td>{ROLE.owner}</td><td></td></tr>
+        <tr className="adm-fixed"><td data-l="Name"><b>Owner</b><small>from the server settings</small></td><td data-l="Username">{d.owner}</td><td data-l="Email"><small>uses the alert list in Settings</small></td><td data-l="Role">{ROLE.owner}</td><td></td></tr>
         {d.users.map(u => <tr key={u.username} className={u.active ? '' : 'adm-off'}>
-          <td><b>{u.name}</b>{!u.active && <small>Switched off</small>}</td><td>{u.username}</td>
-          <td><input defaultValue={u.email} placeholder="name@company.com" aria-label={`Email for ${u.name}`} onBlur={e => e.target.value !== (u.email || '') && patch(u.username, { email: e.target.value }, 'Email saved.')} /></td>
-          <td><select value={u.role} disabled={busy} onChange={e => patch(u.username, { role: e.target.value }, 'Role changed.')} aria-label={`Role for ${u.name}`}><option value="sales">{ROLE.sales}</option><option value="hr">{ROLE.hr}</option></select></td>
+          <td data-l="Name"><b>{u.name}</b>{!u.active && <small>Switched off</small>}</td><td data-l="Username">{u.username}</td>
+          <td data-l="Email"><input defaultValue={u.email} placeholder="name@company.com" aria-label={`Email for ${u.name}`} onBlur={e => e.target.value !== (u.email || '') && patch(u.username, { email: e.target.value }, 'Email saved.')} /></td>
+          <td data-l="Role"><select value={u.role} disabled={busy} onChange={e => patch(u.username, { role: e.target.value }, 'Role changed.')} aria-label={`Role for ${u.name}`}><option value="sales">{ROLE.sales}</option><option value="hr">{ROLE.hr}</option></select></td>
           <td className="adm-row-acts"><button className="adm-link" disabled={busy} onClick={() => reset(u)}>New password</button><button className="adm-link" disabled={busy} onClick={() => patch(u.username, { active: !u.active }, u.active ? `${u.name} can no longer sign in.` : `${u.name} can sign in again.`)}>{u.active ? 'Switch off' : 'Switch on'}</button></td>
         </tr>)}
       </tbody></table></section>

@@ -68,7 +68,7 @@
 @media (max-width:1000px){.adm-kpis{grid-template-columns:1fr 1fr}.adm-two{grid-template-columns:1fr}.adm-pipe{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:760px){
   .adm{grid-template-columns:1fr}
-  .adm-side{position:fixed;inset:0 auto 0 0;width:250px;z-index:30;transform:translateX(-100%);transition:transform .2s}.adm-side.open{transform:none}
+  .adm-side{position:fixed;inset:0 auto 0 0;width:250px;z-index:30;transform:translateX(-100%);transition:transform .2s}.adm-side.is-open{transform:none}
   .adm-burger{display:block;position:fixed;top:12px;right:12px;z-index:31;width:44px;height:44px;border:2px solid var(--ink);border-radius:10px;background:var(--yellow);font-size:22px}
   .adm-main{padding-top:64px}.adm-recent a{grid-template-columns:auto 1fr auto}.adm-recent span,.adm-recent time{display:none}
 }
@@ -140,3 +140,65 @@ a.adm-card{text-decoration:none;color:var(--ink)}a.adm-card:hover{transform:tran
 .an-clicks li{display:grid;padding:14px;border:2px solid var(--ink);border-radius:12px}.an-clicks b{font:800 30px/1 var(--head)}
 .an-c-cta{background:var(--yellow)}.an-c-whatsapp{background:#B8F0CF}.an-c-call{background:#BFEDEB}.an-c-email{background:#FFE0D6}
 .adm-sub-nav a{justify-content:flex-start!important}
+/* Phones and small tablets */
+.adm-top,.adm-scrim,.adm-more-btn{display:none}
+.adm-more{display:contents}
+@media (max-width:760px){
+  .adm{grid-template-columns:1fr;font-size:15px}
+  .adm-top{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:25;height:58px;padding:0 12px 0 16px;background:var(--ink);color:#fff}
+  .adm-top-logo svg{height:32px;width:auto;display:block}
+  .adm-top b{font:800 18px var(--head);color:var(--yellow);margin-right:auto}
+  .adm-burger{position:relative!important;top:auto!important;right:auto!important;display:grid!important;place-items:center;width:42px;height:42px;border:2px solid var(--yellow)!important;border-radius:10px;background:transparent!important;color:var(--yellow);font-size:0}
+  .adm-burger i{position:absolute;top:-7px;right:-7px;min-width:20px;padding:0 5px;border-radius:99px;background:#D9482B;color:#fff;font:800 12px/20px var(--head);font-style:normal}
+  .adm-side{position:fixed;inset:0 auto 0 0;width:min(280px,82vw);z-index:40;transform:translateX(-102%);transition:transform .22s;overflow-y:auto;box-shadow:6px 0 0 var(--teal)}
+  .adm-side.is-open{transform:none}
+  .adm-scrim{display:block;position:fixed;inset:0;z-index:35;background:#06282A99}
+  .adm-main{padding:18px 14px 48px;gap:16px}
+  .adm-card{padding:16px;box-shadow:3px 3px 0 var(--ink)}
+  .adm h1{font-size:28px}.adm h2{font-size:19px;margin-bottom:12px}
+  .adm-head{align-items:flex-start}.adm-head .adm-btn{padding:8px 14px;font-size:15px}
+  .adm-kpis{grid-template-columns:1fr 1fr;gap:12px}.adm-kpis b{font-size:32px}.adm-kpis .adm-card{padding:14px}
+  .adm-chart{height:120px;gap:2px}
+  .adm-pipe{grid-template-columns:repeat(3,1fr)}.adm-pipe a{padding:10px}.adm-pipe b{font-size:24px}
+  .adm-types{gap:12px}.adm-type{padding:14px}
+  /* type tabs: one swipeable row */
+  .adm-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -14px;padding:2px 14px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .adm-tab{min-width:136px;flex:none;padding:10px 14px;scroll-snap-align:start}.adm-tab span{font-size:22px}
+  /* filters fold away behind one button */
+  .adm-filters{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px}
+  .adm-filters input[type=search]{min-width:0}
+  .adm-more-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border:2px solid var(--ink);border-radius:10px;background:var(--mist);font:800 15px var(--head);color:var(--ink)}
+  .adm-more-btn b{min-width:20px;border-radius:99px;background:var(--ink);color:var(--yellow);font-size:12px;line-height:20px;text-align:center}
+  .adm-more{display:none;grid-column:1/-1;gap:10px;grid-template-columns:1fr 1fr}
+  .adm-filters.is-open .adm-more{display:grid}
+  .adm-more>select,.adm-more>label,.adm-more input{width:100%}
+  .adm-filters>.adm-link{grid-column:1/-1;justify-self:start}
+  /* lead rows become cards */
+  .adm-table-wrap{background:none;border:0;box-shadow:none;padding:0;overflow:visible}
+  .adm-table,.adm-table tbody{display:block}.adm-table thead{display:none}
+  .adm-table tr{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin-bottom:12px;padding:14px 14px 14px 18px;border:2px solid var(--ink);border-radius:var(--r-s);background:#fff;box-shadow:3px 3px 0 var(--ink)}
+  .adm-table td{display:block;padding:0;border:0;min-width:0}
+  .adm-table tr.row-idea{border-left:8px solid var(--yellow)}.adm-table tr.row-partner{border-left:8px solid #7FDCDC}.adm-table tr.row-career{border-left:8px solid #FFC2D6}
+  .adm-table tr td:first-child{box-shadow:none!important}
+  .c-type{grid-row:1;grid-column:1}.c-when{grid-row:1;grid-column:2;text-align:right;color:var(--soft);font-size:13px}
+  .c-name{grid-column:1/-1;font-size:17px}.c-contact{grid-column:1/-1}.c-int{grid-column:1/-1;color:var(--soft)}
+  .c-status{grid-column:1}.c-owner,.c-follow{grid-column:1/-1;font-size:14px}
+  .c-owner::before,.c-follow::before{content:attr(data-l) ": ";color:var(--soft);font-weight:600}
+  .c-int:has(small:only-child),.c-owner:has(small:only-child),.c-follow:has(small:only-child){display:none}
+  /* team rows become cards */
+  .adm-team tr{grid-template-columns:1fr}
+  .adm-team td[data-l]::before{content:attr(data-l);display:block;font-size:12px;font-weight:700;color:var(--soft)}
+  .adm-team input,.adm-team select{width:100%;min-width:0}
+  .adm-row-acts{white-space:normal}
+  /* lead page */
+  .adm-acts{width:100%}.adm-acts .adm-btn{flex:1;justify-content:center}
+  .adm-owner{display:grid;grid-template-columns:1fr 1fr;gap:12px}.adm-owner select,.adm-owner input{width:100%}
+  .adm-quick{grid-column:1/-1}
+  .adm-steps button{padding:7px 12px;font-size:14px}
+  .adm-recent a{grid-template-columns:auto 1fr auto}
+  .an-range{width:100%}.an-range button{flex:1}
+  .an-list{font-size:14px}.an-list th,.an-list td{padding-left:8px}
+  .an-funnel small{display:none}
+  .adm-form{grid-template-columns:1fr}
+}
+@media (max-width:760px){.adm-more .adm-check{flex-direction:row;justify-content:flex-start;align-self:center}.adm-more .adm-check input{width:20px;flex:none}}
