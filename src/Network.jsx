@@ -22,7 +22,7 @@ const route = c => `M${HQ[0]} ${HQ[1]}Q${(HQ[0] + c.x) / 2 + 14} ${(HQ[1] + c.y)
 // Rockets: one launch per city, back to back, each a fast hop along its route
 const HOP = 1.1, FLY = .75, legs = cities.filter(c => !c.hq), LOOP = legs.length * HOP
 const Rocket = () => <g><path className="nw-flame" d="M-8-3L-17 0-8 3Z" fill="#F39A2B" stroke="#06282A" strokeWidth="1.200" strokeLinejoin="round" /><path d="M-6-5L-10-8V-3ZM-6 5L-10 8V3Z" fill="#D9482B" stroke="#06282A" strokeWidth="1.200" strokeLinejoin="round" /><path d="M-9-4H3Q10-4 13 0Q10 4 3 4H-9Z" fill="#fff" stroke="#06282A" strokeWidth="1.600" strokeLinejoin="round" /><path d="M7-2.800Q10.500-2 13 0Q10.500 2 7 2.800Z" fill="#D9482B" /><circle cx="1" r="2.200" fill="#06A4A5" stroke="#06282A" strokeWidth="1.200" /></g>
-const stats = [[50, '+', 'Major cities'], [200, '+', 'Enterprise partners'], [15, 'k+', 'Active users'], [24, '/7', 'Regional support']]
+const stats = [[50, '+', 'Major cities'], [200, '+', 'Enterprise partners'], [100, 'k+', 'Active users'], [24, '/7', 'Regional support']]
 
 export function Count({ to, suf, go }) {
   const [n, setN] = useState(to)

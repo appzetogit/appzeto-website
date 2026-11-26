@@ -7,6 +7,7 @@ import { Boarding } from '../Ride.jsx'
 import ProductLogo from '../ProductLogo.jsx'
 import Hero from '../Hero.jsx'
 import Network from '../Network.jsx'
+import Trust from '../Trust.jsx'
 import Later from '../Later.jsx'
 import { ContactBlock, How } from './Inner.jsx'
 
@@ -52,7 +53,7 @@ function ServiceList() {
 
 export default function Home() {
   return <><Hero />
-    <div id="products"><Later i={0} h={1800}><div className="wrap prod-intro"><h2 className="h-xl">Pick an app. Or take them all.</h2><p className="lead">Each one has its own page. All-in-One puts them behind a single login.</p></div>
+    <div id="products"><Later i={0} h={1800}><Trust />
       <FoodBand /><TaxiBand /><MoreBands /></Later></div>
     <Later i={1}><ServiceList /></Later><Later i={2}><How /></Later>
     <Later i={3}><Network /></Later>
