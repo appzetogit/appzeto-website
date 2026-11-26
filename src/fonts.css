@@ -1,0 +1,6 @@
+/* Main latin faces, served from /fonts so the page can preload them (see app/layout.jsx).
+   Declared before the devanagari subsets, which keep their unicode-range and win for those characters. */
+@font-face{font-family:'Baloo 2';font-style:normal;font-display:swap;font-weight:700;src:url(/fonts/baloo-2-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Baloo 2';font-style:normal;font-display:swap;font-weight:800;src:url(/fonts/baloo-2-latin-800-normal.woff2) format('woff2')}
+@font-face{font-family:'Mukta';font-style:normal;font-display:swap;font-weight:400;src:url(/fonts/mukta-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Mukta';font-style:normal;font-display:swap;font-weight:600;src:url(/fonts/mukta-latin-600-normal.woff2) format('woff2')}

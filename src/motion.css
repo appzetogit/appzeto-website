@@ -12,6 +12,8 @@ html.opening{overflow:hidden}
 @keyframes op-a{0%{transform:translateY(-220px) scale(.9,1.1);opacity:0}30%{opacity:1}62%{transform:scale(1.12,.8)}82%{transform:translateY(-9px) scale(.97,1.05)}100%{transform:none;opacity:1}}
 .op-l{transform-box:fill-box;transform-origin:50% 100%;animation:op-l 460ms both cubic-bezier(.3,1.5,.5,1)}
 @keyframes op-l{from{transform:translateX(-46px) scale(.1);opacity:0}}
+.op-tag{animation-name:op-tag;animation-duration:500ms;animation-delay:1350ms;animation-timing-function:cubic-bezier(.3,1.4,.5,1);animation-fill-mode:both}
+@keyframes op-tag{from{transform:translateY(14px);opacity:0}}
 /* Page change */
 .curtain{position:fixed;inset:-16vw 0;z-index:90;background:var(--teal);clip-path:polygon(0 16vw,100% 0,100% calc(100% - 16vw),0 100%);display:grid;place-items:center;transform:translateY(105%);visibility:hidden;pointer-events:none}
 .curtain.cover{visibility:visible;pointer-events:auto;animation:cur-in 460ms cubic-bezier(.6,0,.2,1) forwards}.curtain.clear{visibility:visible;animation:cur-out 600ms 60ms cubic-bezier(.6,0,.2,1) both}
@@ -246,3 +248,8 @@ html:not(.js) .open{display:none}
 .sh.quick .sh-panel{animation-delay:0ms}.sh.quick .sh-svg{animation-delay:120ms}
 .sh.quick .ln>span{animation-delay:calc(60ms + var(--n)*90ms)}
 .sh.quick .tagl{animation-delay:380ms}.sh.quick .sh-copy .row,.sh.quick .sh-sub,.sh.quick .tabs{animation-delay:460ms}
+
+/* Below-the-fold sections skip layout and paint until they come near the screen, so the
+   first load and the opening only pay for what is visible. Only sections with nothing
+   sticking out past their edges are listed (paint is clipped to the box). */
+.band-food,.band-taxi,.trio,.band-super,.band-ai,section.svc,section.how,section.nw,section.join,section.faq,.foot{content-visibility:auto;contain-intrinsic-size:auto 820px}

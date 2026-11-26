@@ -21,7 +21,8 @@ export function Opening() {
   if (st === 'gone') return null
   return <div className={`open ${st}`} aria-hidden="true"><i className="ol l3" /><i className="ol l2" /><div className="ol l1">
     <svg viewBox="36 -20 540 240"><g className="op-phone"><PhoneBody /><g className="op-a"><LetterA /></g></g>
-      {['p1', 'p2', 'z', 'e', 't', 'o'].map((k, i) => <g key={k} className="op-l" style={{ animationDelay: `${980 + i * 75}ms` }}><Letter k={k} /></g>)}</svg>
+      {['p1', 'p2', 'z', 'e', 't', 'o'].map((k, i) => <g key={k} className="op-l" style={{ animationDelay: `${980 + i * 75}ms` }}><Letter k={k} /></g>)}
+      <g className="op-tag"><path d="M281 166L255 180L281 195M496 166L523 180L496 195" fill="none" stroke="#06282A" strokeWidth="2.200" /><g fontFamily="Noto Serif,Georgia,serif" fontWeight="700" fontStyle="italic" fontSize="16.500" fill="#06282A"><text x="280" y="187" textLength="77" lengthAdjust="spacingAndGlyphs">REFLECT</text><text x="374" y="187" textLength="122" lengthAdjust="spacingAndGlyphs">TECHNOLOGY</text></g><path d="M357 193h8l9-24h-8z" fill="#06282A" /></g></svg>
   </div></div>
 }
 

@@ -1,5 +1,6 @@
 'use client'
 import { topApps } from './data.js'
+import { useLive } from './Brand.jsx'
 
 const GooglePlayIcon = () => (
   <svg viewBox="0 0 512 512" width="16" height="16" aria-hidden="true" className="gp-ico">
@@ -18,10 +19,10 @@ const DownloadIcon = () => (
 
 export default function RollingApps() {
   // Triple the items for a seamless, continuous, infinite downhill roll
-  const stream = [...topApps, ...topApps, ...topApps]
+  const stream = [...topApps, ...topApps, ...topApps], ref = useLive()
 
   return (
-    <section className="rolling-slope-sec" id="top-apps" aria-label="Applications with the highest downloads developed by Appzeto">
+    <section className="rolling-slope-sec" id="top-apps" ref={ref} aria-label="Applications with the highest downloads developed by Appzeto">
       <div className="wrap rolling-head">
         <div className="rolling-badge">
           <span className="pulse-dot" aria-hidden="true" />
