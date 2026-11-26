@@ -45,7 +45,7 @@ export default function RollingApps() {
                 href={app.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="roll-card"
+                className={`roll-card ${app.downloads === '1.5 Lakh+' ? 'is-hero-app' : ''}`}
                 role="listitem"
                 style={{
                   '--app-color': app.color,
@@ -55,12 +55,25 @@ export default function RollingApps() {
               >
                 {/* Floating upright card pill with stats & bouncy suspension */}
                 <div className="roll-card-pill">
+                  {app.downloads === '1.5 Lakh+' && (
+                    <span className="hero-crown-badge" aria-hidden="true">
+                      <span>🏆 HIGHEST DOWNLOADS</span>
+                    </span>
+                  )}
                   <div className="roll-card-top">
                     <span className="roll-category">{app.category}</span>
-                    <span className="roll-dl-chip">
-                      <DownloadIcon />
-                      {app.downloads}
-                    </span>
+                    {app.downloads === '1.5 Lakh+' ? (
+                      <span className="roll-dl-chip chip-super-hero">
+                        <span className="chip-flame" aria-hidden="true">🔥</span>
+                        <strong className="chip-text">{app.downloads}</strong>
+                        <span className="chip-shine" aria-hidden="true" />
+                      </span>
+                    ) : (
+                      <span className="roll-dl-chip">
+                        <DownloadIcon />
+                        {app.downloads}
+                      </span>
+                    )}
                   </div>
                   <div className="roll-card-body">
                     <h3 className="roll-name">{app.name}</h3>

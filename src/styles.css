@@ -356,6 +356,19 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
 .roll-dl-chip .dl-ico{stroke:var(--ink)}
 .roll-card:hover .roll-dl-chip{animation:funky-wiggle .35s ease infinite alternate}
 @keyframes funky-wiggle{from{transform:scale(1.08) rotate(-4deg)}to{transform:scale(1.16) rotate(4deg)}}
+
+/* 1.5 Lakh+ Super Hero Badge & Crown Highlight */
+.chip-super-hero{background:linear-gradient(135deg,#FAFD0F 0%,#FFA500 50%,#FF3B30 100%)!important;color:var(--ink)!important;font:800 13.5px/1 var(--head)!important;padding:5px 11px!important;border:2px solid var(--ink)!important;box-shadow:2px 2px 0 var(--ink),0 0 14px rgba(255,107,0,.6)!important;position:relative;overflow:hidden;animation:hero-chip-pulse 2.2s ease-in-out infinite!important}
+@keyframes hero-chip-pulse{0%,100%{transform:scale(1);box-shadow:2px 2px 0 var(--ink),0 0 8px rgba(255,107,0,.4)}50%{transform:scale(1.09);box-shadow:2.5px 2.5px 0 var(--ink),0 0 20px rgba(255,59,48,.85)}}
+.chip-super-hero .chip-flame{display:inline-block;animation:flame-bounce .8s ease infinite alternate;font-size:14px}
+@keyframes flame-bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-2px) scale(1.2)}}
+.chip-shine{position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-25deg);animation:shine-sweep 2.6s infinite}
+@keyframes shine-sweep{0%,30%{left:-100%}70%,100%{left:140%}}
+
+.hero-crown-badge{position:absolute;top:-12px;left:14px;background:var(--ink);color:var(--yellow);font:800 10.5px/1 var(--head);letter-spacing:.6px;padding:4px 9px;border-radius:6px;border:1.5px solid var(--yellow);box-shadow:2px 2px 0 var(--ink);z-index:3;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.is-hero-app .roll-card-pill{border-top:5px solid #E50914!important;box-shadow:6px 6px 0 var(--ink),0 0 20px rgba(229,9,20,.25)!important}
+.is-hero-app .roll-wheel{border-color:var(--ink)!important;box-shadow:0 6px 16px rgba(6,40,42,.22),0 0 22px rgba(229,9,20,.45)!important}
+.is-hero-app .wheel-spokes{border:2.5px dashed #FAFD0F!important}
 .roll-name{font:800 22px/1.15 var(--head);margin:0 0 4px;color:var(--ink)}
 .roll-tagline{font:500 14px/1.35 var(--body);color:var(--soft);margin:0;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .roll-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1.5px dashed rgba(6,40,42,.2);font:700 13px/1 var(--body);color:var(--teal-ink)}
