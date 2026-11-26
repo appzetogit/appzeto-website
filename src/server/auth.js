@@ -8,7 +8,7 @@ export const COOKIE = 'az_admin'
 const DAY = 864e5, LIFE = 7 * DAY
 // What each role may see. Owners also manage the team and settings.
 export const ROLES = { owner: 'Owner', sales: 'Sales', hr: 'HR' }
-export const KINDS_FOR = { owner: ['idea', 'career', 'partner'], sales: ['idea', 'partner'], hr: ['career'] }
+export const KINDS_FOR = { owner: ['idea', 'partner', 'career'], sales: ['idea', 'partner'], hr: ['career'] }
 
 export function hashPassword(pw, salt = randomBytes(16).toString('hex')) {
   return `scrypt:${salt}:${scryptSync(pw, salt, 64).toString('hex')}`

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { KIND, STATUS, api, dateIST, dayIST, dayLabel, waNumber, when } from './api.js'
+import { KIND, KIND_FROM, STATUS, TypeTag, api, dateIST, dayIST, dayLabel, waNumber, when } from './api.js'
 import { useMe } from './Shell.jsx'
 
 function Event({ x, team }) {
@@ -29,8 +29,8 @@ export default function Lead() {
   const src = l.source || {}, utm = src.utm || {}, team = me.team
   const events = [...(l.notes || []).map(n => ({ ...n, t: 'note' })), ...(l.history || [])].sort((a, b) => new Date(b.at) - new Date(a.at))
   return <>
-    <Link className="adm-back" href="/admin/leads">← All leads</Link>
-    <header className="adm-head"><div><h1>{l.name} {l.times > 1 && <span className="pill adm-times">Sent {l.times}×</span>}</h1><p className="adm-sub">{KIND[l.kind]} form · {l.product || 'No interest picked'} · {when(l.createdAt)}</p></div>
+    <Link className="adm-back" href={`/admin/leads?kind=${l.kind}`}>← All {KIND[l.kind].toLowerCase()}s</Link>
+    <header className="adm-head"><div><TypeTag k={l.kind} big /><h1>{l.name} {l.times > 1 && <span className="pill adm-times">Sent {l.times}×</span>}</h1><p className="adm-sub">From the {KIND_FROM[l.kind]} · {l.product || 'No interest picked'} · {when(l.createdAt)}</p></div>
       <div className="adm-acts">{l.phone && <><a className="adm-btn" href={`tel:${l.phone.replace(/\s/g, '')}`}>Call</a><a className="adm-btn adm-btn-wa" href={`https://wa.me/${waNumber(l.phone)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></>}{l.email && <a className="adm-btn adm-btn-y" href={`mailto:${l.email}`}>Email</a>}</div></header>
     {err && <p className="adm-err">{err}</p>}
     <section className="adm-card"><h2>Status</h2>

@@ -1,9 +1,13 @@
 'use client'
 // Small fetch helper for the admin: JSON in/out, and back to the login page when signed out.
 export const STATUS = { new: 'New', contacted: 'Contacted', qualified: 'Qualified', won: 'Won', lost: 'Lost' }
-export const KIND = { idea: 'Idea', career: 'Careers', partner: 'Partner' }
+// The three kinds of lead, one per website form, in the order and colours used everywhere in the admin
+export const KIND = { idea: 'Client', partner: 'Partner', career: 'Job applicant' }
+export const KINDS_PL = { idea: 'Clients', partner: 'Partners', career: 'Job applicants' }
+export const KIND_FROM = { idea: '“Tell us your idea” form', partner: '“Partner with us” form', career: 'Careers form' }
+export const TypeTag = ({ k, big }) => <em className={`ty ty-${k}${big ? ' ty-big' : ''}`}>{KIND[k]}</em>
 export const ROLE = { owner: 'Owner', sales: 'Sales', hr: 'HR' }
-export const ROLE_SEES = { owner: 'Everything, plus team and settings', sales: 'Idea and partner forms', hr: 'Careers form' }
+export const ROLE_SEES = { owner: 'All leads, plus team and settings', sales: 'Client and partner leads', hr: 'Job applicants' }
 // Today in India as YYYY-MM-DD, plus n days
 export const dayIST = (n = 0) => new Date(Date.now() + n * 864e5).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
 export const dateIST = d => d ? new Date(d).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }) : ''

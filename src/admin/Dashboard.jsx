@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { KIND, STATUS, ago, api, dayLabel } from './api.js'
+import { KIND, KINDS_PL, KIND_FROM, STATUS, TypeTag, ago, api, dayLabel } from './api.js'
 import { useMe } from './Shell.jsx'
 
 const Bars = ({ list, label = x => x._id, href }) => {
@@ -25,6 +25,7 @@ export default function Dashboard() {
       <div className="adm-card k-g"><b>{s.winRate == null ? '–' : s.winRate + '%'}</b><span>Won of closed</span></div>
     </div>
     {s.due.length > 0 && <section className="adm-card"><h2>Follow up today <small>{me.role === 'owner' ? 'everyone' : 'yours'}</small></h2><ul className="adm-recent">{s.due.map(l => <li key={l._id}><Link href={`/admin/leads/${l._id}`}><i className="adm-dot" /><b>{l.name}</b><span>{l.product || KIND[l.kind]}</span><em className="pill st-new">{dayLabel(l.followUp)}</em><time>{l.phone}</time></Link></li>)}</ul></section>}
+    {me.kinds.length > 1 && <div className="adm-types">{me.kinds.map(k => { const n = s.byKind.find(x => x._id === k)?.n || 0; return <Link key={k} href={`/admin/leads?kind=${k}`} className={`adm-card adm-type ty-${k}`}><b>{n}</b><span>{KINDS_PL[k]}</span><small>{KIND_FROM[k]}</small></Link> })}</div>}
     <section className="adm-card">
       <h2>Leads per day <small>last 30 days</small></h2>
       <div className="adm-chart" role="img" aria-label={`Leads per day, highest ${max}`}>{s.days.map(d => <span key={d.day} title={`${d.day}: ${d.n}`} style={{ '--h': d.n / max }}><i /></span>)}</div>
@@ -35,12 +36,12 @@ export default function Dashboard() {
     </section>
     <div className="adm-two">
       <section className="adm-card"><h2>What people ask about</h2><Bars list={s.byProduct} href={x => `/admin/leads?product=${encodeURIComponent(x._id)}`} /></section>
-      <section className="adm-card"><h2>Which form</h2><Bars list={s.byKind} label={x => KIND[x._id] || x._id} href={x => `/admin/leads?kind=${x._id}`} /></section>
+      <section className="adm-card"><h2>Lead types</h2><Bars list={s.byKind} label={x => KINDS_PL[x._id] || x._id} href={x => `/admin/leads?kind=${x._id}`} /></section>
       <section className="adm-card"><h2>Pages that bring leads</h2><Bars list={s.byPage} /></section>
       <section className="adm-card"><h2>Device</h2><Bars list={s.byDevice} label={x => x._id === 'phone' ? 'Phone' : 'Desktop'} /></section>
     </div>
     <section className="adm-card"><h2>Latest</h2>
-      {recent.length ? <ul className="adm-recent">{recent.map(l => <li key={l._id}><Link href={`/admin/leads/${l._id}`}>{!l.seen && <i className="adm-dot" />}<b>{l.name}</b><span>{l.product || KIND[l.kind]}</span><em className={`pill st-${l.status}`}>{STATUS[l.status]}</em><time>{ago(l.createdAt)}</time></Link></li>)}</ul> : <p className="adm-empty">No leads yet. They’ll appear here as soon as someone sends a form on the website.</p>}
+      {recent.length ? <ul className="adm-recent">{recent.map(l => <li key={l._id}><Link href={`/admin/leads/${l._id}`}>{!l.seen && <i className="adm-dot" />}<b>{l.name}</b><span><TypeTag k={l.kind} /> {l.product}</span><em className={`pill st-${l.status}`}>{STATUS[l.status]}</em><time>{ago(l.createdAt)}</time></Link></li>)}</ul> : <p className="adm-empty">No leads yet. They’ll appear here as soon as someone sends a form on the website.</p>}
     </section>
   </>
 }

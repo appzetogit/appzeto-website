@@ -6,7 +6,8 @@ import { KINDS_FOR } from './auth.js'
 // CVs live outside the public folder and are only served through the admin API
 export const uploadDir = () => process.env.UPLOAD_DIR || join(process.cwd(), '.data', 'uploads')
 
-export const KINDS = { idea: 'Idea', career: 'Careers', partner: 'Partner' }
+// The three kinds of lead, one per website form
+export const KINDS = { idea: 'Client', partner: 'Partner', career: 'Job applicant' }
 export const STATUSES = ['new', 'contacted', 'qualified', 'won', 'lost']
 
 const pick = (f, ...keys) => { for (const k of keys) if (f[k]) return f[k]; return '' }

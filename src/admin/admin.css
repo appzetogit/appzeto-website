@@ -95,3 +95,20 @@ a.adm-card{text-decoration:none;color:var(--ink)}a.adm-card:hover{transform:tran
 .adm-settings{display:grid;gap:22px}
 .adm-team input{width:100%;min-width:190px}.adm-team tr{cursor:default}.adm-off td{opacity:.55}.adm-fixed td{background:#F3FAF8}
 .adm-row-acts{white-space:nowrap}.adm-row-acts .adm-link+.adm-link{margin-left:14px}
+/* Lead types: Client (yellow), Partner (teal), Job applicant (pink) */
+.ty{display:inline-block;padding:2px 10px;border:1.5px solid var(--ink);border-radius:6px;font:800 12px/1.6 var(--head);font-style:normal;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase}
+.ty-idea{--ty:var(--yellow)}.ty-partner{--ty:#7FDCDC}.ty-career{--ty:#FFC2D6}.ty-all{--ty:#fff}
+.ty{background:var(--ty)}.ty-big{font-size:14px;padding:3px 12px;margin-bottom:8px}
+.adm-tabs{display:flex;flex-wrap:wrap;gap:12px}
+.adm-tab{display:grid;gap:2px;min-width:150px;padding:12px 18px;border:2px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink);text-align:left;cursor:pointer;box-shadow:3px 3px 0 var(--ink);border-top:8px solid var(--ink);border-top-color:var(--ty)}
+.adm-tab b{font:800 18px var(--head)}.adm-tab span{font:800 26px/1 var(--head)}.adm-tab i{font:700 13px var(--body);font-style:normal;color:#B3261E;margin-left:8px}
+.adm-tab.on{background:var(--ty);transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.adm-table tr.row-idea td:first-child{box-shadow:inset 6px 0 0 var(--yellow)}.adm-table tr.row-partner td:first-child{box-shadow:inset 6px 0 0 #7FDCDC}.adm-table tr.row-career td:first-child{box-shadow:inset 6px 0 0 #FFC2D6}
+.adm-sub-nav{display:grid;gap:2px;margin:4px 0 6px 14px}
+.adm-sub-nav a{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;color:#D6ECEA;text-decoration:none;font:600 15px var(--body)}
+.adm-sub-nav a:hover{background:#0D3A3E;color:#fff}
+.adm-sub-nav a::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--ty);flex:none}
+.adm-sub-nav b{margin-left:auto;min-width:22px;padding:0 6px;border-radius:99px;background:var(--ty);color:var(--ink);font:800 12px/20px var(--head);text-align:center}
+.adm-types{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.adm-type{display:grid;gap:2px;border-top:10px solid var(--ty)!important}.adm-type b{font:800 40px/1 var(--head)}.adm-type span{font:800 20px var(--head)}.adm-type small{color:var(--soft)}
+@media (max-width:760px){.adm-types{grid-template-columns:1fr}.adm-tab{min-width:0;flex:1 1 140px}}
