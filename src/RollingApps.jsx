@@ -1,7 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
 import { topApps } from './data.js'
-import { reduced } from './Brand.jsx'
 
 const GooglePlayIcon = () => (
   <svg viewBox="0 0 512 512" width="16" height="16" aria-hidden="true" className="gp-ico">
@@ -19,18 +17,11 @@ const DownloadIcon = () => (
 )
 
 export default function RollingApps() {
-  const [paused, setPaused] = useState(false)
-  const isReduced = useRef(false)
-
-  useEffect(() => {
-    isReduced.current = reduced()
-  }, [])
-
-  // Duplicate items 3 times for a completely seamless, continuous loop
+  // Triple the items for a seamless, continuous, infinite downhill roll
   const stream = [...topApps, ...topApps, ...topApps]
 
   return (
-    <section className="rolling-slope-sec" aria-label="Applications with the highest downloads developed by Appzeto">
+    <section className="rolling-slope-sec" id="top-apps" aria-label="Applications with the highest downloads developed by Appzeto">
       <div className="wrap rolling-head">
         <div className="rolling-badge">
           <span className="pulse-dot" aria-hidden="true" />
@@ -44,14 +35,8 @@ export default function RollingApps() {
         </p>
       </div>
 
-      {/* Sloped rolling runway */}
-      <div 
-        className={`rolling-slope-wrap ${paused ? 'is-paused' : ''}`}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onTouchStart={() => setPaused(true)}
-        onTouchEnd={() => setPaused(false)}
-      >
+      {/* Sloped rolling runway - continuous nonstop glide */}
+      <div className="rolling-slope-wrap">
         <div className="rolling-incline-stage">
           <div className="rolling-track" role="list">
             {stream.map((app, idx) => (
@@ -62,9 +47,13 @@ export default function RollingApps() {
                 rel="noopener noreferrer"
                 className="roll-card"
                 role="listitem"
+                style={{
+                  '--app-color': app.color,
+                  '--idx': idx % 6,
+                }}
                 aria-label={`${app.name} on Google Play - ${app.downloads} downloads, ${app.category}`}
               >
-                {/* Floating upright card pill with stats */}
+                {/* Floating upright card pill with stats & bouncy suspension */}
                 <div className="roll-card-pill">
                   <div className="roll-card-top">
                     <span className="roll-category">{app.category}</span>
@@ -86,15 +75,31 @@ export default function RollingApps() {
                   </div>
                 </div>
 
-                {/* Stalk connecting card to the rolling wheel */}
+                {/* Funky coil spring suspension stalk */}
                 <div className="roll-stalk" aria-hidden="true">
-                  <span className="stalk-line" />
+                  <svg viewBox="0 0 20 28" width="16" height="22" className="stalk-spring">
+                    <path
+                      d="M10 0v3c4 0 6 2 6 4s-4 4-6 4 6 2 6 4-4 4-6 4v4"
+                      fill="none"
+                      stroke="var(--ink)"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                   <span className="stalk-joint" />
                 </div>
 
-                {/* Rolling physical wheel that rotates as it moves downhill */}
+                {/* Rolling physical wheel that rotates downhill with speed dust */}
                 <div className="roll-wheel-wrap" aria-hidden="true">
-                  <div className="roll-wheel" style={{ '--app-color': app.color }}>
+                  {/* Funky cartoon dust puffs trailing behind the wheel */}
+                  <div className="wheel-dust">
+                    <span className="dust-puff d1" />
+                    <span className="dust-puff d2" />
+                    <span className="dust-puff d3" />
+                  </div>
+
+                  <div className="roll-wheel">
                     <div className="wheel-tread" />
                     <img
                       src={app.icon}
@@ -105,7 +110,7 @@ export default function RollingApps() {
                       height="68"
                     />
                     <div className="wheel-rim" />
-                    <div className="wheel-center-cap" />
+                    <div className="wheel-spokes" />
                   </div>
                   <div className="wheel-shadow" />
                 </div>

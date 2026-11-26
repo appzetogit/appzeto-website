@@ -327,8 +327,8 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
 @media (prefers-reduced-motion:reduce){.tr-burst{display:none}.tr-tile.pop{animation:none}.tr-rating::after{display:none}.tr-rating .tr-star::after,.tr-rating:not(.go) .tr-star::after{clip-path:inset(0 calc(100% - var(--f)) 0 0);transition:none}}
 
 /* Rolling Apps sloped showcase */
-.rolling-slope-sec{padding:40px 0 0;position:relative;z-index:6;margin-bottom:-30px}
-.rolling-head{text-align:center;max-width:880px;margin:0 auto 32px}
+.rolling-slope-sec{padding:72px 0 0;position:relative;z-index:6;margin-bottom:-30px;scroll-margin-top:96px}
+.rolling-head{text-align:center;max-width:880px;margin:0 auto 36px}
 .rolling-badge{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 var(--head);text-transform:uppercase;letter-spacing:.8px;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;box-shadow:3px 3px 0 var(--ink);margin-bottom:14px;color:var(--ink)}
 .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(51,167,122,.7);animation:pulse-green 1.8s infinite}
 @keyframes pulse-green{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(51,167,122,.7)}70%{transform:scale(1);box-shadow:0 0 0 8px rgba(51,167,122,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(51,167,122,0)}}
@@ -336,39 +336,62 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
 .highlight-tag{background:var(--yellow);padding:2px 10px;border-radius:10px;display:inline-block;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-1deg);white-space:nowrap}
 .rolling-sub{font-size:clamp(17px,1.6vw,21px);line-height:1.45;color:var(--soft);max-width:38em;margin:0 auto}
 .rolling-sub strong{color:var(--ink);font-weight:700}
-.rolling-slope-wrap{width:100%;overflow:hidden;position:relative;padding:30px 0 56px}
-.rolling-incline-stage{transform:rotate(var(--slope-deg));transform-origin:50% 50%;width:140vw;margin-left:-20vw;position:relative;padding-bottom:34px}
-.rolling-track{display:flex;gap:36px;width:max-content;animation:roll-downhill 36s linear infinite;will-change:transform}
-.rolling-slope-wrap.is-paused .rolling-track,.rolling-slope-wrap:hover .rolling-track{animation-play-state:paused}
+.rolling-slope-wrap{width:100%;overflow:hidden;position:relative;padding:36px 0 60px}
+.rolling-incline-stage{transform:rotate(var(--slope-deg));transform-origin:50% 50%;width:140vw;margin-left:-20vw;position:relative;padding-bottom:38px}
+
+/* Continuous smooth downhill roll - DOES NOT STOP ON HOVER */
+.rolling-track{display:flex;gap:38px;width:max-content;animation:roll-downhill 32s linear infinite;will-change:transform}
 @keyframes roll-downhill{0%{transform:translateX(0)}100%{transform:translateX(calc(-100% / 3))}}
-.roll-card{display:flex;flex-direction:column;align-items:center;width:270px;text-decoration:none;color:var(--ink);flex-shrink:0;position:relative;transition:transform .25s var(--spring)}
-.roll-card:hover{transform:translateY(-8px) scale(1.03)}
-.roll-card-pill{transform:rotate(calc(-1 * var(--slope-deg)));background:#fff;border:2px solid var(--ink);border-radius:var(--r-s);box-shadow:5px 5px 0 var(--ink);padding:16px 18px;width:100%;box-sizing:border-box;transition:box-shadow var(--snap),border-color var(--snap);position:relative;z-index:2}
-.roll-card:hover .roll-card-pill{box-shadow:7px 7px 0 var(--ink);border-color:var(--teal-ink)}
+
+/* Funky bobbing kart suspension effect */
+.roll-card{display:flex;flex-direction:column;align-items:center;width:270px;text-decoration:none;color:var(--ink);flex-shrink:0;position:relative;animation:funky-kart-bob 2.8s ease-in-out infinite;animation-delay:calc(var(--idx, 0) * -0.45s);transition:transform .25s var(--spring),z-index 0s}
+@keyframes funky-kart-bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-7px) rotate(1.2deg)}}
+.roll-card:hover{z-index:10;animation-play-state:paused;transform:translateY(-16px) scale(1.07) rotate(-2deg)}
+
+.roll-card-pill{transform:rotate(calc(-1 * var(--slope-deg)));background:#fff;border:2px solid var(--ink);border-top:4.5px solid var(--app-color, var(--teal));border-radius:var(--r-s);box-shadow:5px 5px 0 var(--ink);padding:16px 18px;width:100%;box-sizing:border-box;transition:box-shadow .25s var(--spring),border-color var(--snap);position:relative;z-index:2}
+.roll-card:hover .roll-card-pill{box-shadow:8px 8px 0 var(--ink),0 0 24px var(--app-color, var(--teal));border-color:var(--ink)}
 .roll-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .roll-category{font:700 12px/1 var(--body);color:var(--soft);text-transform:uppercase;letter-spacing:.6px}
-.roll-dl-chip{display:inline-flex;align-items:center;gap:4px;background:var(--yellow);color:var(--ink);font:800 13px/1 var(--head);padding:4px 9px;border-radius:99px;border:1.5px solid var(--ink);white-space:nowrap;box-shadow:1.5px 1.5px 0 var(--ink)}
+.roll-dl-chip{display:inline-flex;align-items:center;gap:4px;background:var(--yellow);color:var(--ink);font:800 13px/1 var(--head);padding:4px 9px;border-radius:99px;border:1.5px solid var(--ink);white-space:nowrap;box-shadow:1.5px 1.5px 0 var(--ink);transition:transform var(--snap)}
 .roll-dl-chip .dl-ico{stroke:var(--ink)}
+.roll-card:hover .roll-dl-chip{animation:funky-wiggle .35s ease infinite alternate}
+@keyframes funky-wiggle{from{transform:scale(1.08) rotate(-4deg)}to{transform:scale(1.16) rotate(4deg)}}
 .roll-name{font:800 22px/1.15 var(--head);margin:0 0 4px;color:var(--ink)}
 .roll-tagline{font:500 14px/1.35 var(--body);color:var(--soft);margin:0;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .roll-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1.5px dashed rgba(6,40,42,.2);font:700 13px/1 var(--body);color:var(--teal-ink)}
 .roll-store-link{display:inline-flex;align-items:center;gap:6px}
 .roll-arrow{font-size:16px;font-weight:800;transition:transform var(--snap)}
 .roll-card:hover .roll-arrow{transform:translateX(5px)}
-.roll-stalk{display:flex;flex-direction:column;align-items:center;height:18px;position:relative;z-index:1}
-.stalk-line{width:2.5px;height:100%;background:var(--ink)}
-.stalk-joint{width:8px;height:8px;border-radius:50%;background:var(--yellow);border:2px solid var(--ink);margin-top:-4px}
+
+/* Funky coil spring stalk */
+.roll-stalk{display:flex;flex-direction:column;align-items:center;height:24px;position:relative;z-index:1;margin-top:-2px}
+.stalk-spring{transition:transform .25s var(--spring)}
+.roll-card:hover .stalk-spring{transform:scaleY(1.3) scaleX(1.1)}
+.stalk-joint{width:9px;height:9px;border-radius:50%;background:var(--yellow);border:2px solid var(--ink);margin-top:-5px}
+
+/* Rolling physical wheel that rotates downhill with speed dust */
 .roll-wheel-wrap{display:flex;flex-direction:column;align-items:center;position:relative;margin-top:-2px;z-index:2}
-.roll-wheel{width:76px;height:76px;border-radius:50%;border:3px solid var(--ink);background:#fff;box-shadow:0 6px 14px rgba(6,40,42,.22);position:relative;display:flex;align-items:center;justify-content:center;animation:roll-wheel-spin 3.4s linear infinite;will-change:transform}
-.rolling-slope-wrap.is-paused .roll-wheel,.rolling-slope-wrap:hover .roll-wheel{animation-play-state:paused}
+.roll-wheel{width:76px;height:76px;border-radius:50%;border:3.5px solid var(--ink);background:#fff;box-shadow:0 6px 14px rgba(6,40,42,.22);position:relative;display:flex;align-items:center;justify-content:center;animation:roll-wheel-spin 3.2s linear infinite;will-change:transform;transition:box-shadow .25s ease}
 @keyframes roll-wheel-spin{0%{transform:rotate(0deg)}100%{transform:rotate(-360deg)}}
+.roll-card:hover .roll-wheel{box-shadow:0 0 25px var(--app-color, var(--teal));animation-duration:1.4s!important}
 .wheel-img{width:54px;height:54px;border-radius:14px;object-fit:cover;display:block;border:1px solid rgba(6,40,42,.12)}
-.wheel-rim{position:absolute;inset:0;border-radius:50%;border:2px dashed rgba(6,40,42,.35);pointer-events:none}
-.wheel-tread{position:absolute;inset:-4px;border-radius:50%;border:3px dotted var(--teal-ink);pointer-events:none;opacity:.75}
+.wheel-rim{position:absolute;inset:0;border-radius:50%;border:2.5px dashed rgba(6,40,42,.35);pointer-events:none}
+.wheel-spokes{position:absolute;inset:3px;border-radius:50%;border:2px dotted var(--app-color, var(--teal));pointer-events:none}
+.wheel-tread{position:absolute;inset:-4px;border-radius:50%;border:3px dotted var(--ink);pointer-events:none;opacity:.8}
 .wheel-shadow{width:60px;height:8px;background:rgba(6,40,42,.22);border-radius:50%;margin-top:4px;filter:blur(2px)}
+
+/* Cartoon speed dust clouds trailing behind rolling tires */
+.wheel-dust{position:absolute;right:-14px;bottom:10px;pointer-events:none}
+.dust-puff{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff 35%,rgba(6,164,165,.4) 100%);border:1.5px solid var(--ink);opacity:0;animation:dust-puff 1.2s ease-out infinite}
+.dust-puff.d1{width:13px;height:13px;animation-delay:0s}
+.dust-puff.d2{width:9px;height:9px;animation-delay:.4s;right:-6px;bottom:10px}
+.dust-puff.d3{width:7px;height:7px;animation-delay:.8s;right:-12px;bottom:16px}
+@keyframes dust-puff{0%{opacity:.85;transform:translate(0,0) scale(.5)}50%{opacity:.6}100%{opacity:0;transform:translate(20px,-12px) scale(1.4)}}
+
 .rolling-road-rail{position:absolute;left:0;right:0;bottom:36px;height:6px;border-bottom:4px solid var(--ink);z-index:1}
 .rail-dashes{position:absolute;left:0;right:0;bottom:8px;height:3px;background:repeating-linear-gradient(90deg,var(--teal) 0 32px,transparent 32px 56px)}
 @media (max-width:640px){
+  .rolling-slope-sec{padding:48px 0 0}
   .rolling-head{margin-bottom:24px}
   .highlight-tag{white-space:normal}
   .roll-card{width:230px}
@@ -379,6 +402,6 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
   .rolling-track{gap:24px}
 }
 @media (prefers-reduced-motion:reduce){
-  .rolling-track,.roll-wheel,.pulse-dot{animation:none!important}
+  .rolling-track,.roll-wheel,.pulse-dot,.roll-card,.dust-puff{animation:none!important}
   .rolling-slope-wrap{overflow-x:auto;scrollbar-width:thin}
 }
