@@ -3,6 +3,7 @@
 // and a Google rating card whose stars fill in. Runs once, when the strip comes on screen.
 import { useEffect, useRef, useState } from 'react'
 import { reduced } from './Brand.jsx'
+import './trust.css'
 
 // Edit the numbers here. [target, suffix, label, emoji]
 const STATS = [
@@ -13,6 +14,15 @@ const STATS = [
 ]
 const RATING = 4.35
 const GOOGLE_URL = '' // your Google Business review link; the card becomes a link once this is set
+
+// Drawn icons, one per tile, in the site's ink-outline style (48x48)
+const K = { stroke: '#06282A', strokeWidth: 3, strokeLinejoin: 'round', strokeLinecap: 'round' }
+const ICONS = {
+  '😊': <><circle cx="24" cy="24" r="18" fill="#FAFD0F" {...K} /><circle cx="17.5" cy="20" r="2.6" fill="#06282A" /><circle cx="30.5" cy="20" r="2.6" fill="#06282A" /><path d="M15 27.5q9 9 18 0" fill="#fff" {...K} /><circle cx="12.5" cy="27" r="2.4" fill="#F59AA0" /><circle cx="35.5" cy="27" r="2.4" fill="#F59AA0" /></>,
+  '📍': <><ellipse cx="24" cy="42" rx="9" ry="2.6" fill="#06282A" opacity=".25" /><path d="M24 42S10 28.5 10 19a14 14 0 0 1 28 0c0 9.5-14 23-14 23z" fill="#D9482B" {...K} /><circle cx="24" cy="19" r="5.5" fill="#fff" {...K} /></>,
+  '🚀': <><circle cx="31" cy="17" r="6" fill="#06A4A5" {...K} /><path d="M20 40c0-6.5 4.8-11 11-11s11 4.5 11 11z" fill="#06A4A5" {...K} /><circle cx="17" cy="19" r="7" fill="#FAFD0F" {...K} /><path d="M4 42c0-7.5 5.8-13 13-13s13 5.5 13 13z" fill="#FAFD0F" {...K} /></>,
+  '💬': <><path d="M10 27v-4a14 14 0 0 1 28 0v4" fill="none" {...K} /><rect x="6" y="24" width="9" height="13" rx="4" fill="#FAFD0F" {...K} /><rect x="33" y="24" width="9" height="13" rx="4" fill="#FAFD0F" {...K} /><path d="M37.5 37v2a5 5 0 0 1-5 5H27" fill="none" {...K} /><rect x="21" y="41" width="7" height="5" rx="2.5" fill="#fff" {...K} /></>,
+}
 
 const BITS = 18, COLORS = ['#FAFD0F', '#06A4A5', '#06282A', '#33A77A', '#fff']
 
@@ -33,7 +43,7 @@ function Tile({ to, suf, label, emoji, go, delay }) {
     return () => { clearTimeout(timer); cancelAnimationFrame(raf) }
   }, [go])
   return <div className={`tr-tile${pop ? ' pop' : ''}`}>
-    <span className="tr-corner-emoji" aria-hidden="true">{emoji}</span>
+    <span className="tr-ico" aria-hidden="true"><svg viewBox="0 0 48 48">{ICONS[emoji]}</svg></span>
     <dt><span className="tr-num">{n.toLocaleString('en-IN')}</span>{suf}</dt><dd>{label}</dd>
     {pop && <i className="tr-burst" aria-hidden="true">{Array.from({ length: BITS }, (_, i) => {
       const a = (i / BITS) * Math.PI * 2 + .3, d = 70 + (i * 37) % 60
