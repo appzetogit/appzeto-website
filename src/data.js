@@ -108,3 +108,79 @@ export const faqs = [
   ['How will we stay in touch?', 'Through a shared Slack or Teams channel, a weekly sprint meeting, and a Jira or Trello board. You can reach the project manager and lead developer directly.'],
   ['How does pricing work?', 'Fixed price when the scope is clear, time and material when it will change, or a dedicated team for longer work.'],
 ]
+
+export const topApps = [
+  {
+    id: 'inplay',
+    name: 'In Play',
+    tagline: 'Shorts drama & OTT shows',
+    category: 'OTT Platform',
+    downloads: '1.5 Lakh+',
+    downloadsRaw: 150000,
+    icon: '/apps/inplay.png',
+    url: 'https://play.google.com/store/apps/details?id=com.company.inplay',
+    color: '#E50914',
+    badge: 'Top OTT'
+  },
+  {
+    id: 'abhikaro',
+    name: 'Abhi Karo',
+    tagline: 'Food + Taxi + Hotel booking',
+    category: 'All-in-One App',
+    downloads: '10k+',
+    downloadsRaw: 10000,
+    icon: '/apps/abhikaro.png',
+    url: 'https://play.google.com/store/apps/details?id=com.abhikaro',
+    color: '#FF6B00',
+    badge: 'Multi-service'
+  },
+  {
+    id: 'tiranga',
+    name: 'Tiranga Cab',
+    tagline: 'Fast city rides & taxi fleet',
+    category: 'Taxi Booking',
+    downloads: '10k+',
+    downloadsRaw: 10000,
+    icon: '/apps/tiranga.png',
+    url: 'https://play.google.com/store/apps/details?id=com.tirangacabpartner.appzeto',
+    color: '#FF9933',
+    badge: 'Ride-Hailing'
+  },
+  {
+    id: 'foodywing',
+    name: 'Foodywing',
+    tagline: 'Food & quick grocery delivery',
+    category: 'Food Delivery',
+    downloads: '10k+',
+    downloadsRaw: 10000,
+    icon: '/apps/foodywing.png',
+    url: 'https://play.google.com/store/apps/details?id=com.quick_commerce.frontend',
+    color: '#E23744',
+    badge: 'Quick Delivery'
+  },
+  {
+    id: 'indiankart',
+    name: 'Indian Kart',
+    tagline: 'Multi-vendor local marketplace',
+    category: 'E-commerce',
+    downloads: '10k+',
+    downloadsRaw: 10000,
+    icon: '/apps/indiankart.png',
+    url: 'https://play.google.com/store/apps/details?id=com.indiankart.user1',
+    color: '#008ECC',
+    badge: 'Commerce'
+  },
+  {
+    id: 'tuggo',
+    name: 'Tuggo',
+    tagline: 'On-demand restaurant ordering',
+    category: 'Food Delivery',
+    downloads: '10k+',
+    downloadsRaw: 10000,
+    icon: '/apps/tuggo.png',
+    url: 'https://play.google.com/store/apps/details?id=com.tuggo.user',
+    color: '#28A745',
+    badge: 'Food App'
+  }
+]
+

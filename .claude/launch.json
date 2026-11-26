@@ -1,5 +1,56 @@
-{"version":"0.0.1","configurations":[
-{"name":"appzeto","runtimeExecutable":"npm","runtimeArgs":["run","dev","--","--port","5199"],"port":5199},
-{"name":"appzeto-static","runtimeExecutable":"npx","runtimeArgs":["serve","out","-l","5197"],"port":5197},
-{"name":"appzeto-old","runtimeExecutable":"npm","runtimeArgs":["--prefix","C:/Users/ompar/AppData/Local/Temp/claude/0dd52d3c0a3f0f95/89679cdd-d094-47d0-803d-d9e307279948/scratchpad/old","run","dev","--","--port","5198","--strictPort"],"port":5198}
-]}
+{
+ "version": "0.0.1",
+ "configurations": [
+  {
+   "name": "appzeto",
+   "runtimeExecutable": "npm",
+   "runtimeArgs": [
+    "run",
+    "dev",
+    "--",
+    "--port",
+    "5199"
+   ],
+   "port": 5199
+  },
+  {
+   "name": "appzeto-static",
+   "runtimeExecutable": "npx",
+   "runtimeArgs": [
+    "serve",
+    "out",
+    "-l",
+    "5197"
+   ],
+   "port": 5197
+  },
+  {
+   "name": "appzeto-old",
+   "runtimeExecutable": "npm",
+   "runtimeArgs": [
+    "--prefix",
+    "C:/Users/ompar/AppData/Local/Temp/claude/0dd52d3c0a3f0f95/89679cdd-d094-47d0-803d-d9e307279948/scratchpad/old",
+    "run",
+    "dev",
+    "--",
+    "--port",
+    "5198",
+    "--strictPort"
+   ],
+   "port": 5198
+  },
+  {
+   "name": "taxi-btg-preview",
+   "runtimeExecutable": "node",
+   "runtimeArgs": [
+    "D:/projects/appzeto-taxi-btg/frontend/node_modules/vite/bin/vite.js",
+    "preview",
+    "D:/projects/appzeto-taxi-btg/frontend",
+    "--port",
+    "5310",
+    "--strictPort"
+   ],
+   "port": 5310
+  }
+ ]
+}

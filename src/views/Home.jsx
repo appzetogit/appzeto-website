@@ -8,17 +8,36 @@ import ProductLogo from '../ProductLogo.jsx'
 import Hero from '../Hero.jsx'
 import Network from '../Network.jsx'
 import Trust from '../Trust.jsx'
+import RollingApps from '../RollingApps.jsx'
 import Later from '../Later.jsx'
 import { ContactBlock, How } from './Inner.jsx'
 
 export function FoodBand() {
   const p = products[0], ref = useLive()
-  return <section className="band band-food" ref={ref}><div className="wrap band-grid">
-    <div><ProductLogo id="food" /><h3 className="h-xl">{p.name}</h3><p className="lead">{p.line}</p>
-      <dl className="roles">{p.roles.map(r => <div key={r.who}><dt>{r.who}</dt><dd>{r.does[0]}</dd></div>)}</dl>
-      <Link className="btn btn-y" to={p.path}>Open Appzeto Food</Link></div>
-    <Phone name="food" className="tilt" />
-  </div></section>
+  return <section className="band band-food" ref={ref}>
+    <div className="wrap prod-intro">
+      <div>
+        <span className="prod-eyebrow">Ready-to-launch platforms</span>
+        <h2 className="h-xl prod-title">Apps you can launch in days, not months.</h2>
+      </div>
+      <div>
+        <p className="lead prod-lead">Take one, take a few, or bundle them into a single super-app. Complete with customer apps, partner panels, driver tracking, and your own admin dashboard.</p>
+        <div className="prod-pills" role="navigation" aria-label="Platforms quick links">
+          {products.slice(0, 5).map(x => (
+            <Link key={x.id} to={x.path} className="prod-pill">
+              {x.short}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div className="wrap band-grid">
+      <div><ProductLogo id="food" /><h3 className="h-xl">{p.name}</h3><p className="lead">{p.line}</p>
+        <dl className="roles">{p.roles.map(r => <div key={r.who}><dt>{r.who}</dt><dd>{r.does[0]}</dd></div>)}</dl>
+        <Link className="btn btn-y" to={p.path}>Open Appzeto Food</Link></div>
+      <Phone name="food" className="tilt" />
+    </div>
+  </section>
 }
 export function TaxiBand() {
   const p = products[1], ref = useLive()
@@ -54,6 +73,7 @@ function ServiceList() {
 export default function Home() {
   return <><Hero />
     <div id="products"><Later i={0} h={1800}><Trust />
+      <RollingApps />
       <FoodBand /><TaxiBand /><MoreBands /></Later></div>
     <Later i={1}><ServiceList /></Later><Later i={2}><How /></Later>
     <Later i={3}><Network /></Later>
