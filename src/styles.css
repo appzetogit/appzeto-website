@@ -324,7 +324,7 @@ summary::after{content:'';position:absolute;right:8px;top:24px;width:14px;height
 @media (max-width:640px){.ab-nums{gap:12px}.ab-vals{grid-template-columns:1fr}.ab-quote{padding:40px 24px 28px}.ab-story .prose{text-align:center}}
 
 /* Trust strip (home): counters with confetti, Google rating card */
-.trust{padding:84px 0 76px}
+.trust{padding:64px 0 32px}
 .trust-in{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:stretch}
 .tr-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin:0}
 .tr-tile{position:relative;background:#fff;border:2px solid var(--ink);border-radius:var(--r-s);box-shadow:6px 6px 0 var(--ink);padding:26px 18px 22px;display:flex;flex-direction:column;justify-content:center;text-align:center}
@@ -355,11 +355,11 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
 .tr-rating.go .tr-star::after{transition:clip-path .45s ease-out;transition-delay:var(--d)}
 .tr-sub{margin:10px 0 0;font-size:16px;color:var(--soft)}
 @media (max-width:1000px){.trust-in{grid-template-columns:1fr}.tr-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.tr-rating{flex-direction:row;flex-wrap:wrap;gap:6px 16px}.tr-score{margin:0;font-size:52px}.tr-sub{width:100%}}
-@media (max-width:640px){.trust{padding:56px 0 52px}.tr-tiles{gap:14px}.tr-tile{padding:20px 10px 16px;box-shadow:4px 4px 0 var(--ink)}.tr-tile dd{font-size:15px}.tr-rating{box-shadow:4px 4px 0 var(--ink)}.tr-corner-emoji{top:8px;right:8px;font-size:18px}}
+@media (max-width:640px){.trust{padding:44px 0 22px}.tr-tiles{gap:14px}.tr-tile{padding:20px 10px 16px;box-shadow:4px 4px 0 var(--ink)}.tr-tile dd{font-size:15px}.tr-rating{box-shadow:4px 4px 0 var(--ink)}.tr-corner-emoji{top:8px;right:8px;font-size:18px}}
 @media (prefers-reduced-motion:reduce){.tr-burst{display:none}.tr-tile.pop{animation:none}.tr-rating::after{display:none}.tr-rating .tr-star::after,.tr-rating:not(.go) .tr-star::after{clip-path:inset(0 calc(100% - var(--f)) 0 0);transition:none}}
 
 /* Rolling Apps sloped showcase */
-.rolling-slope-sec{padding:72px 0 0;position:relative;z-index:6;margin-bottom:-30px;scroll-margin-top:96px}
+.rolling-slope-sec{padding:32px 0 0;position:relative;z-index:6;margin-bottom:-30px;scroll-margin-top:96px}
 .rolling-head{text-align:center;max-width:880px;margin:0 auto 36px}
 .rolling-badge{display:inline-flex;align-items:center;gap:8px;font:700 13px/1 var(--head);text-transform:uppercase;letter-spacing:.8px;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 14px;box-shadow:3px 3px 0 var(--ink);margin-bottom:14px;color:var(--ink)}
 .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(51,167,122,.7);animation:pulse-green 1.8s infinite}
@@ -438,7 +438,7 @@ a.tr-rating:hover{transform:translate(-2px,-2px)}
 .rolling-road-rail{position:absolute;left:0;right:0;bottom:36px;height:6px;border-bottom:4px solid var(--ink);z-index:1}
 .rail-dashes{position:absolute;left:0;right:0;bottom:8px;height:3px;background:repeating-linear-gradient(90deg,var(--teal) 0 32px,transparent 32px 56px)}
 @media (max-width:640px){
-  .rolling-slope-sec{padding:48px 0 0}
+  .rolling-slope-sec{padding:22px 0 0}
   .rolling-head{margin-bottom:24px}
   .highlight-tag{white-space:normal}
   .roll-card{width:230px}

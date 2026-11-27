@@ -7,6 +7,7 @@ import { Letter, LetterA, PhoneBody, Phone, reduced } from './Brand.jsx'
 // It's in the server HTML, so its CSS starts at first paint; the 2s is counted from then too.
 // No JS or reduced motion: CSS keeps it hidden (motion.css), and it's dropped here.
 const sincePaint = () => { const p = performance.getEntriesByName('first-contentful-paint')[0] || performance.getEntriesByName('first-paint')[0]; return p ? performance.now() - p.startTime : 0 }
+const VB = '36 -20 540 240'
 export function Opening() {
   const [st, setSt] = useState('play')
   useEffect(() => { if (reduced()) setSt('gone') }, [])
@@ -20,9 +21,13 @@ export function Opening() {
   useEffect(() => { document.documentElement.classList.toggle('opening', st === 'play') }, [st])
   if (st === 'gone') return null
   return <div className={`open ${st}`} aria-hidden="true"><i className="ol l3" /><i className="ol l2" /><div className="ol l1">
-    <svg viewBox="36 -20 540 240"><g className="op-phone"><PhoneBody /><g className="op-a"><LetterA /></g></g>
-      {['p1', 'p2', 'z', 'e', 't', 'o'].map((k, i) => <g key={k} className="op-l" style={{ animationDelay: `${980 + i * 75}ms` }}><Letter k={k} /></g>)}
-      <g className="op-tag"><path d="M281 166L255 180L281 195M496 166L523 180L496 195" fill="none" stroke="#06282A" strokeWidth="2.200" /><g fontFamily="Noto Serif,Georgia,serif" fontWeight="700" fontStyle="italic" fontSize="16.500" fill="#06282A"><text x="280" y="187" textLength="77" lengthAdjust="spacingAndGlyphs">REFLECT</text><text x="374" y="187" textLength="122" lengthAdjust="spacingAndGlyphs">TECHNOLOGY</text></g><path d="M357 193h8l9-24h-8z" fill="#06282A" /></g></svg>
+    {/* Each moving piece is its own layer (an HTML box with a full-size drawing inside), so the browser can
+        animate it on the graphics card and it keeps moving while the page is still being built underneath */}
+    <div className="op-stage">
+      <div className="op-part op-phone"><svg viewBox={VB}><PhoneBody /></svg><div className="op-part op-a"><svg viewBox={VB}><LetterA /></svg></div></div>
+      {['p1', 'p2', 'z', 'e', 't', 'o'].map((k, i) => <div key={k} className={`op-part op-l opl-${k}`} style={{ animationDelay: `${980 + i * 75}ms` }}><svg viewBox={VB}><Letter k={k} /></svg></div>)}
+      <div className="op-part op-tag"><svg viewBox={VB}><path d="M281 166L255 180L281 195M496 166L523 180L496 195" fill="none" stroke="#06282A" strokeWidth="2.200" /><g fontFamily="Noto Serif,Georgia,serif" fontWeight="700" fontStyle="italic" fontSize="16.500" fill="#06282A"><text x="280" y="187" textLength="77" lengthAdjust="spacingAndGlyphs">REFLECT</text><text x="374" y="187" textLength="122" lengthAdjust="spacingAndGlyphs">TECHNOLOGY</text></g><path d="M357 193h8l9-24h-8z" fill="#06282A" /></svg></div>
+    </div>
   </div></div>
 }
 

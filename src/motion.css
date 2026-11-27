@@ -3,17 +3,19 @@ html.opening{overflow:hidden}
 .open{position:fixed;inset:0;z-index:100;pointer-events:none}.open.play{pointer-events:auto}
 .ol{position:absolute;left:0;right:0;top:0;height:calc(100% + 16vw);clip-path:polygon(0 0,100% 0,100% calc(100% - 16vw),0 100%);display:grid;place-items:center;padding-bottom:16vw}
 .l1{background:var(--light)}.l2{background:var(--yellow)}.l3{background:var(--teal)}
-.l1 svg{width:min(780px,86vw);overflow:visible}
+.op-stage{position:relative;width:min(780px,86vw);aspect-ratio:540/240}
+.op-part{position:absolute;inset:0;will-change:transform,opacity}.op-part svg{display:block;width:100%;height:100%;overflow:visible}
 .open.leave .ol{animation:up 720ms cubic-bezier(.7,0,.2,1) forwards}.open.leave .l2{animation-delay:110ms}.open.leave .l3{animation-delay:220ms}
 @keyframes up{to{transform:translateY(-101%)}}
-.op-phone{transform-origin:86px 94px;animation:op-phone 620ms 520ms cubic-bezier(.5,0,.2,1) both}
-@keyframes op-phone{from{transform:translateX(220px) scale(.6)}45%{transform:translateX(220px) scale(1.04)}to{transform:none}}
-.op-a{transform-origin:85px 146px;animation:op-a 560ms 80ms cubic-bezier(.3,0,.4,1) both}
-@keyframes op-a{0%{transform:translateY(-220px) scale(.9,1.1);opacity:0}30%{opacity:1}62%{transform:scale(1.12,.8)}82%{transform:translateY(-9px) scale(.97,1.05)}100%{transform:none;opacity:1}}
-.op-l{transform-box:fill-box;transform-origin:50% 100%;animation:op-l 460ms both cubic-bezier(.3,1.5,.5,1)}
-@keyframes op-l{from{transform:translateX(-46px) scale(.1);opacity:0}}
+.op-phone{transform-origin:9.26% 47.5%;animation:op-phone 620ms 520ms cubic-bezier(.5,0,.2,1) both}
+@keyframes op-phone{from{transform:translateX(40.74%) scale(.6)}45%{transform:translateX(40.74%) scale(1.04)}to{transform:none}}
+.op-a{transform-origin:9.07% 69.17%;animation:op-a 560ms 80ms cubic-bezier(.3,0,.4,1) both}
+@keyframes op-a{0%{transform:translateY(-91.67%) scale(.9,1.1);opacity:0}30%{opacity:1}62%{transform:scale(1.12,.8)}82%{transform:translateY(-3.75%) scale(.97,1.05)}100%{transform:none;opacity:1}}
+.op-l{animation:op-l 460ms both cubic-bezier(.3,1.5,.5,1)}
+.opl-p1{transform-origin:25.85% 86.67%}.opl-p2{transform-origin:40.81% 86.65%}.opl-z{transform-origin:55.33% 68.73%}.opl-e{transform-origin:68.6% 68.02%}.opl-t{transform-origin:80.31% 70.39%}.opl-o{transform-origin:92.87% 69.9%}
+@keyframes op-l{from{transform:translateX(-8.52%) scale(.1);opacity:0}}
 .op-tag{animation-name:op-tag;animation-duration:500ms;animation-delay:1350ms;animation-timing-function:cubic-bezier(.3,1.4,.5,1);animation-fill-mode:both}
-@keyframes op-tag{from{transform:translateY(14px);opacity:0}}
+@keyframes op-tag{from{transform:translateY(5.83%);opacity:0}}
 /* Page change */
 .curtain{position:fixed;inset:-16vw 0;z-index:90;background:var(--teal);clip-path:polygon(0 16vw,100% 0,100% calc(100% - 16vw),0 100%);display:grid;place-items:center;transform:translateY(105%);visibility:hidden;pointer-events:none}
 .curtain.cover{visibility:visible;pointer-events:auto;animation:cur-in 460ms cubic-bezier(.6,0,.2,1) forwards}.curtain.clear{visibility:visible;animation:cur-out 600ms 60ms cubic-bezier(.6,0,.2,1) both}
@@ -252,4 +254,4 @@ html:not(.js) .open{display:none}
 /* Below-the-fold sections skip layout and paint until they come near the screen, so the
    first load and the opening only pay for what is visible. Only sections with nothing
    sticking out past their edges are listed (paint is clipped to the box). */
-.band-food,.band-taxi,.trio,.band-super,.band-ai,section.svc,section.how,section.nw,section.join,section.faq,.foot{content-visibility:auto;contain-intrinsic-size:auto 820px}
+.band-food,.band-taxi,.trio,.band-super,.band-ai,section.svc,section.how,section.nw,section.join,section.faq,.foot,.rolling-slope-sec{content-visibility:auto;contain-intrinsic-size:auto 820px}

@@ -3,6 +3,9 @@ import { useEffect, useRef } from 'react'
 import { LETTERS, Glove, letterPath } from './Mascot.jsx'
 import { Burger, Scooter, CabBack, CabFront, FOOD, TAXI, food, hideShows, taxi } from './Shows.jsx'
 import { AI, HOTEL, PHARMACY, QUICK, SERVICE, SUPER, SetBacks, SetFronts, ai, hotel, pharmacy, quick, service, superShow } from './Shows2.jsx'
+// Write an attribute or style only when it changes (the browser restyles and repaints on every write)
+const sa = (e, k, v) => { const c = e.__a || (e.__a = {}); if (c[k] !== v) { c[k] = v; e.setAttribute(k, v) } }
+const ss = (e, k, v) => { const c = e.__s || (e.__s = {}); v = String(v); if (c[k] !== v) { c[k] = v; e.style[k] = v } }
 
 // Everything on stage, and the phone's own scenes, run at this speed
 export const SPEED = 1.7
@@ -129,10 +132,11 @@ export default function Crew({ id, clock, ctl, seek }) {
   useEffect(() => {
     const host = root.current, still = calm(), all = (el, c) => [...el.querySelectorAll('.' + c)]
     const els = all(host, 'cw').map(el => ({ el, sh: host.querySelector(`.cw-sh[data-i="${el.dataset.i}"]`), st: all(el, 'cw-s'), ey: all(el, 'cw-e'), pu: all(el, 'cw-p'), ar: all(el, 'cw-a'), ha: all(el, 'cw-h'), mo: all(el, 'cw-m')[0], ht: all(el, 'cw-hat')[0], hk: all(el, 'cw-hk'), bk: all(el, 'cw-bk')[0], skin: all(el, 'cw-skin')[0], vest: all(el, 'cw-vest')[0], pr: all(el, 'cw-pr') }))
-    const items = Object.fromEntries(all(host, 'cw-it').map(e => [e.dataset.k, e])), shown = {}
+    const items = Object.fromEntries(all(host, 'cw-it').map(e => [e.dataset.k, e]))
+    let shown = {}
     const now0 = performance.now()
     const A = els.map((e, i) => ({ ...e, i, v: {}, l: 'O', hat: null, on: false, blink: now0 + 900 + i * 700, spin: 0, shock: 0, q: 1, qu: 0, move: null, x: -120, y: FLOOR, s: .5, rot: 0, hover: false, box: null, hurt: 0 }))
-    let cur = null, raf = 0, last = now0, live = false, mouse = null, mAt = -1e9, lastIn = now0, wordAt = now0, slow = 16, tick = 0, bye = false, boxAt = 0
+    let cur = null, raf = 0, last = now0, scrollAt = -1e9, rafAt = now0, coarse = matchMedia('(pointer: coarse)').matches, live = false, mouse = null, mAt = -1e9, lastIn = now0, wordAt = now0, slow = 16, tick = 0, bye = false, boxAt = 0
     const go = (a, k, to, dt, K, d) => { const o = a.v[k] || (a.v[k] = { x: to, u: 0 }); if (still) { o.x = to; return to } for (let j = 0; j < 2; j++) { o.u += ((to - o.x) * K - o.u * d) * dt / 2; o.x += o.u * dt / 2 } return o.x }
 
     const E = { cab: all(host, 'cw-cab'), wheels: all(host, 'cw-wh'), burger: all(host, 'cw-bg')[0], layers: all(host, 'cw-ly'), crumbs: all(host, 'cw-cr'), sets: Object.fromEntries(all(host, 'cw-set').map(g => [g.dataset.k, g])), gr: all(host, 'cw-gr'), cf: all(host, 'cw-cf'), swh: all(host, 'st-wh'), scw: all(host, 'cw-sw'), puff: all(host, 'cw-pf'), dl: all(host, 'st-dl')[0], dr: all(host, 'st-dr')[0], beam: all(host, 'st-beam')[0] }
@@ -219,7 +223,7 @@ export default function Crew({ id, clock, ctl, seek }) {
       // body
       let path = ''
       L.s.forEach((s, j) => { const b = s.map((x, k) => go(a, `s${j}${k}`, x, dt, 200, 17).toFixed(1)); path += `M${b[0]} ${b[1]}Q${b[2]} ${b[3]} ${b[4]} ${b[5]}` })
-      if (path !== a.path) { a.path = path; a.st.forEach(e => e.setAttribute('d', path)) }
+      if (path !== a.path) { a.path = path; a.st.forEach(e => sa(e, 'd', path)) }
       // place
       a.hurt *= Math.exp(-dt * 7)
       a.qu += ((1 - a.q) * 260 - a.qu * 13) * dt; a.q = cl(a.q + a.qu * dt, .55, 1.35)
@@ -228,12 +232,12 @@ export default function Crew({ id, clock, ctl, seek }) {
       let X = a.x + px * (a.s / .6), Yy = a.y + py * (a.s / .6), s = a.s
       if (into > 0) { X = lerp(X, PHONE[0], into); Yy = lerp(Yy, PHONE[1] + 46, into) - Math.sin(into * Math.PI) * 46; s = lerp(s, .05, into * into) }
       const r = a.rot + pr + (into > 0 ? into * 340 : 0), sy = a.q + breathe, sx = 2 - sy
-      a.el.setAttribute('transform', `translate(${X.toFixed(2)} ${Yy.toFixed(2)}) translate(0 ${(-58 * s).toFixed(2)}) rotate(${r.toFixed(1)}) translate(0 ${(58 * s).toFixed(2)}) scale(${(s * sx).toFixed(3)} ${(s * sy).toFixed(3)}) translate(-50 -130)`)
+      sa(a.el, 'transform', `translate(${X.toFixed(2)} ${Yy.toFixed(2)}) translate(0 ${(-58 * s).toFixed(2)}) rotate(${r.toFixed(1)}) translate(0 ${(58 * s).toFixed(2)}) scale(${(s * sx).toFixed(3)} ${(s * sy).toFixed(3)}) translate(-50 -130)`)
       const gone = !a.on || s < .07
-      a.el.style.visibility = gone ? 'hidden' : 'visible'
+      ss(a.el, 'visibility', gone ? 'hidden' : 'visible')
       const high = cl((FLOOR - Yy) / 90, 0, 1)
-      a.sh.setAttribute('transform', `translate(${X.toFixed(1)} ${FLOOR}) scale(${(a.s * (1 - high * .6)).toFixed(2)})`); a.el.style.opacity = a.fade ?? 1
-      a.sh.style.opacity = gone || a.ride ? 0 : (.2 * (1 - high)).toFixed(2)
+      sa(a.sh, 'transform', `translate(${X.toFixed(1)} ${FLOOR}) scale(${(a.s * (1 - high * .6)).toFixed(2)})`); ss(a.el, 'opacity', a.fade ?? 1)
+      ss(a.sh, 'opacity', gone || a.ride ? 0 : (.2 * (1 - high)).toFixed(2))
       // face
       if (now > a.blink) a.blink = now + 1500 + Math.random() * 3200
       const lid = go(a, 'lid', a.blink - now < 120 ? .08 : p.lid, dt, 900, 50)
@@ -241,29 +245,33 @@ export default function Crew({ id, clock, ctl, seek }) {
       if (mouse && now - mAt < 1500 && !mode && a.box) { const dx = mouse[0] - a.box.left - a.box.width / 2, dy = mouse[1] - a.box.top - a.box.height * .35, q = Math.hypot(dx, dy) || 1, k = Math.min(1, q / 110); look = [dx / q * k, dy / q * k] }
       const startled = A.find(b => b !== a && b.shock > now); if (startled && !busy) look = [startled.i < a.i ? -1 : 1, 0]
       for (let e = 0; e < 2; e++) {
-        a.ey[e].setAttribute('transform', `translate(${go(a, 'ex' + e, L.e[e * 2], dt, 170, 13).toFixed(1)} ${go(a, 'ey' + e, L.e[e * 2 + 1], dt, 170, 13).toFixed(1)}) scale(1 ${Math.max(.07, lid).toFixed(2)})`)
+        sa(a.ey[e], 'transform', `translate(${go(a, 'ex' + e, L.e[e * 2], dt, 170, 13).toFixed(1)} ${go(a, 'ey' + e, L.e[e * 2 + 1], dt, 170, 13).toFixed(1)}) scale(1 ${Math.max(.07, lid).toFixed(2)})`)
         const sp = now < a.spin || busy, w = now / 70 + e * 2
         const gx = go(a, 'px' + e, sp ? Math.cos(w) * 6 : look[0] * 6.5, dt, sp ? 900 : 120 + e * 35, sp ? 40 : 8), gy = go(a, 'py' + e, sp ? Math.sin(w) * 6 : look[1] * 6.5, dt, sp ? 900 : 120 + e * 35, sp ? 40 : 8), h = Math.hypot(gx, gy), k = h > 7 ? 7 / h : 1
-        a.pu[e].setAttribute('transform', `translate(${(gx * k).toFixed(1)} ${(gy * k).toFixed(1)})`)
+        sa(a.pu[e], 'transform', `translate(${(gx * k).toFixed(1)} ${(gy * k).toFixed(1)})`)
       }
       const mw = go(a, 'mw', p.m[0], dt, 260, 18), mc = go(a, 'mc', p.m[1], dt, 260, 18), mo = Math.max(0, go(a, 'mo', p.m[2], dt, 260, 18))
-      a.mo.setAttribute('transform', `translate(${go(a, 'mx', L.m[0], dt, 170, 14).toFixed(1)} ${go(a, 'my', L.m[1], dt, 170, 14).toFixed(1)})`)
-      a.mo.setAttribute('d', `M${(-mw).toFixed(1)} ${(-mo / 2).toFixed(1)}Q0 ${(mc - mo).toFixed(1)} ${mw.toFixed(1)} ${(-mo / 2).toFixed(1)}Q0 ${(mc + mo).toFixed(1)} ${(-mw).toFixed(1)} ${(-mo / 2).toFixed(1)}Z`)
+      sa(a.mo, 'transform', `translate(${go(a, 'mx', L.m[0], dt, 170, 14).toFixed(1)} ${go(a, 'my', L.m[1], dt, 170, 14).toFixed(1)})`)
+      sa(a.mo, 'd', `M${(-mw).toFixed(1)} ${(-mo / 2).toFixed(1)}Q0 ${(mc - mo).toFixed(1)} ${mw.toFixed(1)} ${(-mo / 2).toFixed(1)}Q0 ${(mc + mo).toFixed(1)} ${(-mw).toFixed(1)} ${(-mo / 2).toFixed(1)}Z`)
       // arms, hands, props
       ;[p.hl, p.hr].forEach((h, k) => {
         const ax = go(a, 'ax' + k, L.a[k * 2], dt, 190, 17), ay = go(a, 'ay' + k, L.a[k * 2 + 1], dt, 190, 17), x = go(a, 'hx' + k, h[0], dt, 210, 14), y = go(a, 'hy' + k, h[1], dt, 210, 14), q = go(a, 'hr' + k, h[2], dt, 150, 13), side = k ? 1 : -1
-        a.ar[k].setAttribute('d', `M${ax.toFixed(1)} ${ay.toFixed(1)}Q${((ax + x) / 2 + side * 8).toFixed(1)} ${((ay + y) / 2 + 9).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`)
-        a.ha[k].setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${q.toFixed(0)}) scale(${side} 1)`)
+        sa(a.ar[k], 'd', `M${ax.toFixed(1)} ${ay.toFixed(1)}Q${((ax + x) / 2 + side * 8).toFixed(1)} ${((ay + y) / 2 + 9).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`)
+        sa(a.ha[k], 'transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${q.toFixed(0)}) scale(${side} 1)`)
       })
       const rider = cur === 'food' && a.i === 0
-      if (rider !== a.rider) { a.rider = rider; a.bk.style.display = a.vest.style.display = rider ? '' : 'none'; a.skin.setAttribute('stroke', rider ? R : T) }
+      if (rider !== a.rider) { a.rider = rider; a.bk.style.display = a.vest.style.display = rider ? '' : 'none'; sa(a.skin, 'stroke', rider ? R : T) }
       const want = `${p.pl}|${p.pr}`
       if (want !== a.want) { a.want = want; a.pr.forEach(e => { e.style.display = (e.dataset.s === 'l' ? p.pl : p.pr) === e.dataset.k ? '' : 'none' }) }
-      if (a.hat !== a.hatOn || a.l !== a.hatL) { a.hatOn = a.hat; a.hatL = a.l; a.hk.forEach(e => { e.style.display = e.dataset.k === a.hat ? '' : 'none' }); const [hx, hy] = HAT_AT[a.l] || [50, 8]; a.ht.setAttribute('transform', `translate(${hx} ${hy})`); if (!still) a.ht.firstChild.animate([{ transform: 'translateY(-60px) rotate(-40deg)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 460, delay: 120, fill: 'backwards', easing: 'cubic-bezier(.3,1.7,.5,1)' }) }
+      if (a.hat !== a.hatOn || a.l !== a.hatL) { a.hatOn = a.hat; a.hatL = a.l; a.hk.forEach(e => { e.style.display = e.dataset.k === a.hat ? '' : 'none' }); const [hx, hy] = HAT_AT[a.l] || [50, 8]; sa(a.ht, 'transform', `translate(${hx} ${hy})`); if (!still) a.ht.firstChild.animate([{ transform: 'translateY(-60px) rotate(-40deg)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 460, delay: 120, fill: 'backwards', easing: 'cubic-bezier(.3,1.7,.5,1)' }) }
     }
-    const put = (k, x, y, r, s = .6) => { const e = items[k]; shown[k] = 1; e.style.visibility = 'visible'; e.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${r.toFixed(0)}) scale(${s})`) }
+    const put = (k, x, y, r, s = .6) => { const e = items[k]; shown[k] = 1; ss(e, 'visibility', 'visible'); sa(e, 'transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${r.toFixed(0)}) scale(${s})`) }
     function props(now, n) {
-      for (const k in shown) { items[k].style.visibility = 'hidden'; delete shown[k] }
+      const was = shown; shown = {}
+      propsNow(now, n)
+      for (const k in was) if (!shown[k]) ss(items[k], 'visibility', 'hidden')
+    }
+    function propsNow(now, n) {
       const f = showT != null ? perf : now > wordAt && S.clock ? S.clock() : null
       if (f == null || still || S.ctl?.current?.mode || (S.ctl?.current?.paused && now - lastIn > 30000)) return
       const u = (f % 5200) / 5200, sec = now / 1000
@@ -276,13 +284,15 @@ export default function Crew({ id, clock, ctl, seek }) {
       if (cur === 'ai' && u < .74) for (let k = 0; k < 3; k++) { const t = (sec * .8 + k / 3) % 1; put('spark' + k, lerp(A[0].x + 24, A[1].x - 16, t), FLOOR - 66 - Math.sin(t * Math.PI) * 34, t * 240, .45 + Math.sin(t * Math.PI) * .35) }
     }
     function frame(now) {
-      const raw = now - last, dt = cl(raw / 1000, .001, .034); last = now; tick++
-      if (raw < 120) slow += (raw - slow) * .04
+      const gap = now - rafAt; rafAt = now; if (gap < 120) slow += (gap - slow) * .04 // the browser's real frame time, not ours
+      const cap = coarse || slow > 22 || now - scrollAt < 250 ? 31 : 0
+      if (cap && now - last < cap) { raf = requestAnimationFrame(frame); return }
+      const raw = now - last, dt = cl(raw / 1000, .001, .05); last = now; tick++
       if (S.changed || !cur) change(now)
       if (showT != null) runShow(now)
       const n = WORDS[cur].length, lite = slow > 25 && !A.some(a => a.move || a.air || a.ride)
       if (now - boxAt > 350 && mouse && now - mAt < 1500) { boxAt = now; A.forEach(a => { if (a.on) a.box = a.el.getBoundingClientRect() }) }
-      A.forEach(a => { place(a, now, dt); if (!a.on) { if (a.seen !== false) { a.seen = false; a.el.style.visibility = 'hidden'; a.sh.style.opacity = 0 } return } a.seen = true; if (lite && a.i && (tick + a.i) % 2) return; draw(a, now, lite ? Math.min(.034, dt * 2) : dt, n) })
+      A.forEach(a => { place(a, now, dt); if (!a.on) { if (a.seen !== false) { a.seen = false; ss(a.el, 'visibility', 'hidden'); ss(a.sh, 'opacity', 0)} return } a.seen = true; if (lite && a.i && (tick + a.i) % 2) return; draw(a, now, lite ? Math.min(.034, dt * 2) : dt, n) })
       props(now, n)
       S.fps = 1000 / slow
       if (live && !document.hidden && !still) raf = requestAnimationFrame(frame)
@@ -292,7 +302,7 @@ export default function Crew({ id, clock, ctl, seek }) {
     const start = () => { cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame) }
     const svg = host.ownerSVGElement, io = new IntersectionObserver(([e]) => { const was = live; live = e.isIntersecting; if (live && !was) start() }); io.observe(svg)
     const mv = e => { lastIn = performance.now(); if (e.pointerType !== 'touch') { mouse = [e.clientX, e.clientY]; mAt = lastIn } }
-    const sc = () => { lastIn = performance.now(); bye = scrollY > 180 }, vis = () => { if (!document.hidden && live) start() }
+    const sc = () => { lastIn = scrollAt = performance.now(); bye = scrollY > 180 }, vis = () => { if (!document.hidden && live) start() }
     const of = e => { const g = e.target.closest?.('.cw'); return g && A[+g.dataset.i] }
     const over = e => { A.forEach(a => { a.hover = false }); const a = of(e); if (a && e.pointerType === 'mouse') a.hover = true }, out = () => A.forEach(a => { a.hover = false })
     const click = e => { const a = of(e); if (a) { a.shock = performance.now() + 1300; a.spin = a.shock; a.qu += 5; lastIn = performance.now() } }
