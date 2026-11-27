@@ -285,8 +285,10 @@ export default function Crew({ id, clock, ctl, seek }) {
     }
     function frame(now) {
       const gap = now - rafAt; rafAt = now; if (gap < 120) slow += (gap - slow) * .04 // the browser's real frame time, not ours
-      const cap = coarse || slow > 22 || now - scrollAt < 250 ? 31 : 0
-      if (cap && now - last < cap) { raf = requestAnimationFrame(frame); return }
+      // 30 fps everywhere: it is cartoon motion, and every frame restyles and repaints the whole drawing.
+      // On slow devices and while the page scrolls, 20 fps.
+      const cap = slow > 22 || now - scrollAt < 250 || (coarse && slow > 18) ? 48 : 31
+      if (now - last < cap) { raf = requestAnimationFrame(frame); return }
       const raw = now - last, dt = cl(raw / 1000, .001, .05); last = now; tick++
       if (S.changed || !cur) change(now)
       if (showT != null) runShow(now)
