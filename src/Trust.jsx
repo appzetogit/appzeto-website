@@ -12,7 +12,7 @@ const STATS = [
   [100, 'k+', 'Active users', '🚀'],
   [24, '/7', 'Live support', '💬']
 ]
-const RATING = 4.35
+const RATING = 4.8
 const GOOGLE_URL = '' // your Google Business review link; the card becomes a link once this is set
 
 // Drawn icons, one per tile, in the site's ink-outline style (48x48)
@@ -64,7 +64,7 @@ function Rating({ go }) {
   const body = <>
     <span className="tr-corner-emoji" aria-hidden="true">🌟</span>
     <div className="tr-g-head"><G /><span>Google</span></div>
-    <div className="tr-score">{RATING.toFixed(2)}</div>
+    <div className="tr-score">{String(RATING)}</div>
     <div className="tr-stars" role="img" aria-label={`Rated ${RATING} out of 5 on Google`}>
       {stars.map((f, i) => <span key={i} className="tr-star" style={{ '--f': `${f * 100}%`, '--d': `${300 + i * 160}ms` }}><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.3L12 17.8 5.7 21.5l1.7-7.3L2 9.5l7.1-.6z" /></svg></span>)}
     </div>
