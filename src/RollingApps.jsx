@@ -106,12 +106,6 @@ export default function RollingApps() {
 
                 {/* Rolling physical wheel that rotates downhill with speed dust */}
                 <div className="roll-wheel-wrap" aria-hidden="true">
-                  {/* Funky cartoon dust puffs trailing behind the wheel */}
-                  <div className="wheel-dust">
-                    <span className="dust-puff d1" />
-                    <span className="dust-puff d2" />
-                    <span className="dust-puff d3" />
-                  </div>
 
                   <div className="roll-wheel">
                     <div className="wheel-tread" />

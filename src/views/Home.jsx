@@ -52,7 +52,7 @@ function MoreBands() {
   const ref = useLive(), by = id => products.find(p => p.id === id), rest = ['quick', 'service', 'hotel'].map(by), sup = by('super'), ai = by('ai')
   return <div ref={ref}>
     <section className="trio"><div className="wrap trio-in">{rest.map(p => <Link key={p.id} to={p.path} className={`trio-i tr-${p.id}`}><Phone name={p.id} /><h3>{p.name}</h3><p>{p.line}</p><span className="go">Open</span></Link>)}</div></section>
-    <section className="band band-super"><div className="wrap band-grid"><div><h3 className="h-xl">{sup.name}</h3><p className="lead">{sup.line}</p><ul className="care-list">{sup.roles.map(r => <li key={r.who}><b>{r.who}</b> {r.does[0].toLowerCase()}</li>)}</ul><Link className="btn btn-k" to={sup.path}>Open All-in-One</Link></div><Phone name="super" className="tilt" /></div></section>
+    <section className="band band-super"><div className="wrap band-grid"><div><h3 className="h-xl">{sup.name}</h3><p className="lead">{sup.line}</p><ul className="care-list">{sup.roles.map(r => <li key={r.who}><b>{r.who}:</b> {r.does[0]}</li>)}</ul><Link className="btn btn-k" to={sup.path}>Open All-in-One</Link></div><Phone name="super" className="tilt" /></div></section>
     <section className="band band-ai"><div className="wrap band-grid flip"><Phone name="ai" /><div><h3 className="h-xl">{ai.name}</h3><p className="lead">{ai.intro}</p><ul className="ai-list">{ai.roles[0].does.map(x => <li key={x}>{x}</li>)}</ul><Link className="btn btn-y" to={ai.path}>See AI projects</Link></div></div></section>
   </div>
 }

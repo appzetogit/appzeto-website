@@ -74,7 +74,7 @@ export function Products() {
     <section className="sec"><div className="wrap prod-rows">{products.map(p => <article key={p.id} className={`prod-row pr-${p.id}`}>
       <Link to={p.path} className="pr-phone" aria-label={`Open ${p.name}`}><Phone name={p.id} /></Link>
       <div><ProductLogo id={p.id} /><h2 className="h-xl">{p.name}</h2><p className="lead">{p.intro}</p>
-        <ul className="pr-roles">{p.roles.map(r => <li key={r.who}><b>{r.who}</b>{r.does[0]}</li>)}</ul>
+        <ul className="pr-roles">{p.roles.map(r => <li key={r.who}><b>{r.who}</b><ul className="pr-feats">{r.does.slice(0, 4).map(d => <li key={d}>{d}</li>)}</ul></li>)}</ul>
         <div className="row"><Link className={p.id === 'taxi' ? 'btn btn-y' : 'btn btn-k'} to={p.path}>See {p.name}</Link><Link className="txt" to="/contact">Ask for a demo</Link></div></div>
     </article>)}</div></section>
     <Cta t="Need something we haven’t built yet?" /></>
